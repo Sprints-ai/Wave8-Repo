@@ -2,13 +2,13 @@
  ============================================================================
  Name        : TMU.c
  Author      : Muhammed Gamal
- Description : this file includes the function implementation of the TMU driver
+ Description : this file contains the functions implementation of the SOS
  ============================================================================
  */
 
 
 /*********************************includes**********************************/
-#include "TMU.h"
+#include "SOS.h"
 /***************************************************************************/
 
 
@@ -24,49 +24,69 @@
 #define TIMER0_COMPARE_VALUE 250
 #define ONE 1
 #define FIRST_CHANNEL 0
+#define TASK_EXCUTED 1
+#define NO_TASK_EXCUTED 0
 /***************************************************************************/
 
 
 /******************************global variables*****************************/
-static TMU_ConfigChannel * TMU_Channels = NULL_PTR;
-static uint8_t TMU_Status = TMU_NOT_INITIALIZED;
+static SOS_ConfigChannel * SOS_Tasks = NULL_PTR;
+static uint8_t SOS_Status = SOS_NOT_INITIALIZED;
 void (*g8_functionHoler[NUMBER_OF_TASKS])(void);
 uint32_t gu32_Counter_Delay_Arr[NUMBER_OF_TASKS][NUM_OF_ARR_ELEMENTS];
 uint8_t gu8_Active_Channels[NUMBER_OF_TASKS];
 uint8_t Loop_Counter;
+void (*g8_IdleState_PTR)(void)=NULL_PTR;
+uint8_t Timer_Channel;
 /***************************************************************************/
 
 
 
 
 /************************************************************************************
-* Function Name: TMU_Init
-* Parameters (in):
+* Function Name: SOS_InitRunable
+* Parameters (in): ConfigPtr- pointer to the SOS configuration structure
 * Parameters (inout): None
 * Parameters (out): None
 * Return value: u8_error- variable that describe the error status
-* Description: Initiates the module
+* Description: this function is responsible for Initiating the SOS
 ************************************************************************************/
-ERROR_STATUS TMU_Init(TMU_ConfigType* ConfigPtr)
+ERROR_STATUS SOS_InitRunable(SOS_Config* ConfigPtr)
 {
 	uint8_t u8_status=E_ok;
-	if(ConfigPtr == NULL_PTR || TMU_Status == SOS_INITIALIZED)
+	St_TimerCfg timer0_stru_init=
+	{
+		timer0_stru_init.Timer_CH_NO=Timer_0,
+		timer0_stru_init.Timer_Mode=T0_COMP_MODE,
+		timer0_stru_init.Timer_Polling_Or_Interrupt=T0_INTERRUPT_CMP,
+		timer0_stru_init.Timer_Prescaler=T0_PRESCALER_64,
+	};
+	if(ConfigPtr == NULL_PTR || SOS_Status == SOS_INITIALIZED)
 	{
 		u8_status |= E_NOk;
 	}
 	else
 	{
-		TMU_Channels = ConfigPtr->Channels;
-
-		St_TimerCfg timer0_stru_init=
+		switch(ConfigPtr->Timer_CH_NO)
 		{
-			timer0_stru_init.Timer_CH_NO=Timer_0,
-			timer0_stru_init.Timer_Mode=T0_COMP_MODE,
-			timer0_stru_init.Timer_Polling_Or_Interrupt=T0_INTERRUPT_CMP,
-			timer0_stru_init.Timer_Prescaler=T0_PRESCALER_64,
-		};
-		Timer_Init(&timer0_stru_init);
-		TMU_Status = SOS_INITIALIZED;
+			case Timer_0:
+				u8_status |= Timer_Init(&timer0_stru_init);
+				Timer_Channel=Timer_0;
+				break;
+			case Timer_1:
+
+				u8_status |= E_NOk;
+				break;
+			case Timer_2:
+
+				u8_status |= E_NOk;
+				break;
+			default:
+				u8_status |= E_NOk;
+				break;
+		}
+		SOS_Tasks = SOS_TasksConfiguration.Tasks;
+		SOS_Status = SOS_INITIALIZED;
 	}
 
 	if(u8_status == E_ok)
@@ -84,20 +104,24 @@ ERROR_STATUS TMU_Init(TMU_ConfigType* ConfigPtr)
 
 
 /************************************************************************************
-* Function Name: TMU_Start
-* Parameters (in):
+* Function Name: Task_Start
+* Parameters (in): void (*ptr)(void)- pointer to call back task
+*                  channel_id-
+*                  repetition-
+*                  delay-
 * Parameters (inout): None
 * Parameters (out): None
 * Return value: u8_error- variable that describe the error status
-* Description:
+* Description: this function is responsible for starting the SOS tasks
+* NOTE: the channel_id also represent the channel priority
 ************************************************************************************/
-ERROR_STATUS TMU_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition, uint16_t delay)
+ERROR_STATUS Task_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition, uint16_t delay)
 {
 	uint8_t u8_status=E_ok;
 	if(ptr == NULL_PTR ||   /*pointer to function is null*/
-		TMU_Status == TMU_NOT_INITIALIZED ||  /*TMU module is not initialized*/
+		SOS_Status == SOS_NOT_INITIALIZED ||  /*SOS is not initialized*/
 		((gu8_Active_Channels[channel_id]==channel_id) && (channel_id!=FIRST_CHANNEL)) ||  /*restart a channel*/
-		channel_id >= NUMBER_OF_TASKS ||  /*the TMU buffer is full*/
+		channel_id >= NUMBER_OF_TASKS ||  /*the SOS buffer is full*/
 		repetition>PERIODIC  /*unexpected repetition input*/
 	  )
 	{
@@ -106,7 +130,7 @@ ERROR_STATUS TMU_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition
 
 	else
 	{
-		switch(TMU_Channels[channel_id].Timer_CH_NO)
+		switch(Timer_Channel)
 		{
 			case Timer_0:
 				Timer_Start(Timer_0,TIMER0_COMPARE_VALUE);
@@ -126,7 +150,7 @@ ERROR_STATUS TMU_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition
 		g8_functionHoler[channel_id]=ptr;
 		gu32_Counter_Delay_Arr[channel_id][COUNTER]=CLEAR;
 		gu32_Counter_Delay_Arr[channel_id][DELAY]=delay;
-		TMU_Channels[channel_id].Repetition=repetition;
+		SOS_Tasks[channel_id].Repetition=repetition;
 		gu8_Active_Channels[channel_id]=channel_id;
 	}
 
@@ -145,16 +169,16 @@ ERROR_STATUS TMU_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition
 
 
 /************************************************************************************
-* Function Name: TMU_Dispatcher
-* Parameters (in):
+* Function Name: SOS_Runable
+* Parameters (in): None
 * Parameters (inout): None
 * Parameters (out): None
-* Return value:
-* Description:
+* Return value: u8_error- variable that describe the error status
+* Description: this function is responsible for managing the SOS
 ************************************************************************************/
-void TMU_Dispatch(void)
+void SOS_Runable(void)
 {
-	uint8_t Loop_Counter;
+	uint8_t Tick_state=NO_TASK_EXCUTED;
 	if(gu8_Timer0CompFlag==FLAG_HIGH)
 	{
 		gu8_Timer0CompFlag=FLAG_LOW;
@@ -162,8 +186,9 @@ void TMU_Dispatch(void)
 		{
 			if(gu32_Counter_Delay_Arr[Loop_Counter][COUNTER]==gu32_Counter_Delay_Arr[Loop_Counter][DELAY] && gu32_Counter_Delay_Arr[Loop_Counter][DELAY]!=0)
 			{
+				Tick_state=TASK_EXCUTED;
 				(*g8_functionHoler[Loop_Counter])();
-				if(TMU_Channels[Loop_Counter].Repetition==PERIODIC)
+				if(SOS_Tasks[Loop_Counter].Repetition==PERIODIC)
 				{
 					gu32_Counter_Delay_Arr[Loop_Counter][COUNTER]=CLEAR;
 				}
@@ -174,34 +199,40 @@ void TMU_Dispatch(void)
 			}
 			gu32_Counter_Delay_Arr[Loop_Counter][COUNTER]++;
 		}
+
+		if(g8_IdleState_PTR!=NULL_PTR && Tick_state==NO_TASK_EXCUTED)
+		{
+			g8_IdleState_PTR();
+		}
+
 	}
 }
 
 
 
 /************************************************************************************
-* Function Name: TMU_DeInit
-* Parameters (in):
+* Function Name: SOS_DeInit
+* Parameters (in): None
 * Parameters (inout): None
 * Parameters (out): None
-* Return value:
-* Description:
+* Return value: u8_error- variable that describe the error status
+* Description: this task is responsible for de-initializing the SOS
 ************************************************************************************/
-ERROR_STATUS TMU_DeInit(void)
+ERROR_STATUS SOS_DeInit(void)
 {
 	uint8_t u8_status=E_ok;
-	if(TMU_Status == TMU_NOT_INITIALIZED)
+	if(SOS_Status == SOS_NOT_INITIALIZED)
 	{
 		u8_status |= E_NOk;
 	}
 	else
 	{
 		Timer_DeInit(Timer_0);
-		TMU_Status = TMU_NOT_INITIALIZED;
+		SOS_Status = SOS_NOT_INITIALIZED;
 
-		for(int i=0;i<NUMBER_OF_TASKS;i++)
+		for(int i=START;i<NUMBER_OF_TASKS;i++)
 		{
-			TMU_Stop(i);
+			u8_status |= Task_Stop(i);
 		}
 	}
 
@@ -221,19 +252,19 @@ ERROR_STATUS TMU_DeInit(void)
 
 
 /************************************************************************************
-* Function Name: TMU_DeInit
-* Parameters (in):
+* Function Name: Task_Stop
+* Parameters (in): Channel_ID
 * Parameters (inout): None
 * Parameters (out): None
-* Return value:
-* Description:
+* Return value: u8_error- variable that describe the error status
+* Description: this function stops the any running task according to the task id
 ************************************************************************************/
-ERROR_STATUS TMU_Stop(uint8_t Channel_ID)
+ERROR_STATUS Task_Stop(uint8_t Channel_ID)
 {
 	uint8_t u8_status=E_ok;
 
-	/* check if the channel has been started or not
-	 * no need to check if the channel is initialized or not since no channel
+	/* check if the task has been started or not
+	 * no need to check if the task is initialized or not since no task
 	 * will start without initializing the module
 	 *  */
 	if(gu8_Active_Channels[Channel_ID]!=Channel_ID)
@@ -245,7 +276,7 @@ ERROR_STATUS TMU_Stop(uint8_t Channel_ID)
 		g8_functionHoler[Channel_ID]=NULL_PTR;
 		gu32_Counter_Delay_Arr[Channel_ID][COUNTER]=CLEAR;
 		gu32_Counter_Delay_Arr[Channel_ID][DELAY]=CLEAR;
-		TMU_Channels[Channel_ID].Repetition=ONE_SHOOT;
+		SOS_Tasks[Channel_ID].Repetition=ONE_SHOOT;
 		gu8_Active_Channels[Channel_ID]=CLEAR;
 	}
 
@@ -262,6 +293,33 @@ ERROR_STATUS TMU_Stop(uint8_t Channel_ID)
 	return u8_status;
 }
 
+
+
+
+/************************************************************************************
+* Function Name: SOS_SetIdleTask
+* Parameters (in): void (*callback)(void)- pointer to the idle task
+* Parameters (inout): None
+* Parameters (out): None
+* Return value: u8_error- variable that describe the error status
+* Description: this function sets the call back to the idle task
+************************************************************************************/
+ERROR_STATUS SOS_SetIdleTask(void (*callback)(void))
+{
+	uint8_t u8_status=E_ok;
+
+	if(callback!=NULL_PTR)
+	{
+		g8_IdleState_PTR=callback;
+	}
+
+	else
+	{
+		u8_status = E_NOk;
+	}
+
+	return u8_status;
+}
 
 
 

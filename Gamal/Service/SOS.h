@@ -6,58 +6,64 @@
  ============================================================================
  */
 
-#ifndef TMU_H_
-#define TMU_H_
+#ifndef SOS_H_
+#define SOS_H_
 
 /*********************************includes**********************************/
 #include "../Common/std_types.h"
 #include "../MCAL/registers.h"
 #include "../MCAL/interrupt.h"
+#include "SOS_Cfg.h"
 #include "../MCAL/Timer.h"
-#include "TMU_Cfg.h"
 /***************************************************************************/
 
 
 /*******************************definitions********************************/
 #define SOS_INITIALIZED                (1U)
-#define TMU_NOT_INITIALIZED            (0U)
+#define SOS_NOT_INITIALIZED            (0U)
 
 #define ONE_SHOOT                      0
 #define PERIODIC                       1
 
+#define TASK_REPETITION                1   /*  0=>one shoot   1=>infinite */
 /************************************************************************/
 /*			          Structures Definitions	                        */
 /************************************************************************/
-
 
 
 typedef struct
 {
 	uint8_t Timer_CH_NO;
 	uint8_t Resolution;
-	uint8_t Repetition;
-} TMU_ConfigChannel;
+} SOS_Config;
 
 typedef struct
 {
-	TMU_ConfigChannel Channels[NUMBER_OF_TASKS];
-} TMU_ConfigType;
+	uint8_t Repetition;
+} SOS_ConfigChannel;
+
+typedef struct
+{
+	SOS_ConfigChannel Tasks[NUMBER_OF_TASKS];
+} SOS_ConfigType;
 
 /***************************************************************************/
 
 
 /******************************global variables*****************************/
 /* Extern structures to be used by TMU and other modules */
-extern const TMU_ConfigType TMU_Configuration;
+extern const SOS_ConfigType SOS_TasksConfiguration;
+extern const SOS_Config SOS_Configration;
 /***************************************************************************/
 
 
 /***************************functions prototypes****************************/
-ERROR_STATUS TMU_Init(TMU_ConfigType* ConfigPtr);
-ERROR_STATUS TMU_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition, uint16_t delay);
-void TMU_Dispatch(void);
-ERROR_STATUS TMU_DeInit(void);
-ERROR_STATUS TMU_Stop(uint8_t Channel_ID);
+ERROR_STATUS SOS_InitRunable(SOS_Config* ConfigPtr);
+ERROR_STATUS Task_Start(void (*ptr)(void), uint8_t channel_id, uint8_t repetition, uint16_t delay);
+void SOS_Runable(void);
+ERROR_STATUS SOS_DeInit(void);
+ERROR_STATUS Task_Stop(uint8_t Channel_ID);
+ERROR_STATUS SOS_SetIdleTask(void (*callback)(void));
 /***************************************************************************/
 
-#endif /* TMU_H_ */
+#endif /* SOS_H_ */

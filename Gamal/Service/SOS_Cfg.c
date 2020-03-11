@@ -7,7 +7,7 @@
  */
 
 /*********************************includes**********************************/
-#include "TMU.h"
+#include "SOS.h"
 /***************************************************************************/
 
 
@@ -20,10 +20,18 @@
 
 /***************************************************************************/
 
-const TMU_ConfigType TMU_Configuration =
+
+/*this structure filled with pre-configuration data from the user*/
+const SOS_Config SOS_Configration =
                                    {
 								    TASK_TIMER_CH_NUM,
-									SOS_TICK_RESOLUTIO,TASK_REPETITION
+									SOS_TICK_RESOLUTIO
 								   };
+/*****************************************************************/
 
 
+const SOS_ConfigType SOS_TasksConfiguration =
+                                   {
+									TASK_REPETITION
+								   };
+/****************************************************************/
