@@ -1,14 +1,13 @@
 /*
- * TMU.h
+ * SOS.h
  *
- * Created: 2/24/2020 11:51:46 AM
- *  Author: Ehab & Reem
+ * Created: 3/10/2020 5:32:41 PM
+ *  Author: Reem el-Areeny
  */ 
 
 
-#ifndef TMU_H_
-#define TMU_H_
-
+#ifndef SOS_H_
+#define SOS_H_
 
 /************************************************************************/
 /*											INCLUDES							            */
@@ -36,37 +35,37 @@
 #define TIMER_INITIAL_VALUE	0x05
 #define TCNT						TCNT0
 
-#define ERROR_TMU_MODULE_ID	200
+#define ERROR_SOS_MODULE_ID	200
 
 
 /************************************************************************/
 /*								  Structures Definitions	                     */
 /************************************************************************/
-typedef struct TMU_Task
+typedef struct SOS_Task
 {
-	uint8_t Task_ID;
+	uint8_t Task_Priority;
 	uint8_t periodic_or_oneShot;
 	uint32_t delay_ms;
 	uint32_t current_ticks;
 	void (*CBK_TOV)(void);
 	
-}TMU_Task;
+}SOS_Task;
 
 
 /************************************************************************/
 /*						    TIMER FUNCTIONS' PROTOTYPES							   */
 /************************************************************************/
 /**
- * Description: Initializes TMU module 
+ * Description: Initializes SOS module 
  * @return function status 
  */
-extern ERROR_STATUS TMU_Init(void);
+extern ERROR_STATUS SOS_Init(void);
 
 /**
- * Description: DeInitializes TMU module 
+ * Description: DeInitializes SOS module 
  * @return function status 
  */
-extern ERROR_STATUS TMU_DeInit(void);
+extern ERROR_STATUS SOS_DeInit(void);
 
 /**
  * Description: adds a new task to the task buffer
@@ -75,20 +74,20 @@ extern ERROR_STATUS TMU_DeInit(void);
  * @param: delay_ms: period of the consumer
  * @return function status 
  */
-extern ERROR_STATUS TMU_Start_Timer (uint8_t Task_ID , void (*CBK_TOV)(void) , uint32_t delay_ms, uint8_t periodic_or_oneShot);
+extern ERROR_STATUS SOS_Create(uint8_t Task_ID , void (*CBK_TOV)(void) , uint32_t delay_ms, uint8_t periodic_or_oneShot);
 
 /**
  * Description: stops a specific task from the task buffer
  * @param: Task_ID : ID of the Consumer
  * @return function status 
  */
-extern ERROR_STATUS TMU_Stop_Timer(uint8_t Task_ID);
+extern ERROR_STATUS SOS_Delete(uint8_t Task_ID);
 
 /**
  * Description: starts implementing the tasks based on their periods
  * @return function status 
  */
-extern ERROR_STATUS TMU_Dispatch(void);
+extern ERROR_STATUS SOS_Run(void);
 
 
-#endif /* TMU_H_ */
+#endif /* SOS_H_ */

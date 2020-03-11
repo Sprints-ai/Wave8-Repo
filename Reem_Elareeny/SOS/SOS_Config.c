@@ -9,7 +9,7 @@
 /************************************************************************/
 /*								  Structure OBJECT					               */
 /************************************************************************/
-TMU_ConfigType TMU_Config = 
+SOS_ConfigType SOS_Config = 
 {
 	/*For timer channel 0 write TIMER_CH0
 	For timer channel 2 write TIMER_CH2

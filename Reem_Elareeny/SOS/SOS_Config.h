@@ -14,13 +14,13 @@
 /************************************************************************/
 /*								  Structures Definition 	                     */
 /************************************************************************/
-typedef struct TMU_ConfigType
+typedef struct SOS_ConfigType
 {
 	uint8_t Timer_Channel;
 	
-}TMU_ConfigType;
+}SOS_ConfigType;
 
 
-//review:should include the extern here: extern TMU_ConfigType TMU_Config;
+//review:should include the extern here: extern SOS_ConfigType SOS_Config;
 
 #endif /* SOS_CONFIG_H_ */
