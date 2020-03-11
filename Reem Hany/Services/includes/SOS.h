@@ -39,6 +39,7 @@ typedef struct SOS_TASK_Cfg{
 	uint8_t SOS_MODE;
 	uint32_t Delay_TimeMs;
 	uint32_t Delay_Counter;
+	uint32_t Priority;
 }SOS_TASK_Cfg;
 
 /************************************************************************/

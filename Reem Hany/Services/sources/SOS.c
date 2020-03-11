@@ -281,6 +281,9 @@ ERROR_STATUS SOS_Create_Task(SOS_TASK_Cfg* task){
 							aES_errorStatus = (E_FULL_BUFFER + SOS_ERROR);
 						}
 						else{
+							
+							//Sort the task according to its priorities
+							SOS_SortTasks();
 							//In case the timer is already started
 							if(gu8_StartedFlag == TRUE){
 								aES_errorStatus = E_OK;
@@ -378,6 +381,9 @@ ERROR_STATUS SOS_Delete_Task(uint8_t taskID){
 
 			/*Remove the task with the given task_id */
 			aES_errorStatus = SOS_RemoveTask(taskID);
+			
+			//Sort the task according to its priorities
+			SOS_SortTasks();
 
 		}
 		else{
@@ -406,7 +412,7 @@ ERROR_STATUS SOS_Delete_Task(uint8_t taskID){
 */
 void SOS_Run(void){
 	//Define locals
-	uint16_t au16_TaskIterator;
+	uint16_t au16_TaskIterator = 0;
 
 	//In case there is an interrupt
 	if(gu8_ISR_Flag == TRUE){
@@ -414,29 +420,28 @@ void SOS_Run(void){
 		gu8_ISR_Flag = FALSE;
 		
 		//Loop on all the objects in the buffer
-		for(au16_TaskIterator =0; au16_TaskIterator < SOS_TASK_BUFFER_SIZE; au16_TaskIterator++){
+		while(gstr_TasksBuffer[au16_TaskIterator] != NULL){
 			//In case an object exists in this index
-			if (gstr_TasksBuffer[au16_TaskIterator] != NULL)
+			
+			//Decrease the delay
+			gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter--;
+
+			//In case the delay is finished
+			if (gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter == 0)
 			{
-				//Decrease the delay
-				gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter--;
+				//Execute the callback function
+				gstr_TasksBuffer[au16_TaskIterator]->SOS_Cbk_ptr();
 
-				//In case the delay is finished
-				if (gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter == 0)
-				{
-					//Execute the callback function
-					gstr_TasksBuffer[au16_TaskIterator]->SOS_Cbk_ptr();
-
-					//In case the task is periodic reset the Counter
-					if(gstr_TasksBuffer[au16_TaskIterator]->SOS_MODE == PERIODIC){
-						gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter = gstr_TasksBuffer[au16_TaskIterator]->Delay_TimeMs;
-					}
-					//In case the task is one shot function remove the task
-					else{
-						gstr_TasksBuffer[au16_TaskIterator]= NULL;
-					}
+				//In case the task is periodic reset the Counter
+				if(gstr_TasksBuffer[au16_TaskIterator]->SOS_MODE == PERIODIC){
+					gstr_TasksBuffer[au16_TaskIterator]->Delay_Counter = gstr_TasksBuffer[au16_TaskIterator]->Delay_TimeMs;
+				}
+				//In case the task is one shot function remove the task
+				else{
+					gstr_TasksBuffer[au16_TaskIterator]= NULL;
 				}
 			}
+			au16_TaskIterator++;
 		}
 	}
 }
@@ -476,7 +481,29 @@ static ERROR_STATUS SOS_RemoveTask(uint16_t TaskID){
 	return aES_errorStatus;
 }
 
-static void SOS_SortTasks(void){
-	
-}
 
+static void SOS_SortTasks(void){
+	uint16_t au16_task_i, au16_task_j ;
+	
+	SOS_TASK_Cfg *temp;
+	for (au16_task_i = 0; au16_task_i < SOS_TASK_BUFFER_SIZE-1; au16_task_i++){
+		// Last i elements are already in place
+		for (au16_task_j = 0; au16_task_j < SOS_TASK_BUFFER_SIZE-au16_task_i-1; au16_task_j++)
+		{
+			if((gstr_TasksBuffer[au16_task_j] == NULL ))
+			{
+				temp = gstr_TasksBuffer[au16_task_j];
+				gstr_TasksBuffer[au16_task_j] = gstr_TasksBuffer[au16_task_j+1];
+				gstr_TasksBuffer[au16_task_j+1] = temp;
+			}
+			else if(gstr_TasksBuffer[au16_task_j+1]!= NULL){
+				if( (gstr_TasksBuffer[au16_task_j]->Priority > gstr_TasksBuffer[au16_task_j+1]->Priority)){
+					temp = gstr_TasksBuffer[au16_task_j];
+					gstr_TasksBuffer[au16_task_j] = gstr_TasksBuffer[au16_task_j+1];
+					gstr_TasksBuffer[au16_task_j+1] = temp;
+				}
+			}
+		}
+		
+	}
+}
