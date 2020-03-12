@@ -3,7 +3,7 @@
  *
  * Created: 2/24/2020 1:47:59 PM
  *  Author: Ema
- */
+ */ 
 
 
 #ifndef TMU_H_
@@ -15,7 +15,7 @@
 
 #include "std_types.h"
 #include "common_macros.h"
-#include "mock_timer.h"
+#include "Timer.h"
 
 /************************************************************************/
 /*				 DEFINES											    */
@@ -24,21 +24,20 @@
 #define ONESHOOT 0
 #define PERIODIC 1
 
-#define TMUError_t sint8_t
+#define SOSError_t sint8_t
 
-typedef struct TMU_ConfigType{
-	sint8_t Timer_CH;
-	uint8_t resloution;
+typedef struct SOS_ConfigType{
+	uint8_t Timer_CH;
+	uint8_t Sys_Tick;
+	
+}SOS_ConfigType;
 
-}TMU_ConfigType;
-
-typedef struct TMU_SW_Timer{
-	uint8_t TaskID;   //5
-	sint16_t Task_delay;  //1
-	sint8_t Delay_type;   //1
+typedef struct SOS_SW_Task{
+	sint16_t Task_delay;
+	uint8_t	 Task_priority;
 	void (*Task_CallBackfun)(void);
-
-}TMU_SW_Timer;
+	
+}SOS_SW_Task;
 
 
 /************************************************************************/
@@ -46,57 +45,55 @@ typedef struct TMU_SW_Timer{
 /************************************************************************/
 
 /**
- * Input: Pointer to a structure contains the information needed to initialize the TMU.
+ * Input: Pointer to a structure contains the information needed to initialize the SOS. 
  * Output:
- * In/Out:
- * Return: The error status of the function.
+ * In/Out:			
+ * Return: The error status of the function.			
  * Description: Initiates the module.
- *
+ * 							
  */
-extern TMUError_t TMU_Init (const TMU_ConfigType * ConfigPtr);
+extern SOSError_t SOS_Init (const SOS_ConfigType * ConfigPtr);
 /**
- * Input:
+ * Input:  
  * Output:
- * In/Out:
- * Return: The error status of the function.
+ * In/Out:			
+ * Return: The error status of the function.			
  * Description: DeInitiates the module.
- *
+ * 							
  */
-extern TMUError_t TMU_DeInit (void);
+extern SOSError_t SOS_DeInit (void);
 /**
  * Input: Pointer to a structure contains the information needed to start a task.
- *         Task ID			0 -> 9
  *		   Task Delay	    up to 65536
- *		   Delay type : periodic / oneshoot
+ *		   Task_priority :	up to TASKS_MAX_NUM  
  * Output:
- * In/Out:
- *
- * Return: The error status of the function.
- * Description: start a task to be served by TMU.
- *
- */
-extern TMUError_t TMU_Start_Timer(const TMU_SW_Timer * SW_Timer);
+ * In/Out: 
+ *		   					
+ * Return: The error status of the function.			
+ * Description: Create a task.
+ * SOS doesn't support round robin so each task should have a unique priority.. tasks priority reflects its ID.						
+ */	
+extern SOSError_t SOS_Create_Task(const SOS_SW_Task * SW_Task);
 /**
- * Input: Pointer to a structure contains the information needed to stop the task.
- *		  In/Out: Task ID			0 -> 9
+ * Input: Pointer to a structure contains the information needed to stop the task. 
  *		  Task Delay	    up to 65536
- *		  Delay type : periodic / oneshoot
+ *		  Task_priority :	up to TASKS_MAX_NUM 
  * Output:
- * In/Out:
- * Return: The error status of the function.
- * Description: stop a task to be served by TMU.
- *
+ * In/Out:			
+ * Return: The error status of the function.			
+ * Description: Delete a task.
+ * 							
  */
-extern TMUError_t TMU_Stop_Timer(const TMU_SW_Timer * SW_Timer);
+extern SOSError_t SOS_Delete_Task(const SOS_SW_Task * SW_Task);
 /**
- * Input:
+ * Input: 
  * Output:
- * In/Out:
- * Return: The error status of the function.
+ * In/Out:			
+ * Return: 			
  * Description: Control the Tasks.
- *
+ * 							
  */
-extern TMUError_t TMU_Dispatch(void);
+extern void SOS_Run(void);
 
 
 

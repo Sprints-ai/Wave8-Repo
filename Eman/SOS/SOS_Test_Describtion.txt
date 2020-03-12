@@ -1,261 +1,234 @@
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_1_**************************************************
-*****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Dispatch
--INPUT:VOID
--EXPECTED OUTPUT:OK
--Actual OUTPUT: OK
-
-TEST CASE PASSED !
-
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_2_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_DeInit
+-FUNCTION NAME: SOS_DeInit
 -INPUT:VOID
 -EXPECTED OUTPUT:NO_INIT
 -Actual OUTPUT: NO_INIT
 
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Init
+-FUNCTION NAME: SOS_Init
 -INPUT: timer_CH:=0---- resolution=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Init
+-FUNCTION NAME: SOS_Init
 -INPUT: timer_CH:=1---- resolution=2
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_**************************************************
 *****************************************TEST_CASE_NO#_3***********************************************
--FUNCTION NAME: TMU_Init
+-FUNCTION NAME: SOS_Init
 -INPUT: timer_CH:=2---- resolution=3
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_2_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_DeInit
+-FUNCTION NAME: SOS_DeInit
 -INPUT:VOID
 -EXPECTED OUTPUT:OK
 -Actual OUTPUT: OK n
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Init
+-FUNCTION NAME: SOS_Init
 -INPUT: timer_CH:=3---- resolution=1
 -EXPECTED OUTPUT:NOK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Init
--INPUT: timer_CH:=-1---- resolution=5
+-FUNCTION NAME: SOS_Init
+-INPUT: timer_CH:=255---- resolution=5
 -EXPECTED OUTPUT:NOK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_3_(NULL_PTR)**************************************************
 *****************************************TEST_CASE_NO#_4***********************************************
--FUNCTION NAME: TMU_Init
+-FUNCTION NAME: SOS_Init
 -INPUT:NULL_PTR
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS_FULL_BUFFER**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:FULL_BUFFER
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_VALID_PARAMS_FULL_BUFFER**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=0
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:FULL_BUFFER
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_INVALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=0---- Task_Delay=1------Delay_Type=3
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=255
 -EXPECTED OUTPUT:NOK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_INVALID_PARAMS**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=-1------Delay_Type=1
+-FUNCTION NAME: SOS_Create_Task
+-INPUT: Task_delay:=1---- Task_Priority=0
 -EXPECTED OUTPUT:NOK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
-*****************************************TEST_CASE_NO#_3***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=-1294967296------Delay_Type=1
--EXPECTED OUTPUT:NOK
-TEST CASE PASSED !
-
-****************************This is Unit Test for TMU MODULE***************************************
-*******************************************_API_NO#_4_**************************************************
-*****************************************TEST_CASE_NO#_4***********************************************
--FUNCTION NAME: TMU_Start_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=-1
--EXPECTED OUTPUT:NOK
-TEST CASE PASSED !
-
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_4_(NULL_PTR)**************************************************
 *****************************************TEST_CASE_NO#_4***********************************************
--FUNCTION NAME: TMU_Start
+-FUNCTION NAME: SOS_Start
 -INPUT:NULL_PTR
 -EXPECTED OUTPUT:NULL_PTR
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Stop_Timer
--INPUT: Task_ID:=0---- Task_Delay=32767------Delay_Type=0
+-FUNCTION NAME: SOS_Delete_Task
+-INPUT: Task_delay:=2---- Task_Priority=4
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Stop_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=1
+-FUNCTION NAME: SOS_Delete_Task
+-INPUT: Task_delay:=1---- Task_Priority=1
 -EXPECTED OUTPUT:OK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_**************************************************
 *****************************************TEST_CASE_NO#_1***********************************************
--FUNCTION NAME: TMU_Stop_Timer
--INPUT: Task_ID:=0---- Task_Delay=1------Delay_Type=3
+-FUNCTION NAME: SOS_Delete_Task
+-INPUT: Task_delay:=0---- Task_Priority=1
 -EXPECTED OUTPUT:NOK
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_**************************************************
 *****************************************TEST_CASE_NO#_2***********************************************
--FUNCTION NAME: TMU_Stop_Timer
--INPUT: Task_ID:=1---- Task_Delay=1------Delay_Type=-1
--EXPECTED OUTPUT:NOK
+-FUNCTION NAME: SOS_Delete_Task
+-INPUT: Task_delay:=1---- Task_Priority=0
+-EXPECTED OUTPUT:STOP_NO_START
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_**************************************************
 *****************************************TEST_CASE_NO#_3***********************************************
--FUNCTION NAME: TMU_Stop_Timer
--INPUT: Task_ID:=2---- Task_Delay=1------Delay_Type=1
--EXPECTED OUTPUT:START_NO_STOP
+-FUNCTION NAME: SOS_Delete_Task
+-INPUT: Task_delay:=2---- Task_Priority=1------
+-EXPECTED OUTPUT:STOP_NO_START
 TEST CASE PASSED !
 
-****************************This is Unit Test for TMU MODULE***************************************
+****************************This is Unit Test for SOS MODULE***************************************
 *******************************************_API_NO#_5_(NULL_PTR)**************************************************
 *****************************************TEST_CASE_NO#_4***********************************************
--FUNCTION NAME: TMU_Stop
+-FUNCTION NAME: SOS_Stop
 -INPUT:NULL_PTR
 -EXPECTED OUTPUT:NULL_PTR
 TEST CASE PASSED !
-
