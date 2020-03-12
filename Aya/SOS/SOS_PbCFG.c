@@ -1,17 +1,9 @@
 /*
- * SOS_PbCFG.h.c
+ * SOS_PbCFG.c
  *
- * Created: 3/11/2020 5:10:22 PM
- * Author : A_ayman
+ * Created: 3/11/2020 1:48:22 PM
+ *  Author: A_ayman
  */ 
+#include "SOS_PbCFG.h"
 
- #include "SOS_PbCFG.h"
-
-
-
- str_SOS_InitConfig_t init = {TIMER_0};
- 
- 
-
-
- 
+gstr_SOS_InitConfig_t init = {TIMER_0};

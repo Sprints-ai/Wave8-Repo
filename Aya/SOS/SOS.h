@@ -1,8 +1,8 @@
 /*
  * SOS.h
  *
- * Created: 3/11/2020 5:10:22 PM
- * Author : A_ayman
+ * Created: 3/11/2020 7:21:24 AM
+ *  Author: A_ayman
  */ 
 
 
@@ -16,6 +16,7 @@
 #include "SOS_PbCFG.h"
 #include "../ERROR_HANDLING/ERROR-STORE.h"
 #include "../ERROR_HANDLING/Errors.h"
+#include "../CPU Meassurements/CPU_power_management.h"
 
 
 
@@ -25,7 +26,7 @@
 *** this macro determine whether the task would be repeated or happen only once
 */
 
-#define ONE_SHOT 0 
+#define ONE_SHOT 0
 #define PERIODIC 1
 
 /*macro to select timer id*/
@@ -41,54 +42,58 @@
 
 
 /******************************************************************************
-* Function        : ERROR_STATUS SOS_Init (const str_SOS_InitConfig_t * pstr_SOS_ConfigPtr );
+* Function        : ERROR_STATUS Sos_Init (const gstr_SOS_InitConfig_t * pstr_SOS_ConfigPtr );
 * Type            : public
-* Input parameters: SOSCfg Structure (u8_Timer_Id, u8_SOS_Res)
+* Input parameters: gstr_SOS_InitConfig_t (u8_Timer_Id, u8_SOS_Res)
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Non Reentrant
-* Description     : initialize the SOS configuration, which initialize the Timer.
+* Description     : initialize the Sos configuration, which initialize the Timer.
 *****************************************************************************/
-extern ERROR_STATUS Sos_Init (const str_SOS_InitConfig_t * pstr_SOS_ConfigPtr );
+extern ERROR_STATUS Sos_Init (const gstr_SOS_InitConfig_t * pstr_SOS_ConfigPtr );
 
 /******************************************************************************
-* Function        : ERROR_STATUS SOS_Dispatch(void);
+* Function        : ERROR_STATUS Sos_Run(void);
 * Type            : public
 * Input parameters: none
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Reentrant
-* Description     : check timing to serve the consumer function.
+* Description     : check timing to serve the Tasks.
 *****************************************************************************/
-extern ERROR_STATUS Sos_Dispatch(void);
+extern ERROR_STATUS Sos_Run(void);
 
 /******************************************************************************
-* Function        : ERROR_STATUS SOS_Stop(uint8_t Task_Id, void(* Ptr_Func)(void));
+* Function        : ERROR_STATUS Sos_Delete_Task(uint8_t Task_Id);
 * Type            : public
-* Input parameters: Task_Id, void(* Ptr_Func)(void)
+* Input parameters: Task_Id
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Reentrant
-* Description     : stop SOS for a specific task
+* Description     : Delete a specific task
 *****************************************************************************/
-extern ERROR_STATUS Sos_Stop(uint8_t Task_Id);
+extern ERROR_STATUS Sos_Delete_Task(uint8_t Task_Id);
 
 /******************************************************************************
-* Function        : ERROR_STATUS SOS_Start (uint16_t Time_Delay,uint8_t Task_Id, uint8_t Repeat, void(* Ptr_Func)(void));
+* Function        : Sos_Create_Task (gstr_Task_Info_t*);
 * Type            : public
 * Input parameters: Time_Delay(0 : 65536), Task_Id(0 : 255), Repeat (one shot or periodic), void(* Ptr_Func)(void))
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Reentrant
-* Description     : start SOS for a specific task
+* Description     : Create task
 *****************************************************************************/
-extern ERROR_STATUS Sos_Start (gstr_Task_Info_t);
+extern ERROR_STATUS Sos_Create_Task (gstr_Task_Info_t*);
 
 
 /******************************************************************************
-* Function        : ERROR_STATUS SOS_DeInit (void);
+* Function        : SOS_DeInit (void);
 * Type            : public
 * Input parameters: none
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Non Reentrant
-* Description     : start SOS
+* Description     : stop sos
 *****************************************************************************/
 extern ERROR_STATUS Sos_DeInit (void);
+
+
+
+
 
 #endif /* SOS_H_ */

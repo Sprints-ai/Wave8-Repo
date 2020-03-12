@@ -1,0 +1,70 @@
+/* SOS_Init */  
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to insert a NULL Pointer with taking into consideration timer is working well
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer.
+
+3- Third Test case is to insert a NULL Pointer with taking into consideration timer is not working well
+	- Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns "Passed" that's means the function could detect that it's a NULL Pointer.
+
+4- fourth Test case is to insert a non NULL Pointer with taking into consideration timer is not working well
+    - Expected -> to return "Passed" that's means the function could detect that timer is not working well.
+	- Actual   -> the program returns "Passed" that's means the function could detect that timer is not working well..
+
+/* Sos_Create_task */  
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to insert a NULL Pointer For the structure we insert
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer to structure.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer to structure.
+
+3- Third test case is to insert a NULL Pointer to Function 
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer to function.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer to function.
+
+4- Fourth test case is to insert an Invalid Parameter of the Periodicity like make it 0 
+    - Expected -> to return "Passed" that's means the function could detect that it's an Invalid Parameter .
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's an Invalid Parameter .
+			
+5- Fifth test case is to trying to Create Task without Initiaize it 
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that the module is not initialized.
+
+/* SOS_Delete_Task*/
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+
+1- Second test case is to try Deleting Task without Initialization
+    - Expected -> to return "Passed" that's means the function could detect that Sos Not even initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that Sos Not initialized.
+	
+2- Third Test case is to Test Deleting Task without creating
+    - Expected -> to return "Passed" that's means the function could detect that the task not created.
+	- Actual   -> the program returns "Passed" that's means the function could detect that the task not created.
+
+3- Fourth test case is to try Deleting while the buffer is empty "sos has no tasks"
+    - Expected -> to return "Passed" that's means the function could detect that the buffer is empty.
+	- Actual   -> the program returns "Passed" that's means the function could detect that the buffer is empty.
+
+/* SOS_DeInit */
+1- First test case is to check the happy scenario of the function.
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to trying to Deinitialize SOS without Initiaize it 
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that the module is not initialized.
+
+4- Fourth test case is to trying to Deinitialize SOS while Serving tasks 
+    - Expected -> to return "Passed" that's means the function could detect that the module Buffer is not empty that's mean SOS is serving tasks right now.
+	- Actual   -> the program returns "Passed" that's means the function could detect that the module Buffer is not empty that's mean SOS is serving tasks right now.
+
+
+
