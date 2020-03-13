@@ -4,69 +4,66 @@
  * Created: 2/24/2020 3:58:39 PM
  *  Author: hazem
  */ 
+#ifndef _TMU_H__
+#define _TMU_H__
+/*- INCLUDES -----------------------------------------------*/
 
+#include "SOS_confg.h"
+#include "..\mcal\Timer.h"
+#include "..\common\Error_handling.h"
 
-#ifndef TMU_H_
-#define TMU_H_
-/********************************************************************/
-/**************************INCLUDES**********************************/
-/********************************************************************/                                            
-#include "TMU_confg.h"
-#include "..\MCAL\Timer.h"
-#include "..\MCAL\DIO.h"
-/********************************************************************/
-/**************************DEFINES***********************************/
-/*******************************************************************/
-#define ONESHOT 0
-#define PERIODIC 1
-#define EnmTMUError_t uint8_t
+/*- CONSTANTS ----------------------------------------------*/
 
-/********************************************************************/
-/**************************EXTERN***********************************/
-/*******************************************************************/
-typedef struct TMU_ConfigType
+#define ONESHOT            0
+#define PERIODIC           1
+#define INITIALIZED        1
+#define NOTINITIALIZED     0
+#define CLEAR              0
+#define START              0
+#define TCNT_INITIAL_VALUE 6
+#define MAX_NOTASKS        BUFFER_SIZE
+#define FIRST_TASK         0
+#define NOTASKTOSTOP       0
+#define NOT_FOUND          0
+#define FOUND              1
+#define LAST_TASK         BUFFER_SIZE-1 
+/*- PRIMITIVE TYPES ----------------------------------------*/
+
+typedef struct SOS_Configtype
 {
-   uint8_t RES;
-   uint8_t TIMER_ID;
-}TMU_ConfigType;
+	uint8_t u8_res;
+	uint8_t u8_SOS_timerid;
+}SOS_Configtype;
+typedef   SOS_Configtype *  PtrSOS_Configtype;
+typedef void(*ptrtotask)(void);
+typedef  sint8_t EnmTMUError_t;
 
-typedef void(*ptrtotask_CBK_FUNC)(void);
+/*- Extern --------------------------------------------------*/
 
-typedef struct Task_BlockType
-{
-   uint8_t perodicity;
-   uint16_t delay;
-   ptrtotask_CBK_FUNC Ptrtotask;
-   uint16_t delay_milistone;
-}Task_BlockType;
+extern SOS_Configtype gstr_OSCONFIG;
 
+
+/*- FUNCTION DECLARATIONS ----------------------------------*/
 
 /************************************************************************/
 /* TMU_Init
-EnmTMUError_t TMU_Init (const TMU_ConfigType * ConfigPtr )
-Synchronous
-Non Reentrant
-ConfigPtr Pointer to a selected configuration structure*/                                                         
+EnmTMUError_t TMU_Init (const SOS_Configtype * ConfigPtr )
+ConfigPtr Pointer to a selected configuration structure*/
 /************************************************************************/
-extern EnmTMUError_t TMU_Init (const TMU_ConfigType * ConfigPtr );
+extern EnmTMUError_t SOS_Init (const PtrSOS_Configtype ConfigPtr );
 /*
 Function Name 	TMU_Start_Timer
 Syntax:
-Sync/Async:
-Reentrancy:
-Parameters (in):
-Parameters (out):
-Parameters (inOut):
 Return:*/
 
-extern EnmTMUError_t TMU_Start_Timer(uint16_t time,ptrtotask_CBK_FUNC ptrtofun,uint8_t periodicORoneshot);
+extern EnmTMUError_t SOS_Start_Timer(uint16_t u16_time,ptrtotask pf_task,uint8_t u8_periodicORoneshot);
 /**
 * @brief: TMU Stop
 * @param: ptrFun: pointer to callback function
 * @return: EnmTMUError_t status code with error code if one occurred
 */
 
-extern EnmTMUError_t TMU_Stop_Timer(void (*ptrtofun)(void));
+extern EnmTMUError_t SOS_Stop_Timer(ptrtotask ptrtofun);
 
 /**
 * @brief: TMU Loops through task list and service each one as requested
@@ -75,7 +72,7 @@ extern EnmTMUError_t TMU_Stop_Timer(void (*ptrtofun)(void));
 * Output: None
 * @return: EnmTMUError_t status code with error code if one occurred
 */
-extern EnmTMUError_t TMU_Dispatch(void);
+extern EnmTMUError_t SOS_Dispatch(void);
 
 /**
 * @brief: TMU DeInitialization
@@ -84,8 +81,16 @@ extern EnmTMUError_t TMU_Dispatch(void);
 * Output: None
 * @return: EnmTMUError_t status code with error code if one occurred
 */
-extern EnmTMUError_t TMU_DeInit(void);
+extern EnmTMUError_t SOS_DeInit(void);
 
+/**
+* @brief: SOS_schadulertime
+* @param: void
+* Input : void
+* Output: None
+* @return: void
+*/
+extern void SOS_schedulertime(void);
 
 
 

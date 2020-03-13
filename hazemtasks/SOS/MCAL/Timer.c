@@ -17,9 +17,9 @@
 /*				 GLOBAL  VARIABLES			        			*/
 /************************************************************************/
 
-volatile uint32_t gu_timer_count1;
 uint32_t gu_timer_count2;
 uint32_t gu_timer_count3;
+static timer_Cbk gpf_timercbk;
 
 
 
@@ -32,6 +32,7 @@ static uint8_t gsau8_preScaler[MAX_TIMER_CHANNELS] = {TIMER_NO_CLOCK, TIMER_NO_C
 static uint8_t gsau8_initState[MAX_TIMER_CHANNELS] = {NOT_INITIALIZED, NOT_INITIALIZED, NOT_INITIALIZED};
 
 
+/*- APIs IMPLEMENTATION -----------------------------------*/
 
 
 /**
@@ -57,8 +58,8 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* info)
 				TCCR0 &= ~(WGM01 | WGM00);
 
 				if(info->Timer_Int_MODE == TIMER_INTERRUPT_MODE)
-				{  Set_BIT(TIMSK,TOIE0);
-					
+				{  
+					Set_BIT(TIMSK,TOIE0);			
 				}
 				else
 				{  
@@ -522,8 +523,21 @@ ERROR_STATUS Timer_SetValue(uint8_t Timer_CH, uint8_t* Data)
 	return ERROR;
 }
 
+ERROR_STATUS Timer_Setcallback(timer_Cbk pf)
+{
+	ERROR_STATUS au8_timererror=E_OK;
+	if(pf==NULL)
+	{
+		au8_timererror=E_NOK;
+	}
+	gpf_timercbk =pf;
+	return au8_timererror;
+}
+
 
 ISR(TIMER0_OVF_vect)
 {
-   gu_timer_count1++;
+	
+gpf_timercbk();
+
 }

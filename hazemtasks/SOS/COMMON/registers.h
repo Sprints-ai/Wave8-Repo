@@ -70,14 +70,14 @@
  * TCCR0 bits
  */
 
-#define CS00	0
-#define CS01	1
-#define CS02	2
-#define WGM01	3
-#define COM00	4
-#define COM01	5
-#define WGM00	6
-#define FOC0	7
+#define CS00	   0
+#define CS01	   1
+#define CS02	   2
+#define WGM01	   3
+#define COM00	   4
+#define COM01	   5
+#define WGM00	   6
+#define FOC0	   7
 
 
 /*
@@ -103,28 +103,28 @@
  * TCCR1A bits
  */
 
-#define WGM10	0
-#define WGM11	1
-#define FOC1B	2
-#define FOC1A	3
-#define COM1B0	4
-#define COM1B1	5
-#define COM1A0	6
-#define COM1A1	7
+#define WGM10	(0x01)
+#define WGM11	(0x02)
+#define FOC1B	(0x04)
+#define FOC1A	(0x08)
+#define COM1B0	(0x10)
+#define COM1B1	(0x20)
+#define COM1A0	(0x40)
+#define COM1A1	(0x80)
 
 
 /**
  * TCCR1B bits
  */
 
-#define CS10	 0
-#define CS11	 1
-#define CS12	 2
-#define WGM12	 3
-#define WGM13	 4
-#define RESER	 5
-#define ICES1	 6
-#define ICNC1	 7
+#define CS10	(0x01)
+#define CS11	(0x02)
+#define CS12	(0x04)
+#define WGM12	(0x08)
+#define WGM13	(0x10)
+#define RESER	(0x20)
+#define ICES1	(0x40)
+#define ICNC1	(0x80)
 
 /*
  * Timer 2 Registers
@@ -137,18 +137,18 @@
  * TCCR2 bits
  */
 
-#define CS20	0
-#define CS21	1
-#define CS22	2
-#define WGM21	3
-#define COM20	4
-#define COM21	5
-#define WGM20	6
-#define FOC2	7
+#define CS20	(0x01)
+#define CS21	(0x02)
+#define CS22	(0x04)
+#define WGM21	(0x08)
+#define COM20	(0x10)
+#define COM21	(0x20)
+#define WGM20	(0x40)
+#define FOC2	(0x80)
 
 #define  TOIE0 0
-#define  TOIE1 0
-#define  TOIE2 0
+#define  TOIE1 2
+#define  TOIE2 6
 #define  OCIE0 1
 
 #define  TOV0 0

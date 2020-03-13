@@ -46,11 +46,10 @@
 #define		TIMER_PRESCALER_256				6
 #define		TIMER_PRESCALER_1024			   7
 
-extern volatile uint32_t gu_timer_count1;
 extern uint32_t gu_timer_count2;
 extern uint32_t gu_timer_count3;
 
-
+typedef void(*timer_Cbk)(void);
 
 /************************************************************************/
 /*			  Structures Definitions		                            */
@@ -144,7 +143,7 @@ ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO,volatile uint16_t* Data);
 
 
 
-
+ERROR_STATUS Timer_Setcallback(timer_Cbk pf);
 
 
 
