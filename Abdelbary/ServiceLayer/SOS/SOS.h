@@ -55,7 +55,7 @@ ERROR_STATUS    SOS_Init(gstr_SOS_cfg_t * SOS_cfg);
 *		 type->[PERIODIC,ONE_SHOT]
 *@return: ERROR_STATUS [negative number describe module and type of errors]
 */
-ERROR_STATUS	SOS_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,uint8_t type);
+ERROR_STATUS	SOS_createTask(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,uint8_t type,uint8_t periority);
 
 /*
 * Description: SOS_stop stop task with specified id number by removing it from
@@ -64,7 +64,7 @@ ERROR_STATUS	SOS_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,u
 *					0<=id<SOS_BUFFER_MAX_SIZE
 *@return: ERROR_STATUS [negative number describe module and type of errors]
 */
-ERROR_STATUS	SOS_Stop(uint8_t Id);
+ERROR_STATUS	SOS_deletTask(uint8_t Id);
 
 /*
 * Description: SOS_dispatcher is the main SOS procedure, dispatcher check for new time
@@ -73,14 +73,14 @@ ERROR_STATUS	SOS_Stop(uint8_t Id);
 * @pram: void
 * @return: ERROR_STATUS [negative number describe module and type of errors]
 */
-ERROR_STATUS	SOS_dispatcher(void);
+ERROR_STATUS	SOS_run(void);
 
 /*
 * Description: SOS_DeInit Danit SOS unite.
 * @pram: void
 * @return: ERROR_STATUS [negative number describe module and type of errors]
 */
-ERROR_STATUS	SOS_DeInit(void);
+ERROR_STATUS	SOS_Deinit(void);
 
 
 #endif /* SOS_H_ */

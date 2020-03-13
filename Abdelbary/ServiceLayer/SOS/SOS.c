@@ -8,7 +8,7 @@
 #include "SOS.h"
 
 #define TAKEN				1
-
+#define NO_TASKS -1
 typedef struct SOS_obj_str
 {
 	/*object to hold data to the call back functions to call periodically*/
@@ -16,6 +16,7 @@ typedef struct SOS_obj_str
 	void (*callB_fun)(void);
 	uint8_t fire_tick;
 	uint8_t current_ticks;
+	uint8_t priority;
 	uint8_t type;  /*periodic or one shot*/
 	
 }gstr_SOS_obj;
@@ -76,14 +77,14 @@ ERROR_STATUS SOS_Init(gstr_SOS_cfg_t * SOS_cfg)
 	}
 	return fun_error_status;
 }
-ERROR_STATUS SOS_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,uint8_t type)
+ERROR_STATUS SOS_createTask(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,uint8_t type,uint8_t periority)
 {
 	sint16_t s16_fun_error_status = OK;
-	
-	if(Id > SOS_OBJ_BUFFER_SIZE || callB_fun_ptr == NULL || lap_time > SOS_MAX_LAP_TIME 
-		|| type > ON_SHOT || SOS_Init_flag == FALSE || taken_Ids[Id] == TAKEN 
-		|| (lap_time%(SOS_linkCfg.tick_reslution)) != ZERO /*lap_time not multiple of reslution*/
-		|| u8_SOS_objBufferHead ==(SOS_OBJ_BUFFER_SIZE-ONE) )
+	/*lot of condition but it centralize error checking*/
+	if(Id > SOS_OBJ_BUFFER_SIZE || callB_fun_ptr == NULL || lap_time > SOS_MAX_LAP_TIME
+	|| type > ON_SHOT || SOS_Init_flag == FALSE || taken_Ids[Id] == TAKEN
+	|| (lap_time%(SOS_linkCfg.tick_reslution)) != ZERO /*lap_time not multiple of reslution*/
+	|| u8_SOS_objBufferHead ==(SOS_OBJ_BUFFER_SIZE-ONE) )
 	{
 		if ( SOS_Init_flag == FALSE)/*module unintalized*/
 		{
@@ -94,9 +95,9 @@ ERROR_STATUS SOS_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,u
 			s16_fun_error_status = (SOS_MODULE_ERROR_NUM+NULL_PTR_ERROR);
 		}
 		else if(Id > SOS_OBJ_BUFFER_SIZE  ||taken_Ids[Id]  == TAKEN
-				|| type > ON_SHOT  || lap_time > SOS_MAX_LAP_TIME
-				|| (lap_time%(SOS_linkCfg.tick_reslution))
-				|| u8_SOS_objBufferHead ==(SOS_OBJ_BUFFER_SIZE-ONE))/*invalid parameter*/
+		|| type > ON_SHOT  || lap_time > SOS_MAX_LAP_TIME
+		|| (lap_time%(SOS_linkCfg.tick_reslution))
+		|| u8_SOS_objBufferHead ==(SOS_OBJ_BUFFER_SIZE-ONE))/*invalid parameter*/
 		{
 			s16_fun_error_status = (SOS_MODULE_ERROR_NUM+INVALAD_PARAMETER);
 		}
@@ -104,36 +105,75 @@ ERROR_STATUS SOS_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,u
 	}
 	else
 	{
-	static uint8_t fun_frstTime_flag = FALSE;
-	/*check for first time entrance to start timer*/
-	if(!fun_frstTime_flag)
-	{
-		/*start timer*/
-	
-		Timer_Start(SOS_Timer_ch,TIMER0_1MS_PRESCALER256);
-				
-		fun_frstTime_flag = TRUE;
-	}
-	
-	/*set how many resolution time it takes to fire event*/
-	lap_time = (lap_time/(SOS_linkCfg.tick_reslution));
-	
-	
-	/*SOS_obj_str {id,callBack fun , ticks ,current_ticks,type[periodic,onshot]} */
-	gstr_SOS_obj tobj  = {Id,callB_fun_ptr,lap_time,ZERO,type};		
-	
-	
-	u8_SOS_objBufferHead++; /*increase buffer head to next empty position*/
-	gastr_SOS_ObjBuffer[u8_SOS_objBufferHead] = tobj;
-	
-	taken_Ids[Id] = TAKEN ;/*mark this id as taken*/
+		static uint8_t fun_frstTime_flag = FALSE;
+		uint8_t u8_tempCounter = ZERO;
+		/*check for first time entrance to start timer*/
+		if(!fun_frstTime_flag)
+		{
+			/*start timer*/
+			
+			Timer_Start(SOS_Timer_ch,TIMER0_1MS_PRESCALER256);
+			
+			fun_frstTime_flag = TRUE;
+		}
+		
+		/*
+		*	1-get lap time eq
+		*	2-setup new task struct
+		*	3-load it in place correspond to its priority
+		*/
+		/*set how many resolution time it takes to fire event*/
+		lap_time = (lap_time/(SOS_linkCfg.tick_reslution));
+		
+		/*SOS_obj_str {id,callBack fun , ticks ,current_ticks,type[periodic,onshot]} */
+		gstr_SOS_obj tobj  = {Id,callB_fun_ptr,lap_time,ZERO,periority,type};
+		
+		/*if there is no tasks put task in first pos*/
+		if(u8_SOS_objBufferHead == NO_TASKS)
+		{
+			u8_SOS_objBufferHead++; /*increase buffer head to next empty position*/
+			gastr_SOS_ObjBuffer[u8_SOS_objBufferHead] = tobj;
+		}
+		else
+		{
+			/*	loop throught tasks to find the task place corespondent to it's priority
+			*	shift all tasks lower than the current task priority one place to make a cell for the current task
+			*	insert current task in it's cell
+			*	if the current task is the lowest priority then push it at the end
+			*	increment tasks head pointer
+			*/
+			for (;u8_tempCounter <= u8_SOS_objBufferHead ; u8_tempCounter++)
+			{
+				if (gastr_SOS_ObjBuffer[u8_tempCounter].priority >= periority)
+				{
+					uint8_t u8_shiftCounter = (u8_SOS_objBufferHead + ONE);
+					/*shift each task lower than the current task priority one cell right*/
+					while(u8_shiftCounter > u8_tempCounter)
+					{
+						gastr_SOS_ObjBuffer[u8_shiftCounter] = gastr_SOS_ObjBuffer[(u8_shiftCounter-ONE)];
+						u8_shiftCounter--;
+					}
+					gastr_SOS_ObjBuffer[u8_shiftCounter] = tobj;
+					u8_SOS_objBufferHead++;
+					break;
+				}
+			}
+			/*check if the task is the lowest priority*/
+			if(u8_tempCounter > u8_SOS_objBufferHead)
+			{
+				u8_SOS_objBufferHead++; /*increase buffer head to next empty position*/
+				gastr_SOS_ObjBuffer[u8_SOS_objBufferHead] = tobj;
+			}
+		}
+		
+		taken_Ids[Id] = TAKEN ;/*mark this id as taken*/
 	}
 	return s16_fun_error_status;
 }
 
 
 
-ERROR_STATUS SOS_Stop(uint8_t Id)
+ERROR_STATUS SOS_deletTask(uint8_t Id)
 {
 	sint16_t s16_fun_error_status = OK;
 	
@@ -171,7 +211,7 @@ ERROR_STATUS SOS_Stop(uint8_t Id)
 
 
 
-ERROR_STATUS	SOS_dispatcher(void)
+ERROR_STATUS	SOS_run(void)
 {
 	sint16_t s16_fun_error_status = OK;
 
@@ -224,7 +264,7 @@ ERROR_STATUS	SOS_dispatcher(void)
 						/*handle one_shot functions*/
 						if (gastr_SOS_ObjBuffer[bufferCnt].type == ON_SHOT)
 						{
-							SOS_Stop(gastr_SOS_ObjBuffer[bufferCnt].Id);
+							SOS_deletTask(gastr_SOS_ObjBuffer[bufferCnt].Id);
 						}
 
 					}
@@ -237,7 +277,7 @@ ERROR_STATUS	SOS_dispatcher(void)
 }
 
 
-ERROR_STATUS SOS_DeInit(void)
+ERROR_STATUS SOS_Deinit(void)
 {
 	
 	/*
