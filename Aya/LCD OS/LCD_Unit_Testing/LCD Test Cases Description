@@ -1,0 +1,43 @@
+/* LCD_Init */  
+1- First test case is to check the happy scenario of the function.
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to check the behavior of the function if DIO went wrong.
+    - Expected -> to return "Passed" that's means the function could detect that the Function Could detect that there's something went wrong in the layer below.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that DIO not working well.
+
+/* LCD_SendCommand */  
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to trying send without initializing the LCD
+    - Expected -> to return "Passed" that's means the function could detect that LCD is not Initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that LCD is not Initialized.
+
+/* LCD_DisplayCharacter */  
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to trying send character without initializing the LCD
+    - Expected -> to return "Passed" that's means the function could detect that LCD is not Initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that LCD is not Initialized.
+
+3- Third test case is to insert a NULL character to Function 
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL character.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL character which is an invalid Parameter.
+
+/* LCD_DisplayString */  
+1- First test case is to check the happy scenario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to trying display string without initializing the LCD
+    - Expected -> to return "Passed" that's means the function could detect that LCD is not Initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that LCD is not Initialized.
+
+3- Third test case is to insert a NULL poininter 
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL pointer.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL pointer.
