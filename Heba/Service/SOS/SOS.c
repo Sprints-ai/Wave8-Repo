@@ -39,7 +39,7 @@ typedef struct {void (*P_Consumer)(void);
 	uint8_t u8_ConsumerCount ;
 	uint16_t u8_consumerId;
 } str_CONSUMER;
-	
+
 	
 static str_CONSUMER astr_ConsumerBufferArr[SOS_DUFFER_MAX_SIZE]={0};
 static strSOS_Cfg_t strSOS_Control;			
@@ -241,7 +241,6 @@ void SOS_Run(void){
 			
 				
 				while (u8_Tep_BufferIndex < SOS_DUFFER_MAX_SIZE ){
-
 					if (astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_consumerId!=NULL_ID  ){
 						
 						astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount += u8_ISR_CopyFlag;
