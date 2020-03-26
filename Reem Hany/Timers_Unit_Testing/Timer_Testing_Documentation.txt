@@ -1,0 +1,268 @@
+
+
+
+
+
+
+/**********************************************************/
+/********************Testing Timer Init *******************/
+/**
+
+ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg)
+
+/**
+ * Input: Pointer to a structure contains the information needed to initialize the timer.
+ * Output:
+ * In/Out:
+ * Return: The error status of the function.
+ * Description: Initiates the module.
+ *
+ */
+
+ Testing Timer_Init structure pointer : 
+_______________________________________________________________________
+
+Testcase 1: Input >> structure pointer != NULL
+Expected Output: E_OK 
+
+Testcase 2: Input >> structure pointer = NULL 
+Expected Output: E_NOK 
+
+
+ Testing Timer_Init channels number : 
+_______________________________________________________________________
+
+Testcase 3: Input >> Timer_CH_NO = 0    //TIMER_CH0
+Expected Output: E_OK 
+
+Testcase 4: Input >> Timer_CH_NO = 1  //TIMER_CH1
+Expected Output: E_OK 
+
+Testcase 5: Input >>  Timer_CH_NO = 2 //TIMER_CH2
+Expected Output: E_OK 
+
+Testcase 6: Input >> Timer_CH_NO = 3  //value out of range 
+Expected Output: E_NOK 
+
+
+ Testing Timer_Init Timer Mode : 
+_______________________________________________________________________
+
+Testcase 7: Input >> Timer_Mode= 0  //TIMER_MODE 
+Expected Output: E_OK 
+
+Testcase 8: Input >> Timer_Mode= 1 //COUNTER_RISING_MODE
+Expected Output: E_OK 
+
+Testcase 9: Input >> Timer_Mode= 2 //COUNTER_FALLING_MODE
+Expected Output: E_OK 
+
+Testcase 10: Input >> Timer_Mode= 3   // value out of range 
+Expected Output: E_NOK 
+
+
+ Testing Timer_Init Timer prescaler    : 
+_______________________________________________________________________
+
+Testcase 11: Input >> Timer_Prescaler =0    //  TIMER_NO_CLOCK
+Expected Output: E_OK 
+
+Testcase 12: Input >> Timer_Prescaler = 1   //  TIMER_PRESCALER_NO
+Expected Output: E_OK 
+
+Testcase 13: Input >> Timer_Prescaler = 2   //  TIMER_PRESCALER_8
+Expected Output: E_OK 
+
+Testcase 14: Input >> Timer_Prescaler= 3   //  TIMER_PRESCALER_32
+Expected Output: E_OK 
+
+Testcase 15: Input >> Timer_Prescaler = 4    //  TIMER_PRESCALER_64
+Expected Output: E_OK 
+
+Testcase1 6: Input >> Timer_Prescaler =  5   //  TIMER_PRESCALER_128
+Expected Output: E_OK 
+
+Testcase 17: Input >> Timer_Prescaler = 6   //  TIMER_PRESCALER_256
+Expected Output: E_OK 
+
+Testcase 18: Input >> Timer_Prescaler = 7   //  TIMER_PRESCALER_1024
+Expected Output: E_NOK 
+
+Testcase 19: Input >> Timer_Prescaler = 8  //  value out of range 
+Expected Output: E_NOK 
+
+
+ Testing Timer_Init Timer Polling Or Interrupt : 
+_______________________________________________________________________
+
+Testcase 20: Input >> Timer_Polling_Or_Interrupt = 0  // TIMER_POLLING_MODE
+Expected Output: E_OK 
+
+Testcase 21: Input >> Timer_Polling_Or_Interrupt = 1 //TIMER_INTERRUPT_MODE
+Expected Output: E_OK 
+
+Testcase 22: Input >> Timer_Polling_Or_Interrupt = 3   // value out of range
+Expected Output: E_NOK 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**********************************************************/
+/********************Testing Timer Start*******************/
+
+ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count);
+/**
+ * Input:
+ * 	Timer_CH_NO: The channel number of the timer needed to be started.
+ *	Timer_Count: The start value of the timer.
+ * Output:
+ * In/Out:
+ * Return: The error status of the function.
+ * Description: This function starts the needed timer.
+ *
+ */
+ 
+Testing Timer channels:
+_______________________________________________________________________
+
+Testcase 1: Input >> Timer Channel= 0 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 2: Input >> Timer Channel= 1 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 3: Input >> Timer Channel= 2 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 4: Input >> Timer Channel= 3 , Timer Counts =0
+Expected Output: E_NOK 
+
+
+Testing Timer counts:
+_______________________________________________________________________
+
+Testcase 1: Input >> Timer Channel= 0 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 2: Input >> Timer Channel= 0 , Timer Counts =150
+Expected Output: E_OK 
+
+Testcase 3: Input >> Timer Channel= 0 , Timer Counts =255
+Expected Output: E_OK 
+
+Testcase 4: Input >> Timer Channel= 0 , Timer Counts =1024
+Expected Output: E_NOK 
+
+
+Testcase 5: Input >> Timer Channel= 1 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 6: Input >> Timer Channel= 1 , Timer Counts =150
+Expected Output: E_OK 
+
+Testcase 7: Input >> Timer Channel= 1 , Timer Counts =255
+Expected Output: E_OK 
+
+Testcase 8: Input >> Timer Channel= 1 , Timer Counts =1024
+Expected Output: E_OK 
+
+
+Testcase 9: Input >> Timer Channel= 2 , Timer Counts =0
+Expected Output: E_OK 
+
+Testcase 10: Input >> Timer Channel= 2 , Timer Counts =150
+Expected Output: E_OK 
+
+Testcase 11: Input >> Timer Channel= 2 , Timer Counts =255
+Expected Output: E_OK 
+
+Testcase 12: Input >> Timer Channel= 2 , Timer Counts =1024
+Expected Output: E_NOK 
+
+
+
+
+/**********************************************************/
+/********************Testing Timer Stop*******************/
+/**
+
+ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO)
+ * Input:
+ * 	Timer_CH_NO: The channel number of the timer needed to be stopped.
+ * Output:
+ * In/Out:
+ * Return: The error status of the function.
+ * Description: This function stops the needed timer.
+ *
+ */
+
+ Testing Timer channels:
+_______________________________________________________________________
+
+Testcase 1: Input >> Timer Channel= 0 
+Expected Output: E_OK 
+
+Testcase 2: Input >> Timer Channel= 1 
+Expected Output: E_OK 
+
+Testcase 3: Input >> Timer Channel= 2
+Expected Output: E_OK 
+
+Testcase 4: Input >> Timer Channel= 3
+Expected Output: E_NOK 
+
+
+
+
+/*Timer_GetValue Test casses*/
+------------------------
+*Check Pointer if it's a null or not.
+*Check Channel number.
+---------------------------------------TEST CASSES-----------------------------------------------
+1-First test case is to insert a NULL Pointer.
+	- Expected -> to return Not OK that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program Crached that's means the function could n't detect that it's a NULL Pointer.
+
+2-Second test case is to insert a non NULL Pointer.
+	- Expected -> to return OK that's means the function could detect that it's a NON NULL Pointer.
+	- Actual   -> the program returns OK that's means the function could detect that it's a NON NULL Pointer.
+
+3-Third test case is to insert an invalid Channel number.
+	- Expected -> to return OK that's means the function could detect that it's an invalid Channel number.
+	- Actual   -> the program returns OK that's means the function could detect that it's an invalid Channel number.
+
+4-Fourth test case is to insert a valid Channel number
+	- Expected -> to return OK that's means the function could detect that it's a valid Channel number.
+	- Actual   -> the program returns OK that's means the function could detect that it's a valid Channel number.
+
+
+
+/*Timer_GetStatus Test casses*/
+------------------------
+*Check Pointer if it's a null or not.
+*Check Channel number.
+---------------------------------------TEST CASSES-----------------------------------------------
+1-First test case is to insert a NULL Pointer.
+	- Expected -> to return Not OK that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program Crached that's means the function could n't detect that it's a NULL Pointer.
+
+2-Second test case is to insert a non NULL Pointer.
+	- Expected -> to return OK that's means the function could detect that it's a NON NULL Pointer.
+	- Actual   -> the program returns OK that's means the function could detect that it's a NON NULL Pointer.
+
+3-Third test case is to insert an invalid Channel number.
+	- Expected -> to return OK that's means the function could detect that it's an invalid Channel number.
+	- Actual   -> the program returns OK that's means the function could detect that it's an invalid Channel number.
+
+4-Fourth test case is to insert a valid Channel number
+	- Expected -> to return OK that's means the function could detect that it's a valid Channel number.
+	- Actual   -> the program returns OK that's means the function could detect that it's a valid Channel number.
