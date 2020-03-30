@@ -4,9 +4,9 @@
  * Created: 2/16/2020 4:31:50 PM
  *  Author: Reem
  */ 
-#include "Timer.h"
-#include "Timer_Cfg.h"
-#include "DIO.h"
+#include "../includes/Timer.h"
+#include "../includes/Timer_Cfg.h"
+#include "../includes/DIO.h"
 
 /**************************Global variables*****************************/
 static volatile uint32_t gu32_NoOfOvfs0;
@@ -17,7 +17,7 @@ static uint8_t gu8_T0PrescaleMask,gu8_T1PrescaleMask,gu8_T2PrescaleMask;
 
 /**************************ISRs*****************************/
 _ISR__(TIMER0_OVF_vect){
-	//gu32_NoOfOvfs0++;
+	gu32_NoOfOvfs0++;
 	if(OVF0_CallBack_Fun != NULL){
 		OVF0_CallBack_Fun();
 	}
@@ -49,7 +49,7 @@ _ISR__(TIMER2_COMP_vect){
 ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 	if (Timer_cfg == NULL)
 	{
-		return E_NOK;
+		return E_NULL_PTR;
 	}
 	else{
 		switch(Timer_cfg->Timer_CH_NO){
@@ -84,7 +84,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				break;
 				
 				default:
-					return E_NOK;
+					return E_INVALID_PARAMETER;
 				break;
 			}
 			
@@ -97,7 +97,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				EN_GLOBAL_INT;
 			}			
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			
 			break;//end of timer 1 configurations
@@ -132,7 +132,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				break;
 				
 				default:
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 				break;
 			}
 			
@@ -146,7 +146,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				
 			}
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			
 			break;
@@ -191,7 +191,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				break;
 				
 				default:
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 				break;
 			}
 			
@@ -204,14 +204,14 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 				EN_GLOBAL_INT;
 			}
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			break;
 			
 			
 			/*Invalid channel number*/
 			default:
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 			break;
 		}
 		return E_OK;
@@ -233,7 +233,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 		//TIMER 0 START
 		case TIMER_CH0:
 		if(Timer_Count >255){
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		else{
 			#if TIMER0_OVF_WMODE == ENABLE
@@ -251,19 +251,16 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 		
 		//TIMER 1 START
 		case TIMER_CH1:
-		if(Timer_Count >65535){
-			return E_NOK;
-		}
-		else{
-			#if TIMER1_OVF_WMODE == ENABLE
-				TCNT1 =65536-Timer_Count;
-			#elif TIMER1_CTC_WMODE == ENABLE
-				TCNT1 = 0;
-				OCR1A = Timer_Count;
-			#endif
+	
+		#if TIMER1_OVF_WMODE == ENABLE
+			TCNT1 =65536-Timer_Count;
+		#elif TIMER1_CTC_WMODE == ENABLE
+			TCNT1 = 0;
+			OCR1A = Timer_Count;
+		#endif
 			
-			TCCR1 |= gu8_T1PrescaleMask;
-		}
+		TCCR1 |= gu8_T1PrescaleMask;
+		
 		break;
 		
 		
@@ -271,7 +268,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 		//TIMER 2 START
 		case TIMER_CH2:
 		if(Timer_Count >255){
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		else{
 			#if TIMER2_OVF_WMODE == ENABLE
@@ -286,7 +283,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 		
 		//Not timer 0 or 1 or 2
 		default:
-		return E_NOK;
+		return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;
@@ -324,7 +321,7 @@ ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO){
 		
 		//Not timer 0 or 1 or 2
 		default:
-		return E_NOK;
+		return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;
@@ -343,7 +340,7 @@ ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO){
 ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 	switch(Timer_CH_NO){
 		case TIMER_CH0:
-		if(get_bit(TIFR,T0_INT_FLAG)==0)
+		if(GET_BIT(TIFR,T0_INT_FLAG)==0)
 			(*Data) =0;
 		else{
 			(*Data) =1;
@@ -353,7 +350,7 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 		
 		
 		case TIMER_CH1:
-		if(get_bit(TIFR,T1_INT_FLAG)==0){
+		if(GET_BIT(TIFR,T1_INT_FLAG)==0){
 			(*Data) =0;
 		}
 		else{
@@ -364,7 +361,7 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 		
 		
 		case TIMER_CH2:
-	    if(get_bit(TIFR,T2_INT_FLAG)==0){
+	    if(GET_BIT(TIFR,T2_INT_FLAG)==0){
 			(*Data) =0;
 		}
 		else{
@@ -375,7 +372,7 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 		
 		
 		default:
-		return E_NOK;
+		return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;
@@ -392,25 +389,26 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
  * Description: This function is used to return the value of the overflows.
  * 							
  */
-extern ERROR_STATUS Timer_GetNoOfOVFS(uint8_t Timer_CH_NO, uint32_t* Data){
+ERROR_STATUS Timer_GetNoOfOVFS(uint8_t Timer_CH_NO, uint32_t* Data){
 	if (Data != NULL)
 	{
 		switch(Timer_CH_NO){
 			case TIMER_CH0:
 			(*Data) =gu32_NoOfOvfs0;
 			break;
+/*
 			case TIMER_CH1:
 			break;
 			case TIMER_CH2:
-			break;
+			break;*/
 			default:
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 			break;
 		}
 		return E_OK;
 	}
 	
-	return E_NOK;
+	return E_NULL_PTR;
 }
 
 /**
@@ -422,17 +420,17 @@ extern ERROR_STATUS Timer_GetNoOfOVFS(uint8_t Timer_CH_NO, uint32_t* Data){
  * Description: This function is used to reset the value of the overflows.
  * 							
  */
-extern ERROR_STATUS Timer_resetNoOfOVFS(uint8_t Timer_CH_NO){
+ERROR_STATUS Timer_resetNoOfOVFS(uint8_t Timer_CH_NO){
 	switch(Timer_CH_NO){
 		case TIMER_CH0:
 		gu32_NoOfOvfs0 = 0;
 		break;
-		case TIMER_CH1:
+	/*	case TIMER_CH1:
 		break;
 		case TIMER_CH2:
-		break;
+		break;*/
 		default:
-		return E_NOK;
+		return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;
@@ -451,7 +449,7 @@ extern ERROR_STATUS Timer_resetNoOfOVFS(uint8_t Timer_CH_NO){
  */
 ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO, uint16_t* Data){
 	if(Data == NULL){
-		return E_NOK;
+		return E_NULL_PTR;
 	}
 	else{
 		switch(Timer_CH_NO){
@@ -468,6 +466,7 @@ ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO, uint16_t* Data){
 			break;
 			
 			default:
+			return E_INVALID_PARAMETER;
 			break;
 			
 		}

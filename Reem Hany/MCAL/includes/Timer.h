@@ -12,10 +12,11 @@
 /*				 INCLUDES			        */
 /************************************************************************/
 
-#include "std_types.h"
-#include "common_macros.h"
-#include "registers.h"
-#include "interrupts.h"
+#include "../../Services/includes/std_types.h"
+#include "../../Services/includes/common_macros.h"
+#include "../../Services/includes/ERROR.h"
+#include "../../MCAL/includes/registers.h"
+#include "../../MCAL/includes/interrupts.h"
 
 /************************************************************************/
 /*				 DEFINES			        */

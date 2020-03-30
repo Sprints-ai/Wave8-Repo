@@ -4,7 +4,7 @@
  * Created: 2/16/2020 4:22:20 PM
  *  Author: Reem
  */ 
-#include "DIO.h"
+#include "../includes/DIO.h"
 /*
 *Input: DIO_Cfg_s -> to get PORT name, pins to be initiated and the required direction
 *Output: No output
@@ -15,7 +15,7 @@
 ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info){
 	//check whether the pointer is NULL
 	if(DIO_info == NULL){
-		return E_NOK;
+		return E_NULL_PTR;
 	}
 	else{
 		switch(DIO_info->GPIO){
@@ -23,15 +23,15 @@ ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info){
 			case GPIOA:
 			//Direction OUTPUT
 			if(DIO_info->dir == OUTPUT){
-				set_bit_mask(PORTA_DIR,DIO_info->pins);
+				SET_BIT_MASK(PORTA_DIR,DIO_info->pins);
 			}
 			//Direction INPUT
 			else if(DIO_info->dir == INPUT){
-				clr_bit_mask(PORTA_DIR,DIO_info->pins);
+				CLR_BIT_MASK(PORTA_DIR,DIO_info->pins);
 			}
 			//Invalid direction
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			break;
 			
@@ -39,15 +39,15 @@ ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info){
 			case GPIOB:
 			//Direction OUTPUT
 			if(DIO_info->dir == OUTPUT){
-				set_bit_mask(PORTB_DIR,DIO_info->pins);
+				SET_BIT_MASK(PORTB_DIR,DIO_info->pins);
 			}
 			//Direction INPUT
 			else if(DIO_info->dir == INPUT){
-				clr_bit_mask(PORTB_DIR,DIO_info->pins);
+				CLR_BIT_MASK(PORTB_DIR,DIO_info->pins);
 			}
 			//Invalid direction
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			break;
 			
@@ -55,15 +55,15 @@ ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info){
 			case GPIOC:
 			//Direction OUTPUT
 			if(DIO_info->dir == OUTPUT){
-				set_bit_mask(PORTC_DIR,DIO_info->pins);
+				SET_BIT_MASK(PORTC_DIR,DIO_info->pins);
 			}
 			//Direction INPUT
 			else if(DIO_info->dir == INPUT){
-				clr_bit_mask(PORTC_DIR,DIO_info->pins);
+				CLR_BIT_MASK(PORTC_DIR,DIO_info->pins);
 			}
 			//Invalid direction
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			break;
 			
@@ -71,20 +71,20 @@ ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info){
 			case GPIOD:
 			//Direction OUTPUT
 			if(DIO_info->dir == OUTPUT){
-				set_bit_mask(PORTD_DIR,DIO_info->pins);
+				SET_BIT_MASK(PORTD_DIR,DIO_info->pins);
 			}
 			//Direction INPUT
 			else if(DIO_info->dir == INPUT){
-				clr_bit_mask(PORTD_DIR,DIO_info->pins);
+				CLR_BIT_MASK(PORTD_DIR,DIO_info->pins);
 			}
 			//Invalid direction
 			else{
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			}
 			break;
 			//Invalid GPIO PORT
 			default:
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 			break;
 		}
 		return E_OK;
@@ -125,15 +125,15 @@ ERROR_STATUS DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value){
 		case GPIOA:
 		//Value High
 		if(value == HIGH){
-			set_bit_mask(PORTA_DATA,pins);
+			SET_BIT_MASK(PORTA_DATA,pins);
 		}
 		//Value Low
 		else if(value == LOW){
-			clr_bit_mask(PORTA_DATA,pins);
+			CLR_BIT_MASK(PORTA_DATA,pins);
 		}
 		//Invalid value
 		else{
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		break;
 		
@@ -141,14 +141,14 @@ ERROR_STATUS DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value){
 		case GPIOB:
 		//Value High
 		if(value == HIGH){
-			set_bit_mask(PORTB_DATA,pins);
+			SET_BIT_MASK(PORTB_DATA,pins);
 		}
 		//Value Low
 		else if(value == LOW){
-			clr_bit_mask(PORTB_DATA,pins);
+			CLR_BIT_MASK(PORTB_DATA,pins);
 		}
 		else{
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		
 		break;
@@ -156,14 +156,14 @@ ERROR_STATUS DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value){
 		case GPIOC:
 		//Value High
 		if(value == HIGH){
-			set_bit_mask(PORTC_DATA,pins);
+			SET_BIT_MASK(PORTC_DATA,pins);
 		}
 		//Value Low
 		else if(value == LOW){
-			clr_bit_mask(PORTC_DATA,pins);
+			CLR_BIT_MASK(PORTC_DATA,pins);
 		}
 		else{
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		
 		break;
@@ -171,20 +171,20 @@ ERROR_STATUS DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value){
 		case GPIOD:
 		//Value High
 		if(value == HIGH){
-			set_bit_mask(PORTD_DATA,pins);
+			SET_BIT_MASK(PORTD_DATA,pins);
 		}
 		//Value Low
 		else if(value == LOW){
-			clr_bit_mask(PORTD_DATA,pins);
+			CLR_BIT_MASK(PORTD_DATA,pins);
 		}
 		else{
-			return E_NOK;
+			return E_INVALID_PARAMETER;
 		}
 		
 		break;
 		
 		default:
-		 return E_NOK;
+		 return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;
@@ -219,33 +219,33 @@ ERROR_STATUS DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value){
 ERROR_STATUS DIO_Read (uint8_t GPIO,uint8_t pins, uint8_t *data){
 	if (data == NULL)
 	{
-		return E_NOK;
+		return E_NULL_PTR;
 	}
 	else{
 		switch(GPIO){
 			//reading the pin in portA
 			case GPIOA:
-			(*data) =get_bit(PORTA_PIN,pins);		
+			(*data) =GET_BIT(PORTA_PIN,pins);		
 			break;
 			
 			//reading the pin in portB
 			case GPIOB:
-			(*data) =get_bit(PORTB_PIN,pins);
+			(*data) =GET_BIT(PORTB_PIN,pins);
 			break;
 			
 			//reading the pin in portC
 			case GPIOC:
-			(*data) =get_bit(PORTC_PIN,pins);	
+			(*data) =GET_BIT(PORTC_PIN,pins);	
 			break;
 			
 			//reading the pin in portD
 			case GPIOD:
-			(*data) =get_bit(PORTD_PIN,pins);
+			(*data) =GET_BIT(PORTD_PIN,pins);
 			break;
 			
 			//Invalid GPIO Port
 			default:
-				return E_NOK;
+				return E_INVALID_PARAMETER;
 			break;
 		}
 		
@@ -281,27 +281,27 @@ ERROR_STATUS DIO_Toggle (uint8_t GPIO, uint8_t pins){
 	switch(GPIO){
 		//toggle pins in port A
 		case GPIOA:
-		toggle_bit_mask(PORTA_DATA,pins);
+		TOGGLE_BIT_MASK(PORTA_DATA,pins);
 		break;
 		
 		//toggle pins in port B
 		case GPIOB:
-		toggle_bit_mask(PORTB_DATA,pins);
+		TOGGLE_BIT_MASK(PORTB_DATA,pins);
 		break;
 		
 		//toggle pins in port C
 		case GPIOC:
-		toggle_bit_mask(PORTC_DATA,pins);
+		TOGGLE_BIT_MASK(PORTC_DATA,pins);
 		break;
 		
 		//toggle pins in port D
 		case GPIOD:
-		toggle_bit_mask(PORTD_DATA,pins);
+		TOGGLE_BIT_MASK(PORTD_DATA,pins);
 		break;
 		
 		//Invalid port returning error
 		default:
-		return E_NOK;
+		return E_INVALID_PARAMETER;
 		break;
 	}
 	return E_OK;

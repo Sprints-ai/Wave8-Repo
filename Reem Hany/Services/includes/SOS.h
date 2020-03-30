@@ -1,66 +1,60 @@
 /*
- * TMU.h
+ * SOS.h
  *
- * Created: 2/24/2020 11:47:11 AM
+ * Created: 3/10/2020 4:14:45 PM
  *  Author: Reem
  */ 
-#ifndef TMU_H_
-#define TMU_H_
+
+
+#ifndef SOS_H_
+#define SOS_H_
+
 #include "std_types.h"
-#include "Timer.h"
+#include "../../MCAL/includes/Timer.h"
+
 
 /****************************************************/
 /*              Defines                             */
 /****************************************************/
-//TMU Channels
-#define		TMU_TIMER_CH0					0
-#define		TMU_TIMER_CH1					1
-#define		TMU_TIMER_CH2					2
 
-//TMU Modes
+//SOS Modes
 #define     ONE_SHOT                        0
 #define     PERIODIC                        1
 
-//TMU Resolution
-#define TMU_RESOLUTION                      250
-
-//TMU Buffer size
-#define TMU_TASK_BUFFER_SIZE                100
+//SOS Buffer size
+#define SOS_TASK_BUFFER_SIZE                100
 
 //ERROR Value Of the Module 
-#define TMU_ERROR                          -700
+#define SOS_ERROR                          -700
 
        
 
 /************************************************************************/
 /*			  Structures Definitions		                            */
 /************************************************************************/
-typedef struct TMU_Cfg{
-	uint8_t TIM_Ch;
-	uint8_t Resolutions;
-}TMU_Cfg;
-typedef struct TMU_TASK_Cfg{
+
+typedef struct strSOS_TASK_Cfg_t{
 	uint16_t Task_id;
-	void (*TMU_Cbk_ptr)(void);
-	uint8_t TMU_MODE;
+	void (*SOS_Cbk_ptr)(void);
+	uint8_t SOS_MODE;
 	uint32_t Delay_TimeMs;
 	uint32_t Delay_Counter;
-	
-}TMU_TASK_Cfg;
+	uint32_t Priority;
+}strSOS_TASK_Cfg_t;
 
 /************************************************************************/
 /*			  Functions Prototypes		                                */
 /************************************************************************/
 
 /**
- * Input: Pointer to a structure contains the information needed to initialize the TMU. 
+ * Input: Pointer to a structure contains the information needed to initialize the SOS. 
  * Output:
  * In/Out:			
  * Return: The error status of the function.			
  * Description: Initiates the timer.
  * 							
  */
-extern ERROR_STATUS TMU_Init(TMU_Cfg* TMU_cfg);
+extern ERROR_STATUS SOS_Init(void);
 
 /**
  * Input:  
@@ -70,19 +64,19 @@ extern ERROR_STATUS TMU_Init(TMU_Cfg* TMU_cfg);
  * Description: this function De-initializes the module
  * 							
  */
-extern ERROR_STATUS TMU_DeInit(void);
+extern ERROR_STATUS SOS_DeInit(void);
 
 /**
  * Input: 
- * 	task: Pointer to a structure contains the information needed to create the TMU task.
+ * 	task: Pointer to a structure contains the information needed to create the SOS task.
  * Output:
  * In/Out:			
  * Return: The error status of the function.			
- * Description: This function act as the TMU creator as it starts the initialized timer , 
- *              creates the task and save it in the TMU task buffer.
+ * Description: This function act as the SOS creator as it starts the initialized timer , 
+ *              creates the task and save it in the SOS task buffer.
  * 							
  */
-extern ERROR_STATUS TMU_Start_Timer(TMU_TASK_Cfg* task);
+extern ERROR_STATUS SOS_Create_Task(strSOS_TASK_Cfg_t* task);
 
 /**
  * Input: 
@@ -93,7 +87,7 @@ extern ERROR_STATUS TMU_Start_Timer(TMU_TASK_Cfg* task);
  * Description: This function removes the task with the given id.
  * 							
  */
-extern ERROR_STATUS TMU_Stop_Timer(uint8_t taskID);
+extern ERROR_STATUS SOS_Delete_Task(uint8_t taskID);
 
 /**
  * Input: 
@@ -101,11 +95,14 @@ extern ERROR_STATUS TMU_Stop_Timer(uint8_t taskID);
  * Output:
  * In/Out:			
  * Return: 			
- * Description: This function act as the TMU Manager that manages the TMU task buffer and calls the TMU Consumers for each task
+ * Description: This function act as the SOS Manager that manages the SOS task buffer and calls the SOS Consumers for each task
  *				 when the time is finished of this task
  * 							
  */
-extern void TMU_Dispatcher(void);
+extern void SOS_Run(void);
 
 
-#endif /* TMU_H_ */
+
+
+
+#endif /* SOS_H_ */

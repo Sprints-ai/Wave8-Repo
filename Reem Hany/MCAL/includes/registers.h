@@ -7,14 +7,15 @@
 
 #ifndef REGISTERS_H_
 #define REGISTERS_H_
-#include "std_types.h"
+#include "../../Services/includes/std_types.h"
 
 /*
  * General Registers
  */
 #define MCUCR				*((reg_type8_t)(0x55))
 #define MCUCSR				*((reg_type8_t)(0x54))	
-#define GICR				*((reg_type8_t)(0x5B))		
+#define GICR				*((reg_type8_t)(0x5B))
+//#define GICR					
 #define GIFR				*((reg_type8_t)(0X5A))		
 
 /*

@@ -8,9 +8,9 @@
 #ifndef	DIO_H
 #define DIO_H
 
-#include "common_macros.h"
-//#include "utilities.h"
-#include "std_types.h"
+#include "../../Services/includes/common_macros.h"
+#include "../../Services/includes/std_types.h"
+#include "../../Services/includes/ERROR.h"
 #include "registers.h"
 /************************************************************************/
 /*						PINS/BITS defines                               */

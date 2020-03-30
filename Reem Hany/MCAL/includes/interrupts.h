@@ -9,7 +9,7 @@
 #ifndef INTERRUPTS_H_
 #define INTERRUPTS_H_
 
-#include "std_types.h"
+#include "../../Services/includes/std_types.h"
 #include "registers.h"
 
 #define INT0_vect			__vector_1
@@ -41,7 +41,7 @@ void vector (void)
 #define SREG		(*(reg_type8_t)   0x5F)
 #define GIE_bit		7
 
-#define EN_GLOBAL_INT		set_bit(SREG,GIE_bit)
-#define DIS_GLOBAL_INT		clr_bit(SREG,GIE_bit)
+#define EN_GLOBAL_INT		SET_BIT(SREG,GIE_bit)
+#define DIS_GLOBAL_INT		CLR_BIT(SREG,GIE_bit)
 
 #endif /* INTERRUPTS_H_ */
