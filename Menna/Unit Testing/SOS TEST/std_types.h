@@ -26,7 +26,6 @@ typedef signed long long sint64_t;
 typedef volatile uint8_t* const reg_type8_t;
 typedef volatile uint16_t* const reg_type16_t;
 typedef sint16_t ERROR_STATUS ;
-typedef		void (*FunPtr)(void);
 
 /************************************************************************/
 /*				 		defining boolean values                         */
@@ -34,7 +33,6 @@ typedef		void (*FunPtr)(void);
 #define FALSE 	0	// defines boolean false
 #define TRUE 	1	// defines boolean true
 
-#define ZERO 0
 
 /************************************************************************/
 /*						 LOW/HIGH defines                               */
@@ -45,7 +43,7 @@ typedef		void (*FunPtr)(void);
 #define  E_OK 0
 #define  E_NOK 1
 
-#define ZERO_VALUE 0 
+#define ZERO_VALUE 0
 
 
 /************************************************************************/
@@ -69,7 +67,7 @@ typedef		void (*FunPtr)(void);
 #define TMU_module_error -500
 #define DIO_module_error -400
 #define TIMER_module_error -300
-#define  SOS_module_error -200
+#define SOS_module_error -200
 
 #define NULL_PTR_ERROR -1
 #define MODULE_UNINTIALIZED -2
@@ -79,6 +77,6 @@ typedef		void (*FunPtr)(void);
 #define MULTIPLE_STOP -6
 #define FULL_BUFFER -7
 #define DEINIT_WITHOUT_INIT -8
-#define  STOP_WITHOU_SART -9
+#define  STOP_WITHOU_START -9
 
 #endif /* STD_TYPES_H_ */
