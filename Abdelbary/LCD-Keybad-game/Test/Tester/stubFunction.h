@@ -9,8 +9,8 @@
 #ifndef STUBFUNCTION_H_
 #define STUBFUNCTION_H_
 #include "tester.h"
- #include "../../MCAL/Timers/Timer.h"
-
+#include "../../MCAL/Timers/Timer.h"
+#include "../../MCAL/DIO/DIO.h"
 extern  uint8_t gu8_Timer_Init_fun_status;
 extern  uint8_t gu8_Timer_Start_fun_status;
 extern  uint8_t gu8_Timer_DeInit_status;
@@ -20,6 +20,8 @@ extern  uint8_t gu8_Timer_DeInit_status;
 ERROR_STATUS    Timer_Init(Timer_cfg_s* Timer_cfg)__attribute__((weak)) ;
 ERROR_STATUS	Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count)__attribute__((weak));
 ERROR_STATUS	Timer_DeInit(uint8_t timer_Ch)__attribute__((weak));
+ERROR_STATUS	DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value)__attribute__((weak));
+ERROR_STATUS   gpioPinDirection(uint8_t GPIO,uint8_t pins,uint8_t dir)__attribute__((weak));
 #endif
 
 

@@ -25,3 +25,11 @@ ERROR_STATUS	Timer_DeInit(uint8_t timer_Ch)
 }
 
 
+ERROR_STATUS	DIO_Write (uint8_t GPIO, uint8_t pins, uint8_t value)
+{
+	
+}
+ERROR_STATUS  gpioPinDirection(uint8_t GPIO,uint8_t pins,uint8_t dir)
+{
+	
+}

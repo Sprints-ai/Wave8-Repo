@@ -43,5 +43,7 @@ void test(void)
 	Us_Module_Test();
 	#elif  SOS_TEST
 	SOS_Module_run_test();
+	#elif LCD_TEST
+	LCD_Module_run_test();
 	#endif
 }
