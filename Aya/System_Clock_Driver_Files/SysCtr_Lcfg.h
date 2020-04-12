@@ -1,0 +1,80 @@
+/*
+ * SysCtr_Lcfg.h
+ *
+ * Created: 4/9/2020 2:51:05 AM
+ *  Author: A_ayman
+ */ 
+
+
+#ifndef SYSCTR_LCFG_H_
+#define SYSCTR_LCFG_H_
+
+#include "ARM_STD_t.h"
+
+
+/* CONFIGURABLE, the value could be changed by user*/
+#define NUM_OF_ENABLED_PRIPHERALS_GATES   5
+
+/*
+*** Constants
+*/
+/* Type Of Clock Source */
+#define CLOCK_SOURCE INTERNAL_CLK_SOURCE 
+#define INTERNAL_CLK_SOURCE					0
+#define EXTERNAL_CLK_SOURCE					1
+
+/* Available Clock Values */
+#define SYSCTL_66_67MHZ							0X00000002
+#define SYSCTL_50_MHZ							0X00000003
+#define SYSCTL_40_MHZ							0X00000004
+#define SYSCTL_20_MHZ							0X00000009
+#define SYSCTL_16_67MHZ							0X0000000B
+#define SYSCTL_8_MHZ								0X00000018
+#define SYSCTL_4_MHZ								0X00000031
+
+/* Peripherals Clock Gates */
+#define ENABLE_WDT0_SYSCTL_GATE				0
+#define ENABLE_WDT1_SYSCTL_GATE    			1
+#define ENABLE_TIMER0_SYSCTL_GATE			2
+#define ENABLE_TIMER1_SYSCTL_GATE			3
+#define ENABLE_TIMER2_SYSCTL_GATE			4	
+#define ENABLE_TIMER3_SYSCTL_GATE			5
+#define ENABLE_TIMER4_SYSCTL_GATE			6
+#define ENABLE_GPIOA_SYSCTL_GATE				7
+#define ENABLE_GPIOB_SYSCTL_GATE				8
+#define ENABLE_GPIOD_SYSCTL_GATE				9
+#define ENABLE_GPIOC_SYSCTL_GATE				10
+#define ENABLE_GPIOE_SYSCTL_GATE				11
+#define ENABLE_GPIOF_SYSCTL_GATE				12
+#define ENABLE_UDMA_SYSCTL_GATE				13
+#define ENABLE_HIB_SYSCTL_GATE				14
+#define ENABLE_UART0_SYSCTL_GATE          15
+#define ENABLE_UART1_SYSCTL_GATE				16
+#define ENABLE_UART2_SYSCTL_GATE				17
+#define ENABLE_SSI0_SYSCTL_GATE				18
+#define ENABLE_SSI1_SYSCTL_GATE				19
+#define ENABLE_I2C0_SYSCTL_GATE				20
+#define ENABLE_I2C1_SYSCTL_GATE				21	
+#define ENABLE_USB0_SYSCTL_GATE				22
+#define ENABLE_CAN0_SYSCTL_GATE				23
+#define ENABLE_CAN1_SYSCTL_GATE				24
+#define ENABLE_ADC0_SYSCTL_GATE				25
+#define ENABLE_ADC1_SYSCTL_GATE				26
+#define ENABLE_COMP0_SYSCTL_GATE				27
+#define ENABLE_COMP1_SYSCTL_GATE				28
+#define ENABLE_PWM0_SYSCTL_GATE				29
+#define ENABLE_QEI0_SYSCTL_GATE				30
+#define ENABLE_QEI1_SYSCTL_GATE				31			
+#define ENABLE_EEPROM_SYSCTL_GATE			32		
+#define ENABLE_WTIMER0_SYSCTL_GATE			33 
+#define ENABLE_WTIMER1_SYSCTL_GATE			34
+#define ENABLE_WTIMER2_SYSCTL_GATE			35
+#define ENABLE_WTIMER3_SYSCTL_GATE			36
+#define ENABLE_WTIMER4_SYSCTL_GATE			37							
+
+
+
+extern uint8_t Sys_CLK_CfgArr[NUM_OF_ENABLED_PRIPHERALS_GATES] ;
+extern uint32_t gu32_Clock_Value  ;
+#endif /* SYSCTR_LCFG_H_ */
+
