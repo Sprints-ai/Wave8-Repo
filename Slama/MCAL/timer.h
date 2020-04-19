@@ -11,7 +11,7 @@
 /************************************************************************/
 /*				 INCLUDES			        */
 /************************************************************************/
-#include "/carApp/carApp/carApp/SERVICES/std_types.h"
+#include "std_types.h"
 
 
 /************************************************************************/
@@ -91,7 +91,7 @@ typedef struct Timer_cfg_s
 	uint8_t Timer_Mode;
 	uint8_t Timer_INT_Mode;
 	uint8_t Timer_Prescaler;
-	volatile void (*Timer_Cbk_ptr)(void);
+	void (*Timer_Cbk_ptr)(void);
 }Timer_cfg_s;
 
 

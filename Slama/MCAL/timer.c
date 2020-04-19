@@ -12,14 +12,18 @@
 /************************************************************************/
 #include "timer.h"
 #include "registers.h"
-#include "/carApp/carApp/carApp/SERVICES/common_macros.h"
+#include "common_macros.h"
 #include "interrupt.h"
+#include "Error_table.h"
 
 /************************************************************************/
 /*					DEFINES                                             */
 /************************************************************************/
 #define OVF_FLAG_SET	(1)
 #define OVF_FLAG_CLEAR	(0)
+
+#define TIMER_STATE_INIT (1)
+#define TIMER_STATE_NOT_INIT (0)
 
 /************************************************************************/
 /*				GLOBAL VARIABLES                                        */
@@ -28,7 +32,8 @@ static uint8_t gu8_prescalerVal_Timer0;
 static uint8_t gu8_prescalerVal_Timer1;
 static uint8_t gu8_prescalerVal_Timer2;
 typedef void vvoid;
-volatile static vvoid(*ptr_callback)(void);
+static void(*ptr_callback)(void);
+static uint8_t arr_TimerStatus[TIMER_CH2 + 1] = {0};
 
 /************************************************************************/
 /*							APIS                                        */
@@ -50,15 +55,21 @@ ERROR_STATUS Timer_Init(Timer_cfg_s *st_Timer_cfg_t)
 		if(st_Timer_cfg_t == NULL){
 			
 			/*return FAILED STATUS*/
-			error_flag = E_NOK;
+			error_flag = ERROR_TIMER_BASE + ERROR_NULL_PTR_INIT;
 		}
 		
-		/*check for the channel number*/
+		else
+		{
+			/* check for channel */
+			/*check for the channel number*/
 		switch(st_Timer_cfg_t->Timer_CH_NO){
 			
 			/*if it's timer 0*/
 			case TIMER_CH0:
-			
+
+				/*save initalized state*/
+				arr_TimerStatus[TIMER_CH0] = TIMER_STATE_INIT;
+
 			    /*check if falling edge was chosen*/
 			    if(st_Timer_cfg_t->Timer_Mode == COUNTER_FALLING_MODE){
 				
@@ -88,9 +99,9 @@ ERROR_STATUS Timer_Init(Timer_cfg_s *st_Timer_cfg_t)
 				   TIMSK = ((TIMSK & TIM0_INTERRUPT_MASK) | TIM0_INTERRUPT_EN);
 				   
 				   /*set callback Val*/
-				   ptr_callback = (volatile void *)st_Timer_cfg_t->Timer_Cbk_ptr;
+				   ptr_callback = st_Timer_cfg_t->Timer_Cbk_ptr;
 				   
-				   	sei();
+				  
 			   }
 			   /*enable interrupt if it's chosen*/
 			   else if(st_Timer_cfg_t->Timer_INT_Mode == TIMER_POLLING_MODE){
@@ -98,11 +109,23 @@ ERROR_STATUS Timer_Init(Timer_cfg_s *st_Timer_cfg_t)
 				   /*write 0 at TIMSK*/
 				   TIMSK = ((TIMSK & TIM0_INTERRUPT_MASK) | TIM0_INTERRUPT_DIS);
 			   }
+
+			   else
+			   {
+				   /* save error wrong mode */
+				   error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CONFIG;
+
+					/*if error reported then clear init state*/
+				   arr_TimerStatus[TIMER_CH0] = TIMER_STATE_NOT_INIT;
+			   }
 			
 			   break;
 			
 			/*if timer 1*/
 			case TIMER_CH1:
+
+				/*save initalized state*/
+				arr_TimerStatus[TIMER_CH1] = TIMER_STATE_INIT;
 			
 			    /*check if external clock was chosen*/
 			    if(st_Timer_cfg_t->Timer_Mode == COUNTER_FALLING_MODE){
@@ -139,22 +162,34 @@ ERROR_STATUS Timer_Init(Timer_cfg_s *st_Timer_cfg_t)
 				   /*write 0 at TIMSK TIM1_INTERRUPT_BIT*/
 				   TIMSK = ((TIMSK & TIM1_INTERRUPT_MASK) | TIM1_INTERRUPT_DIS);
 			   }
+			   else
+			   {
+				   /* save error wrong mode */
+				   error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CONFIG;
+
+				   /*if error reported then clear init state*/
+				   arr_TimerStatus[TIMER_CH1] = TIMER_STATE_NOT_INIT;
+			   }
+			   
 			
 			   break;
 			
 			/*TIMER 2 INITS*/
 			case TIMER_CH2:
-			
+
+				/*save initalized state*/
+				arr_TimerStatus[TIMER_CH2] = TIMER_STATE_INIT;
+
 			   /*check if falling edge was chosen*/
 			   if(st_Timer_cfg_t->Timer_Mode == COUNTER_FALLING_MODE){
 				
 					/*return failed because no external at timer2*/
-				   return E_NOK;
+				   error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CONFIG;
 			   }
 			   else if(st_Timer_cfg_t->Timer_Mode == COUNTER_RISING_MODE){
 				
 				   /*return failed because no external at timer2*/
-				   return E_NOK;
+				   error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CONFIG;
 			   }
 
 			   /*check if internal clock is clock was chosen*/
@@ -176,16 +211,26 @@ ERROR_STATUS Timer_Init(Timer_cfg_s *st_Timer_cfg_t)
 				   /*write 1 at TIMSK*/
 				   TIMSK = ((TIMSK & TIM2_INTERRUPT_MASK) | TIM2_INTERRUPT_DIS);
 			   }
+			   else
+			   {
+				   /* save error wrong config */
+				   error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CONFIG;
+
+				   /*if error reported then clear init state*/
+				   arr_TimerStatus[TIMER_CH2] = TIMER_STATE_NOT_INIT;
+			   }
+			   
 			
 			break;
 			   
 			default:
 			
 				/*wrong channel then return failed*/
-				error_flag  = E_NOK;
+				error_flag  = ERROR_TIMER_BASE + ERROR_WRONG_CHANNEL;
 			break;
 		   }
-		
+
+		}
 		   /*return done status*/
 		   return error_flag;	
 }
@@ -204,17 +249,19 @@ ERROR_STATUS Timer_Start(uint8_t u8_Timer_CH_NO, uint16_t Timer_Vale){
 		
 		/*create error flag*/
 		ERROR_STATUS error_flag = E_OK;
-		
-		/*Determine which channel was chosen*/
+
+		if(arr_TimerStatus[u8_Timer_CH_NO] == TIMER_STATE_INIT)
+		{
+			/*Determine which channel was chosen*/
 		switch(u8_Timer_CH_NO){
 			
 			case TIMER_CH0:
 			
 			   /*check if the contVal > 255 so don't do it*/
-			   if(((uint8_t)Timer_Vale) > TIM0_MAX_CONT){
+			   if((Timer_Vale) > TIM0_MAX_CONT){
 				
 				   /*return Failed*/
-				   error_flag = E_NOK;
+				   error_flag = ERROR_TIMER_BASE + ERROR_INVALID_COUNTS;
 			   }
 			
 			   /*write the cont val at TCNT*/
@@ -281,14 +328,15 @@ ERROR_STATUS Timer_Start(uint8_t u8_Timer_CH_NO, uint16_t Timer_Vale){
 					
 					/*if wrong prescale entered then return ENOK*/	  
 				   default:
-							 error_flag = E_NOK;
+							 error_flag = ERROR_TIMER_BASE + ERROR_INVALID_PRESCALLER;
 				   break;   
 					  }
 					  
 					  /*TIM0_MAX = 255 so for 100 cont TCNT0 = 155*/
 					  TCNT0 = TIM0_MAX_CONT-((uint8_t) Timer_Vale);
 			   }
-			   
+			break;
+
 			case TIMER_CH1:
 			
 			   /*check the prescaler val*/
@@ -352,17 +400,18 @@ ERROR_STATUS Timer_Start(uint8_t u8_Timer_CH_NO, uint16_t Timer_Vale){
 				   
 			/*if wrong prescale entered then return ENOK*/
 			default:
-						error_flag = E_NOK;
+						error_flag = ERROR_TIMER_BASE + ERROR_INVALID_PRESCALLER;
 			break;
 			}
-			
+			break;
+
 			case TIMER_CH2:
 			
 			   /*check if the contVal > 255 so don't do it*/
-			   if(((uint8_t)Timer_Vale)  > TIM2_MAX_CONT){
+			   if((Timer_Vale)  > TIM2_MAX_CONT){
 				
 				   /*return Failed*/
-				   error_flag = E_NOK;
+				   error_flag = ERROR_TIMER_BASE + ERROR_INVALID_COUNTS;
 			   }
 			
 			   else{
@@ -431,11 +480,27 @@ ERROR_STATUS Timer_Start(uint8_t u8_Timer_CH_NO, uint16_t Timer_Vale){
 			default:
 			   
 			   /*wrong channel entered then return failed*/
-			   error_flag = E_NOK;
+			   error_flag = ERROR_TIMER_BASE + ERROR_INVALID_PRESCALLER;
 			break;
 		   }
 		}
+		break;
+
+		default:
+
+			/*wrong channel entered*/
+			error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CHANNEL;
+		break;
 	}	
+}
+	else
+	{
+		/* error module not init */
+		error_flag = ERROR_TIMER_BASE + ERROR_TIMER_NOT_INIT;
+	}
+	
+		
+		
 		   /*return error state*/
 		   return error_flag;
 }
@@ -453,7 +518,9 @@ ERROR_STATUS Timer_Stop(uint8_t u8_Timer_CH_NO){
 		/*create error flag*/
 		ERROR_STATUS error_flag = E_OK;
 		
-		/*check for the entered channel*/
+		if(arr_TimerStatus[u8_Timer_CH_NO] == TIMER_STATE_INIT)
+		{
+			/*check for the entered channel*/
 		switch(u8_Timer_CH_NO){
 			
 		case TIMER_CH0:
@@ -476,6 +543,19 @@ ERROR_STATUS Timer_Stop(uint8_t u8_Timer_CH_NO){
 			TCCR2 = ((TCCR2 & TCCR2_WITHOUT_PSC));
 			
 		break;
+
+		default:
+
+			/*save error*/
+			error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CHANNEL;
+		break;
+		}
+		}
+
+		else
+		{
+			/* Return error module not init*/
+			error_flag = ERROR_TIMER_BASE + ERROR_TIMER_NOT_INIT;
 		}
 		
 		/*return error status*/
@@ -502,9 +582,11 @@ ERROR_STATUS Timer_GetValue(uint8_t u8_Timer_CH_NO, uint16_t* u8_Data){
 		if(u8_Data == NULL){
 			
 			/*failed task*/
-			error_flag = E_NOK;
+			error_flag = ERROR_TIMER_BASE + ERROR_NULL_PTR_INIT;
 		}
-		
+	else
+	{
+		/*u8_data is valid then go on*/
 		/*determine which channel you working on*/
 	switch(u8_Timer_CH_NO){
 			
@@ -518,7 +600,7 @@ ERROR_STATUS Timer_GetValue(uint8_t u8_Timer_CH_NO, uint16_t* u8_Data){
 		case TIMER_CH1:
 			
 			/*write the TCNT VAL IN timerVal*/
-			*u8_Data = TCNT1;
+			*u8_Data = (uint8_t)TCNT1;
 			
 		break;
 			
@@ -532,13 +614,14 @@ ERROR_STATUS Timer_GetValue(uint8_t u8_Timer_CH_NO, uint16_t* u8_Data){
 		default:
 		
 			/*wrong channel entered the return failed*/
-			error_flag = E_NOK;
+			error_flag = ERROR_TIMER_BASE + ERROR_WRONG_CHANNEL;
 			
 		break;
 		}
+	}
 		
-		/*return error status*/
-		return error_flag;
+	/*return error status*/
+	return error_flag;
 }
 
 /**
@@ -562,8 +645,10 @@ ERROR_STATUS Timer_GetStatus(uint8_t u8_Timer_CH_NO, uint8_t* u8_Data){
 			/*return failed task*/
 			error_flag = E_NOK;
 		}
-		
-		switch(u8_Timer_CH_NO){
+		else
+		{
+			/* start checking for channel */
+			switch(u8_Timer_CH_NO){
 			
 		/*if channel 0 then check it's ovf flag*/
 		case TIMER_CH0:
@@ -629,7 +714,8 @@ ERROR_STATUS Timer_GetStatus(uint8_t u8_Timer_CH_NO, uint8_t* u8_Data){
 			   
 		break;
 		}
-		
+		}
+	
 		/*return error state*/
 		return error_flag;
 }
@@ -651,7 +737,7 @@ ERROR_STATUS Timer_SetValue(uint8_t u8_Timer_CH_NO,uint16_t u16_Data){
 		case TIMER_CH0:
 		
 		   /*read TCNT Value of TMR0 which is 8bits only wide*/
-		   TCNT0 = (uint8_t)u16_Data ;
+		   TCNT0 = u16_Data ;
 		   
 		   break;
 		   
@@ -681,7 +767,7 @@ ERROR_STATUS Timer_SetValue(uint8_t u8_Timer_CH_NO,uint16_t u16_Data){
 	return error_flag;
 }	
 
-ISR(TIMER0_OVF_irq)
-{
-	ptr_callback();
-}
+// ISR(TIMER0_OVF_irq)
+// {
+// 	ptr_callback();
+// }
