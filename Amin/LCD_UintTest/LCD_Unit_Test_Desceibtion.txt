@@ -1,0 +1,278 @@
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_Init
+-INPUT:Void
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=56
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=40
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=12
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_6***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=14
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_7***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=128
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_8***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=38
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_9***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=16
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_10***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_11***********************************************
+-FUNCTION NAME:LCD_SendCommand
+-INPUT:=120
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_displayCharacter
+-INPUT:data=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_displayString
+-INPUT:Null_PTR=1
+Expected Output:NULL_PTR_ERROR
+Actual Output:NULL_PTR_ERROR
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:LCD_displayString
+-INPUT:String
+Expected Output:E_OK
+Actual Output:NULL_PTR_ERROR
+TEST CASE FAILED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=0
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=3
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=-1
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_6***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=10
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_7***********************************************
+-FUNCTION NAME:LCD_goToRowColumn
+-INPUT:=20
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=0
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=3
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=0
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_6***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=1
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_6_**************************************************
+*****************************************TEST_CASE_NO#_7***********************************************
+-FUNCTION NAME:LCD_displayStringRowColumn
+-INPUT:=2
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_7_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_displayInteger
+-INPUT:=0
+Expected Output:E_OK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_8_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:LCD_clearScreen
+-INPUT:=0
+Expected Output:E_OK
+Actual Output:E_OK
+TEST CASE PASSED
