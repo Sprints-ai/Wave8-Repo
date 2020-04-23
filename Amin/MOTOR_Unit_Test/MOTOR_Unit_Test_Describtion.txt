@@ -1,0 +1,179 @@
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:Motor_Init
+-INPUT:1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:Motor_Init
+-INPUT:2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:Motor_Init
+-INPUT:255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:Motor_Init
+-INPUT:5
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:Motor_Direction
+-INPUT: motor_number 1----INPUT: direction 1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:Motor_Direction
+-INPUT: motor_number 2----INPUT: direction 2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:Motor_Direction
+-INPUT: motor_number 255----INPUT: direction 255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:Motor_Direction
+-INPUT: motor_number 5----INPUT: direction 5
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:Motor_Start
+-INPUT: motor_number 1----INPUT: speed 0
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:Motor_Start
+-INPUT: motor_number 2----INPUT: speed 100
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:Motor_Start
+-INPUT: motor_number 255----INPUT: speed 255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:Motor_Start
+-INPUT: motor_number 5----INPUT: speed 200
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:Motor_Speed_Update
+-INPUT: motor_number 1----INPUT: speed 0
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:Motor_Speed_Update
+-INPUT: motor_number 2----INPUT: speed 100
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:Motor_Speed_Update
+-INPUT: motor_number 255----INPUT: speed 255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_4_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:Motor_Speed_Update
+-INPUT: motor_number 5----INPUT: speed 200
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:Motor_Stop
+-INPUT:1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:Motor_Stop
+-INPUT:2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:Motor_Stop
+-INPUT:255
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
+
+****************************This is Unit Test for MOTOR MODULE***************************************
+*******************************************_API_NO#_5_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME:Motor_Stop
+-INPUT:5
+Expected Output:E_NOK
+Actual Output:E_NOK
+TEST CASE PASSED
