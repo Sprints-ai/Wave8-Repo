@@ -1,0 +1,70 @@
+/*NVIC Types.h */
+typedef char SubGroup_PriorityType ;
+typedef char Group_PriorityType ;
+typedef enum
+{
+	NVIC_INT0=0,
+	NVIC_INT1 = 1 ,
+	NVIC_INT2 = 2,
+	NVIC_INT3 = 3,
+	NVIC_INT4 = 4,
+	NVIC_INT5 = 5,
+	NVIC_INT6 = 6,
+	NVIC_INT7 = 7,
+	
+	NVIC_INT8 = 8 ,
+	NVIC_INT9 = 9 ,
+	NVIC_INT10 = 10 ,
+	NVIC_INT11 = 11,
+	NVIC_INT12 = 12 ,
+	NVIC_INT13 = 13 ,
+	NVIC_INT14 = 14 ,
+	NVIC_INT15 = 15 ,
+	NVIC_INT16 = 16 ,
+	NVIC_INT17 = 17 ,
+	NVIC_INT18 = 18 ,
+	NVIC_INT19 = 19 ,
+	NVIC_INT20 = 20,
+	NVIC_INT21 = 21,
+	NVIC_INT22 = 22,
+	NVIC_INT23 = 23,
+	NVIC_INT24 = 24,
+	NVIC_INT25 = 25,
+	NVIC_INT26 = 26,
+	NVIC_INT27 = 27,
+	NVIC_INT28 = 28,
+	NVIC_INT29 = 29,
+	NVIC_INT30 = 30,
+	NVIC_INT31 = 31,
+	NVIC_INT32 = 32,
+	NVIC_INT33 = 33,
+	NVIC_INT34 = 34,
+	NVIC_INT35 = 35,
+	NVIC_INT36 = 36,
+	NVIC_INT37 = 37,
+	NVIC_INT38 = 38,
+	NVIC_INT39 = 39,
+	NVIC_INT40 = 40,
+	NVIC_INT41 = 41,
+	NVIC_INT42 = 42,
+	NVIC_INT43 = 43,
+	NVIC_INT44 = 44,
+	NVIC_INT45 = 45,
+	NVIC_INT46 = 46,
+	NVIC_INT47 = 47,
+	NVIC_INT48 = 48,
+	NVIC_INT49 = 49,
+	NVIC_INT50 = 50,
+	NVIC_INT51 = 51,
+	NVIC_INT52= 52,
+	NVIC_INT53 = 53
+
+}IntNumType;
+
+typedef struct
+{
+	IntNumType IntNum;
+	Group_PriorityType Group_Priority;
+	SubGroup_PriorityType	SubGroup_Priority;
+}NVIC_CfgType;
+
