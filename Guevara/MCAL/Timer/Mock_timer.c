@@ -6,9 +6,10 @@
  *  Author: mo
  */
 /*INCLUDES*/
-#include "Timer.h"
-#include "Timer_Config.h"
+#include "Mock_Timer.h"
+#include "Mock_Timer_Config.h"
 #include "../../Infrastructure/Error.h"
+#include <stdio.h>
 /************************************************************************/
 /*		         TIMER FUNCTIONS' IMPLEMENTATION		        */
 /************************************************************************/
@@ -25,6 +26,10 @@ static uint8_t u8_sgv_TimerMode=0;
 static uint8_t u8_timer0_is_init=0;
 static uint8_t u8_timer1_is_init=0;
 static uint8_t u8_timer2_is_init=0;
+void G_interrupt_Enable(void)
+{
+ SREG |=(0x80);
+}
 
 ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg)
 {uint8_t Ret=E_OK;
@@ -672,6 +677,8 @@ switch (Timer_CH_NO) {
 case TIMER_CH0:
 {
 	TCCR0 &=0xF8;
+	
+	
 	break;
 }
 case TIMER_CH1:
@@ -749,26 +756,26 @@ ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO, uint16_t* Data)
 	case TIMER_CH0:
 	{
 		*Data =TCNT0;
+	
 		break;
 	}
 	case TIMER_CH1:
 	{
 		*Data =TCNT1;
+	
 		break;
 	}
 	case TIMER_CH2:
 	{
 		*Data =TCNT2;
+		
 		break;
 	}
 	default :
 		Ret= INVALID_TIMER_CHANNEL+TIMER_MODULE;
 		break;
 	}
-	}
-	else{
-		Ret=NULL_PTR+TIMER_MODULE;
-		}
+	}else{Ret=NULL_PTR+TIMER_MODULE;}
 	return Ret;
 
 }

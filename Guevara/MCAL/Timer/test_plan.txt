@@ -1,0 +1,321 @@
+/*test plan*/
+prescaler test
+valid trails
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_POOLING_MODE,
+		TIMER_PRESCALER_256,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		COUNTER_RISING_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_128,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		COUNTER_FAILING_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_64,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_32,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_16,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_8,/*it will not start untill we call timer start function*/
+};
+invalid trails
+Timer_cfg_s Timer_Configuration2 =
+{
+		4,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		3,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		9,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		5,
+		5,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		5,
+		5,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration2 =
+{
+		5,
+		5,
+		3,
+		12,/*it will not start untill we call timer start function*/
+};
+/*Multiple init*/
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH0,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH0,
+		TIMER_MODE,
+		TIMER_POOLING_MODE,
+		TIMER_PRESCALER_256,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH2,
+		COUNTER_FAILING_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_64,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH0,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_32,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH0,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_16,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH0,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_8,/*it will not start untill we call timer start function*/
+};
+invalid trails
+Timer_cfg_s Timer_Configuration0 =
+{
+		4,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH2,
+		3,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		9,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		5,
+		5,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		5,
+		5,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration0 =
+{
+		5,
+		5,
+		3,
+		12,/*it will not start untill we call timer start function*/
+};
+/*Multiple init*/
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		TIMER_MODE,
+		TIMER_POOLING_MODE,
+		TIMER_PRESCALER_256,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		COUNTER_RISING_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_128,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		COUNTER_FAILING_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_64,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_32,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_16,/*it will not start untill we call timer start function*/
+};
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH1,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_8,/*it will not start untill we call timer start function*/
+};
+invalid trails
+Timer_cfg_s Timer_Configuration1 =
+{
+		4,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH2,
+		3,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		TIMER_CH2,
+		TIMER_MODE,
+		TIMER_INTERRUPT_MODE,
+		9,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		5,
+		5,
+		TIMER_INTERRUPT_MODE,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		5,
+		5,
+		2,
+		TIMER_PRESCALER_1024,/*it will not start untill we call timer start function*/
+};
+
+Timer_cfg_s Timer_Configuration1 =
+{
+		5,
+		5,
+		3,
+		12,/*it will not start untill we call timer start function*/
+};
+/*Multiple init*/

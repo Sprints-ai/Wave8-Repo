@@ -1,11 +1,11 @@
-﻿/*
+/*
  * DIO_config.c
  *
  * Created: 17/02/2020 03:53:11 م
  *  Author: mo
  */
 
-#include "DIO_config.h"
+#include "Mock_DIO_config.h"
 DIO_Cfg_s Dio_configurationA= {
 	GPIOA,
 FULL_PORT,
@@ -25,7 +25,7 @@ DIO_Cfg_s Dio_configurationC= {
 };
 
 DIO_Cfg_s Dio_configurationD= {
-	GPIOD,
+	12,
 	BIT4|BIT3|BIT2,
-	OUTPUT
+	8
 };

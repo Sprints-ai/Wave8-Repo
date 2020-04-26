@@ -3,7 +3,7 @@
  *
  * Created: 24/02/2020 02:50:01 م
  *  Author: mo
- */ 
+ */
 
 
 #ifndef ERROR_H_
@@ -15,6 +15,9 @@
 #define MULTIPLE_INIT 6
 #define INVALID_PARM  8
 #define DIO_MODULE 20
+#define INVALID_DIRECTION 14
+#define INVALID_PORT 16
+#define INVALID_VALUE 18
 #define TIMER_MODULE 30
 #define STOP_WITHOUT_START 10
 #define MULTIPLE_START 12
