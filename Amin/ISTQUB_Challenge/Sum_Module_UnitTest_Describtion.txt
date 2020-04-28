@@ -1,0 +1,163 @@
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+
+-FUNCTION NAME:SUM_1_UNIT_TEST
+-INPUT1: =(2147483647)______INPUT2: =(1)
+Expected_RESULT=(2147483648)______Expected_Error_States=(-1)
+Actual_RESULT=(-2147483648)______Actual_Error_States=(-1)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+
+-FUNCTION NAME:SUM_1_UNIT_TEST
+-INPUT1: =(2147483646)______INPUT2: =(1)
+Expected_RESULT=(2147483647)______Expected_Error_States=(0)
+Actual_RESULT=(2147483647)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+
+-FUNCTION NAME:SUM_1_UNIT_TEST
+-INPUT1: =(0)______INPUT2: =(1)
+Expected_RESULT=(1)______Expected_Error_States=(0)
+Actual_RESULT=(1)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+
+-FUNCTION NAME:SUM_1_UNIT_TEST
+-INPUT1: =(-2147483647)______INPUT2: =(1)
+Expected_RESULT=(-2147483646)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483646)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+
+-FUNCTION NAME:SUM_1_UNIT_TEST
+-INPUT1: =(-2147483648)______INPUT2: =(1)
+Expected_RESULT=(-2147483647)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+
+-FUNCTION NAME:SUM_2_UNIT_TEST
+-Age: =(0)______INPUT2: =(2147483647)______INPUT3: =(1)
+Expected_RESULT=(2147483648)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+
+-FUNCTION NAME:SUM_2_UNIT_TEST
+-Age: =(15)______INPUT2: =(2147483646)______INPUT3: =(1)
+Expected_RESULT=(2147483647)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+
+-FUNCTION NAME:SUM_2_UNIT_TEST
+-Age: =(16)______INPUT2: =(0)______INPUT3: =(1)
+Expected_RESULT=(1)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+
+-FUNCTION NAME:SUM_2_UNIT_TEST
+-Age: =(17)______INPUT2: =(-2147483647)______INPUT3: =(1)
+Expected_RESULT=(-2147483646)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483646)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+
+-FUNCTION NAME:SUM_2_UNIT_TEST
+-Age: =(255)______INPUT2: =(-2147483648)______INPUT3: =(1)
+Expected_RESULT=(-2147483647)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+
+-FUNCTION NAME:SUM_2_Integration_Test_With_Function_Driver
+-Age: =(0)______INPUT2: =(2147483647)______INPUT3: =(1)
+Expected_RESULT=(2147483648)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+
+-FUNCTION NAME:SUM_2_Integration_Test_With_Function_Driver
+-Age: =(15)______INPUT2: =(2147483646)______INPUT3: =(1)
+Expected_RESULT=(2147483647)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+
+-FUNCTION NAME:SUM_2_Integration_Test_With_Function_Driver
+-Age: =(16)______INPUT2: =(0)______INPUT3: =(1)
+Expected_RESULT=(1)______Expected_Error_States=(-2)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(-2)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+
+-FUNCTION NAME:SUM_2_Integration_Test_With_Function_Driver
+-Age: =(17)______INPUT2: =(-2147483647)______INPUT3: =(1)
+Expected_RESULT=(-2147483646)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483646)______Actual_Error_States=(0)
+TEST CASE PASSED
+
+
+****************************This is Unit Test for SUMMITION MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+
+-FUNCTION NAME:SUM_2_Integration_Test_With_Function_Driver
+-Age: =(255)______INPUT2: =(-2147483648)______INPUT3: =(1)
+Expected_RESULT=(-2147483647)______Expected_Error_States=(0)
+Actual_RESULT=(-2147483647)______Actual_Error_States=(0)
+TEST CASE PASSED
