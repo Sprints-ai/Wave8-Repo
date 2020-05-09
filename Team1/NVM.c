@@ -162,60 +162,57 @@ NVM_CheckType NVM_WriteBlock(unsigned char BlockId, const unsigned char *DataPtr
 */
 void NVM_Main(void)
 {   
-   while (1)
+   /* check on the state */
+   switch (gu8_NVM_SM_State)
    {
-      /* check on the state */
-      switch (gu8_NVM_SM_State)
+   case NVM_IDLE:
+      /* waiting for action */
+      break;      
+   case NVM_CHUNK_WRITE:;
+      /*if: (check configuration array of block length vs block written counter) (&&) (MIF_block is written) */
+      if((NVM_NUM_OF_BLOCKS > gu8_writtenBlockCounter) && (NVM_WRITE_BLOCK_DONE == gu8_writeBlockDone))
       {
-      case NVM_IDLE:
-         /* waiting for action */
-         break;      
-      case NVM_CHUNK_WRITE:;
-         /*if: (check configuration array of block length vs block written counter) (&&) (MIF_block is written) */
-         if((NVM_NUM_OF_BLOCKS > gu8_writtenBlockCounter) && (NVM_WRITE_BLOCK_DONE == gu8_writeBlockDone))
-         {
-            /* pull flag down */
-            gu8_writeBlockDone = NVM_WRITE_BLOCK_WAIT;
-            /* increment blocks written counter */
-            gu8_writtenBlockCounter++;
-            /* write next block to memory interface */
-            MEMIF_ReqWriteBlock(NVM_BlocConfig[gu8_writtenBlockCounter].BlockId, NVM_BlocConfig[gu8_writtenBlockCounter].BlockRamAddress);
-         }
-         else if(NVM_NUM_OF_BLOCKS <= gu8_writtenBlockCounter)
-         {
-            /* move to IDLE */
-            gu8_NVM_SM_State = NVM_IDLE;
-            /* reinitialize counter */
-            gu8_writtenBlockCounter = 0;
-         }
-         else
-         {
-         }
-         break;
-      case NVM_CHUNK_READ:;
-         /*if: (check configuration array of block length vs block read counter) (&&) (MIF_block is read) */
-         if((NVM_NUM_OF_BLOCKS > gu8_readBlockCounter) && (NVM_READ_BLOCK_DONE == gu8_readBlockDone))
-         {
-            /* pull flag down */
-            gu8_readBlockDone = NVM_READ_BLOCK_WAIT;
-            /* increment blocks read counter */
-            gu8_readBlockCounter++;
-            /* read next block from memory interface */
-            MEMIF_ReqReadBlock(NVM_BlocConfig[gu8_readBlockCounter].BlockId, NVM_BlocConfig[gu8_readBlockCounter].BlockRamAddress);                   
-         }
-         else if(NVM_NUM_OF_BLOCKS <= gu8_readBlockCounter)
-         {
-            /* move to IDLE */
-            gu8_NVM_SM_State = NVM_IDLE;
-            /* reinitialize counter */
-            gu8_readBlockCounter = 0;
-         }
-         else
-         {
-         }
-         break;
+         /* pull flag down */
+         gu8_writeBlockDone = NVM_WRITE_BLOCK_WAIT;
+         /* increment blocks written counter */
+         gu8_writtenBlockCounter++;
+         /* write next block to memory interface */
+         MEMIF_ReqWriteBlock(NVM_BlocConfig[gu8_writtenBlockCounter].BlockId, NVM_BlocConfig[gu8_writtenBlockCounter].BlockRamAddress);
       }
-   }
+      else if(NVM_NUM_OF_BLOCKS <= gu8_writtenBlockCounter)
+      {
+         /* move to IDLE */
+         gu8_NVM_SM_State = NVM_IDLE;
+         /* reinitialize counter */
+         gu8_writtenBlockCounter = 0;
+      }
+      else
+      {
+      }
+      break;
+   case NVM_CHUNK_READ:;
+      /*if: (check configuration array of block length vs block read counter) (&&) (MIF_block is read) */
+      if((NVM_NUM_OF_BLOCKS > gu8_readBlockCounter) && (NVM_READ_BLOCK_DONE == gu8_readBlockDone))
+      {
+         /* pull flag down */
+         gu8_readBlockDone = NVM_READ_BLOCK_WAIT;
+         /* increment blocks read counter */
+         gu8_readBlockCounter++;
+         /* read next block from memory interface */
+         MEMIF_ReqReadBlock(NVM_BlocConfig[gu8_readBlockCounter].BlockId, NVM_BlocConfig[gu8_readBlockCounter].BlockRamAddress);                   
+      }
+      else if(NVM_NUM_OF_BLOCKS <= gu8_readBlockCounter)
+      {
+         /* move to IDLE */
+         gu8_NVM_SM_State = NVM_IDLE;
+         /* reinitialize counter */
+         gu8_readBlockCounter = 0;
+      }
+      else
+      {
+      }
+      break;
+   }   
 }
 void NVM_WriteBlockDoneNotif(void)
 {
