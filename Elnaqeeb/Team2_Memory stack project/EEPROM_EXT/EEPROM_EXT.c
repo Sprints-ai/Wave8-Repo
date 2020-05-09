@@ -17,7 +17,6 @@
 /*
  * Important external EEPROM macros
  */
-#define NULL                  ((void*)0)
 #define EEEXT_ADDRESS         (0xA0)
 #define EEEXT_NOT_AVAILABLE   (0u)
 #define EEEXT_AVAILABLE       (1u)
@@ -182,7 +181,7 @@ void EEEXT_Main(void)
 				if(au8_readSteps == FIRST_READ_STEP)
 				{
 					/*Sending the address of EEPROM*/
-					I2C_ReqWrite(EEEXT_ADDRESS, gu8_readStartAddress, DATA_FIRST_BYTE);
+					I2C_ReqWrite(EEEXT_ADDRESS, (const unsigned char*)&gu8_readStartAddress, DATA_FIRST_BYTE);
 					au8_readSteps = SECOND_READ_STEP;
 				} 
 				else if (au8_readSteps == SECOND_READ_STEP)
@@ -213,6 +212,9 @@ void EEXT_ACtionDoneCallback(void)
 	{
 		/*In writing operation*/
 		case EEEXT_WRITE_REQ:
+			/*Executing writing call back function*/
+			EEXT_ConfigParam.WriteDoneCbkPtr();
+			
 			/*After writing finish enable the EEPROM*/
 			gu8_availableVar = EEEXT_AVAILABLE;
 			break;
@@ -226,6 +228,9 @@ void EEXT_ACtionDoneCallback(void)
 				}
 				else
 				{
+					/*Executing reading call back function*/
+					EEXT_ConfigParam.ReadDoneCbkPtr();
+					
 					/*After reading finish enable the EEPROM*/
 					gu8_availableVar = EEEXT_AVAILABLE;
 					au8_readSteps = FIRST_READ_STEP;

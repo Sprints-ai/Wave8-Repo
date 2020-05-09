@@ -37,63 +37,24 @@ static volatile uint8_t  gu8_Reading_Block_To_Check_Flag = FALSE ;
 #define CRC16 0x8005
 
 /****************STATIC PROTOTYPES**************************/
-static uint16_t gen_crc16(uint8_t *data_, uint16_t size);
+static unsigned short Gen_CRC16(const unsigned char* data_p, unsigned char length);
 
 /*******************Function implementation*****************/
 /*
  * Description: this function used to calculate the CRC error checking value
  */
-static uint16_t gen_crc16(uint8_t *data_, uint16_t size)
+unsigned short Gen_CRC16(const unsigned char* data_p, unsigned char length)
 {
-	uint16_t out = 0u;
-	uint16_t bits_read = 0, bit_flag,ret;
-	uint8_t *data;
-	data = data_;
-	/* Sanity check: */
-	if(data == NULL)
+	unsigned char x;
+	unsigned short crc = 0xFFFF;
+	while (length--)
 	{
-	    ret= 0u;
+		x = crc >> 8 ^ *data_p++;
+		x ^= x>>4;
+		crc = (crc << 8) ^ ((unsigned short)(x << 12)) ^ ((unsigned short)(x <<5)) ^ ((unsigned short)x);
 	}
-	else
-	{
-	    while(size > 0u)
-	    {
-	        bit_flag = (uint16_t)(out >> 15);
-
-	        /* Get next bit: */
-	        out <<= 1;
-	        out |= (uint16_t)((uint16_t)(*data >> ((uint16_t)7 - bits_read)) & (uint16_t)1);
-
-	        /* Increment bit counter: */
-	        bits_read++;
-	        if(bits_read > 7u)
-	        {
-	            bits_read = 0u;
-	            data++;
-	            size--;
-	        }
-	        else
-	        {
-
-	        }
-
-	        /* Cycle check: */
-	        if(bit_flag)
-	        {
-	            out ^=(uint16_t) CRC16;
-	        }
-	        else
-	        {
-
-	        }
-	    }
-
-	    ret= out;
-
-	}
-	return ret;
+	return crc;
 }
-
 /*
  * Description: this function used to initialize globals
  */
@@ -288,7 +249,7 @@ void NVM_Main(void)
 		/*check first by CRC*/
 		/*calculate actual data CRC*/
 		
-		au16_Actual_CRC = (uint16_t)(gen_crc16(
+		au16_Actual_CRC = (uint16_t)(Gen_CRC16(
 		((unsigned char*) NVM_BlocConfig[au8_NUM_OF_OPERATED_BLOCKS].BlockRamAddress)
 		,(NVM_BlocConfig[au8_NUM_OF_OPERATED_BLOCKS].BlockLength)));
 		
@@ -303,7 +264,7 @@ void NVM_Main(void)
 		/*wait for the data */
 		else if(gu8_Reading_Block_To_Check_Flag == TRUE )
 		{
-			au16_calculated_CRC = gen_crc16(
+			au16_calculated_CRC = Gen_CRC16(
 			(( unsigned char*) &au8_Data_after_Write)
 			,NVM_BlocConfig[au8_NUM_OF_OPERATED_BLOCKS].BlockLength);
 			if (au16_Actual_CRC==au16_calculated_CRC)
