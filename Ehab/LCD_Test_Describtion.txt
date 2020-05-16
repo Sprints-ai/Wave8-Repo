@@ -1,0 +1,163 @@
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_1_INIT VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Init
+-INPUT: Operation mode:=0
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_1_INIT VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Init
+-INPUT: Operation mode:=1
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_1_INIT_INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Init
+-INPUT: Operation mode:=251
+-EXPECTED OUTPUT:ERROR_INVALID_PARAMETER
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_1_INIT_INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Init
+-INPUT: Operation mode:=9
+-EXPECTED OUTPUT:ERROR_INVALID_PARAMETER
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=2----- Operation mode:=0
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=2----- Operation mode:=1
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=0----- Operation mode:=1
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=1----- Operation mode:=1
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=-1----- Operation mode:=9
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=-1----- Operation mode:=255
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=9----- Operation mode:=9
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_2_SEND_COMMAND INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_4***********************************************
+-FUNCTION NAME: LCD_Send_command
+-INPUT: command:=255----- Operation mode:=9
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_3_LCD_DisplayChar VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Display Char
+-INPUT: data:=a----- Operation mode:=1
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_3_LCD_DisplayChar VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Display Char
+-INPUT: data:=a----- Operation mode:=0
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 2 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_3_LCD_DisplayChar INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_Display Char
+-INPUT: data:=5----- Operation mode:=9
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_3_LCD_DisplayChar INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_Display Char
+-INPUT: data:=5----- Operation mode:=255
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_LCD_displayStringRowColumn VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_displayStringRowColumn
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_LCD_displayStringRowColumn VALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_displayStringRowColumn
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_LCD_displayStringRowColumn INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME: LCD_displayStringRowColumn
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 1 !
+
+****************************This is Unit Test for LCD MODULE***************************************
+*******************************************_API_NO#_4_LCD_displayStringRowColumn INVALID_PARAMS**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME: LCD_displayStringRowColumn
+-EXPECTED OUTPUT:OK
+TEST CASE FAILED 1 !
+
+****************************This is Unit Test for SOS MODULE***************************************
+*******************************************_API_NO#_4_(NULL_PTR)**************************************************
+*****************************************TEST_CASE_NO#_5***********************************************
+-FUNCTION NAME: LCD_displayStringRowColumn
+-INPUT:NULL_PTR
+-EXPECTED OUTPUT:OK
+TEST CASE PASSED !

@@ -214,7 +214,6 @@ void LCD_Deinit(void)
 /***************************************************************************************/
 ERROR_STATUS LCD_sendCommand(uint8_t u8_Cmd , uint8_t OperationMode)
 {
-	static uint8_t a = 1;
 	
 	ERROR_STATUS ERR = E_OK;
 	static uint8_t u8_LCD_OS_StateMachine_State = LCD_OS_STATE_START;
@@ -263,45 +262,49 @@ ERROR_STATUS LCD_sendCommand(uint8_t u8_Cmd , uint8_t OperationMode)
 			{
 				case 0:
 				/* Set RS to LOW */
-				//DIO_Write(LCD_PORT, LCD_RS_PIN, HIGH);
+				
 				ClearBit(PORTA_DATA,LCD_RS_PIN);
-
-				/* Set R/W to LOW */
-				//DIO_Write(LCD_PORT, LCD_RW_PIN, LOW);
-				ClearBit(PORTA_DATA,LCD_RW_PIN);
-				/* Set E to HIGH  */
-				//DIO_Write(LCD_PORT, LCD_ENABLE, HIGH);
-				SetBit(PORTA_DATA,LCD_ENABLE);
-				
-				/* Load char on Data bus */
-				//PORTA_DATA &=  0x0F;
-				PORTA_DATA = ((u8_Cmd & 0xF0));
-				
-				/* Set E to LOW */
-				//DIO_Write(LCD_PORT, LCD_ENABLE, LOW);
-				ClearBit(PORTA_DATA,LCD_ENABLE);
 				break;
 				
 				case 5:
-				/* Set E to HIGH */
-				//DIO_Write(LCD_PORT, LCD_ENABLE, HIGH);
+				/* Set R/W to LOW */
+				ClearBit(PORTA_DATA,LCD_RW_PIN);
+				
+				/* Set E to HIGH  */
 				SetBit(PORTA_DATA,LCD_ENABLE);
 				break;
 				
-				case 15:
-				PORTA_DATA = ((u8_Cmd & 0x0F) << 4);
-				//DIO_Write(LCD_PORT,LCD_ENABLE, LOW);
+				case 6:
+				/* Load char on Data bus */
+				PORTA_DATA = ((u8_Cmd & 0xF0));
+				
+				/* Set E to LOW */
 				ClearBit(PORTA_DATA,LCD_ENABLE);
 				break;
 				
-				case 20:
+				case 11:
+				/* Set E to HIGH */
 				SetBit(PORTA_DATA,LCD_ENABLE);
 				break;
 				
-				case 30:
+				case 21:
+				/* Load the Remainder of the char on data bus*/
+				PORTA_DATA = ((u8_Cmd & 0x0F) << 4);
+				break;
+				
+				case 22:
+				/* Set E to LOW*/
+				ClearBit(PORTA_DATA,LCD_ENABLE);
+				break;
+				
+				case 28:
+				/* Set E to HIGH */
+				SetBit(PORTA_DATA,LCD_ENABLE);
+				break;
+				
+				case 48:
+				/* Wait for the LCD to Process the command then set the flag */
 				gu8_LCD_SendCmdFlag = TRUE;
-				TCNT2 = a;
-				a++;
 				break;
 			}
 			u8_LCD_OS_StateMachine_State++;
@@ -417,7 +420,7 @@ ERROR_STATUS LCD_DisplayChar(uint8_t u8_DataCpy, uint8_t OperationMode)
 					PORTC_DATA = 0x03;
 					PORTA_DATA &=  0x0F;
 					PORTA_DATA |= ((u8_DataCpy & 0x0F) << 4);
-					PORTD_DATA = PORTA_DATA;
+					
 					//DIO_Write(LCD_PORT,LCD_ENABLE, LOW);
 					ClearBit(PORTA_DATA,LCD_ENABLE);
 					
@@ -481,7 +484,7 @@ void LCD_DisplayString (uint8_t* puint8_tStringCpy, uint8_t uint8_tIndex,uint8_t
 			else
 			{
 				*pu8_Notification = *pu8_Notification +1;
-				
+				//TCNT1 = *pu8_Notification; 
 				gu8_LCD_SendCharFlag = FALSE;
 				gu8_sendStringFlag = TRUE;
 				
@@ -510,7 +513,7 @@ void gotoRowColumn (uint8_t u8_Row,uint8_t u8_Column)
 			switch(u8_Row)
 			{
 				case 1:
-				LCD_sendCommand(u8_Column+127,LCD_OS);
+				LCD_sendCommand(u8_Column+0x80,LCD_OS);
 				if(gu8_LCD_SendCmdFlag)
 				{
 					gu8_gotoRowColumnFlag = TRUE;
@@ -539,42 +542,42 @@ void gotoRowColumn (uint8_t u8_Row,uint8_t u8_Column)
 
 void LCD_displayStringRowColumn (uint8_t u8_Row , uint8_t u8_Column, uint8_t* puint8_tStringCpy, uint8_t uint8_tIndex, uint8_t* pu8_Notification)
 {
-	static uint8_t x = 1;
+	static uint8_t u8_Command_Finished =  FALSE;
 	//pu8_Notification = 0;
 	if (gu8_LCD_InitFlag)
 	{
-		
-		gotoRowColumn(u8_Row,u8_Column);
-  		if (gu8_gotoRowColumnFlag)
- 		{
-			LCD_DisplayString(puint8_tStringCpy,uint8_tIndex,pu8_Notification);
-			if (gu8_sendStringFlag)
+		switch (u8_Row)
+		{
+			case 1:
+			if (!u8_Command_Finished)
 			{
-				gu8_gotoRowColumnFlag = FALSE;
-				gu8_sendStringFlag = FALSE;
-				TCNT1 = x;
-				x++;
+				LCD_sendCommand(u8_Column|0x80/*lcd_Clear*/ ,LCD_OS);
 			}
-			/*if (j<uint8_tIndex)
+			if(gu8_LCD_SendCmdFlag)
 			{
-				LCD_DisplayChar(puint8_tStringCpy[j],LCD_OS);
-				TCNT1 = puint8_tStringCpy[j];
-				if (gu8_LCD_SendCharFlag)
-				{
-					//TCNT2 = j;
-					j++;
-					gu8_LCD_SendCharFlag = FALSE;
-					
-				}
+				u8_Command_Finished = TRUE;
+				LCD_DisplayString(puint8_tStringCpy,uint8_tIndex,pu8_Notification);
 			}
-			else
+			break;
+			
+			case 2:
+			if (!u8_Command_Finished)
 			{
-				*pu8_Notification = *pu8_Notification +1;
-				gu8_gotoRowColumnFlag = FALSE;
-				j=0;
-			}*/
+				LCD_sendCommand(u8_Column|0xC0/*lcd_Clear*/ ,LCD_OS);
+			}
+			if (gu8_LCD_SendCmdFlag)
+			{
+				u8_Command_Finished = TRUE;
+				LCD_DisplayString(puint8_tStringCpy,uint8_tIndex,pu8_Notification);
+			}
+			break;
 		}
-		
+		if (gu8_sendStringFlag)
+		{
+			gu8_LCD_SendCmdFlag = FALSE;
+			u8_Command_Finished = FALSE;
+			gu8_sendStringFlag = FALSE;
+		}
 	}
 	
 }

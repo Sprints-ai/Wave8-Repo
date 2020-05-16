@@ -2,10 +2,11 @@
  * interrupt.h
  *
  *  Created on: Dec 9, 2019
- *      Author: ahmed
+ *      Author: Ehab
  */
 
-#include "registers.h"
+#include "../Infrastructure/registers.h"
+#include "../Infrastructure/std_types.h"
 
 #ifndef INTERRUPT_H_
 #define INTERRUPT_H_
@@ -62,12 +63,12 @@
  * 				- 0x20 -> INT2
  * @param u8_sense: set the sense of the external interrupt
  */
-void EXTI_Init(uint8_t u8_INTNo , uint8_t u8_sense);
+void EXTI_Init(uint8_t u8_INTNo , uint8_t u8_sense , void(*CBK_FN)(void));
 
 /**
  * Description: De-Initializing the external interrupt
  */
-void EXTI_DEInit(void);
+//void EXTI_DEInit(void);
 
 /* Defining the interrupt service routine function to be a signal function */
 #define InterruptServiceRoutine(vector_num) void vector_num(void) __attribute__((signal));\
