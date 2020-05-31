@@ -12,8 +12,9 @@
  *** Local Macros
  */
  
- /* BUFFER DUTY VALUES */
- #define USED 1
+ /* BUFFER Status VALUES */
+ #define RUNNING 2
+ #define WATING 1
  #define NOT_USED 0
  /* to determine if the flags are initialized or not*/
  #define NOT_INITIALIZED 0
@@ -32,24 +33,23 @@
   }str_FuncStatus_t;
 
   /* this struct is used to determine the characteristics of each task */
-  typedef struct str_OS_Buffer_t
+  typedef struct str_OSBuffer_t
   {
-     
-	  uint8_t u8_Duty;                  /* whether the task is used or not */
+	  uint8_t u8_Status;                  /* whether the task is used or not */
 	  uint16_t u8_Delay_Time;           /* the wanted delay time */
 	  uint8_t u8_Repeat;                /* whether the task is repeated or one shot */
 	  void(* Ptr_Consumer)(void);       /* pointer to the consumer function */
 	  uint8_t u8_Pre_Flag;              /* count the time for consumer function until reach it's periodicity  */
-	  uint8_t u8_Task_ID;               /* determine the Id for the consumer task */
+	  uint8_t u8_Task_Priority;               /* determine the Id for the consumer task */
 	  
-  }str_OS_Buffer_t;
+  }str_OSBuffer_t;
 
 /*********************************************************/
 /************ definition of global variables ************/
 /*******************************************************/
 
 /* create OS buffer to serve functions "array of structures"*/
-static str_OS_Buffer_t arrstr_OS_Buffer [OS_BUFFER_SIZE];
+static str_OSBuffer_t arrstr_OS_Buffer [OS_BUFFER_SIZE];
 
 /* create global instance of str_FuncStatus_t  */
 static str_FuncStatus_t  str_FuncStatus;
@@ -69,7 +69,8 @@ static uint8_t	gu8_Tick_Flag = LOW;
 	
 static ERROR_STATUS Is_Buffer_Empty(void);
 static ERROR_STATUS Is_Buffer_Full(void);
-static void Timer_CB (void);
+static void timer_cbk (void);
+void Sleep (void);
 
 /************************************************************/
 /************ implementation of local functions ************/
@@ -105,13 +106,22 @@ static ERROR_STATUS Is_Buffer_Full(void)
 		return u8_Ret_Status;
 	}
 
+void Sleep (void)
+{
+	CLEAR_BIT(MCUCR,BIT6);
+	CLEAR_BIT(MCUCR,BIT5);
+	CLEAR_BIT(MCUCR,BIT4);
+	SET_BIT(MCUCR,BIT7);
+	__asm__ __volatile__ ( "sleep" "\n\t" :: );
+}
+
 /* this function is called when timer over flow occur, this function is used to set a specific flag */
- void Timer_cbk (void)
-	{
+void timer_cbk (void)
+   {
 		Timer_Set_Value(gu8_Ch_ID, 6);
 		gu8_Tick_Flag = HIGH;
 
-	}
+   }
 
 
 	/****************************************************************/
@@ -122,12 +132,12 @@ static ERROR_STATUS Is_Buffer_Full(void)
  ERROR_STATUS OS_Init (const str_OS_InitConfig_t * pstr_ConfigPtr )
 	{
 		uint8_t Error = E_OK;
-		if (pstr_ConfigPtr!= NULL)
+		if (pstr_ConfigPtr != NULL)
 		{
 			if (str_FuncStatus.u8_Init_Flag == NOT_INITIALIZED)
 			{
-				/* set OS status, already initialized */
-				str_FuncStatus.u8_Init_Flag= INITIALIZED;
+				/* set OS status */
+				str_FuncStatus.u8_Init_Flag = INITIALIZED;
 
 				/*Timer Configurations*/
 				Timer_Cfg_ST str_TimerCfg;
@@ -135,10 +145,11 @@ static ERROR_STATUS Is_Buffer_Full(void)
 				str_TimerCfg.Timer_Mode = TIMER_MODE;
 				str_TimerCfg.Timer_PreScaler = PRESCALER_64;
 				str_TimerCfg.Timer_Interrupt_Mode = TIMER_MODE_INTERRUPT;
-				str_TimerCfg.Ptr_TCB_Function = Timer_CB;
+				str_TimerCfg.Ptr_TCB_Function = timer_cbk;
 
 				Timer_Init(&str_TimerCfg);
-				/*store timer id in global variable to use in Task_Creat*/
+
+				/*store timer id in global variable to use in OS_Start*/
 				gu8_Ch_ID = pstr_ConfigPtr->u8_Timer_Id;
 			}
 			else
@@ -159,44 +170,50 @@ static ERROR_STATUS Is_Buffer_Full(void)
 	}
 
 /* this function is used to check timing for each task*/
- ERROR_STATUS OS_Dispatch(void)
+ ERROR_STATUS OS_RUN(void)
 	{
 		uint8_t u8_Buffer_Index=0;
 		static uint8_t u8_Flag=0;
 		uint8_t Error = E_OK;
-		if (HIGH == gu8_Tick_Flag)
+		while(1)
 		{
-		/*Search in OS buffer if there is function to server this tick */
-		for (u8_Buffer_Index=0;u8_Buffer_Index<OS_BUFFER_SIZE && u8_Flag<gu8_Buffer_Counter;u8_Buffer_Index++)
-		{
-			if(arrstr_OS_Buffer[u8_Buffer_Index].u8_Duty == USED)
-			{
-				arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag++;
+		   if (HIGH == gu8_Tick_Flag)
+		   {
+			   /*Search in OS buffer if there is function to server this tick */
+			   for (u8_Buffer_Index=0;u8_Buffer_Index<OS_BUFFER_SIZE && u8_Flag<gu8_Buffer_Counter;u8_Buffer_Index++)
+			   {
+				   if(arrstr_OS_Buffer[u8_Buffer_Index].u8_Status == WATING)
+				   {
+					   arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag++;
 
-				/*Check if this task will serve this tick*/
-				if  (arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag == (arrstr_OS_Buffer[u8_Buffer_Index].u8_Delay_Time) )
-				{
-					
-					arrstr_OS_Buffer[u8_Buffer_Index].Ptr_Consumer();
-					arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag = 0;
+					   /*Check if this task will serve this tick*/
+					   if  (arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag == (arrstr_OS_Buffer[u8_Buffer_Index].u8_Delay_Time) )
+					   {
+						   arrstr_OS_Buffer[u8_Buffer_Index].u8_Status = RUNNING;
+						   arrstr_OS_Buffer[u8_Buffer_Index].Ptr_Consumer();
+						   arrstr_OS_Buffer[u8_Buffer_Index].u8_Pre_Flag = 0;
+							arrstr_OS_Buffer[u8_Buffer_Index].u8_Status = WATING;
 
-					/*chechk if this task desired for one shot remove it from OS buffer*/
-					if (ONE_SHOT == arrstr_OS_Buffer[u8_Buffer_Index].u8_Repeat)
-					{
-					   Task_Delet((arrstr_OS_Buffer[u8_Buffer_Index].u8_Task_ID), (arrstr_OS_Buffer[u8_Buffer_Index].Ptr_Consumer));
-					}					
-				}
-			}
-		}
-		/*clear the tick flag to let the timer call back function set it again and call the dispatch*/
-		gu8_Tick_Flag = LOW;
+						   /*check if this task desired for one shot remove it from OS buffer*/
+						   if (ONE_SHOT == arrstr_OS_Buffer[u8_Buffer_Index].u8_Repeat)
+						   {
+							   Task_Delet((arrstr_OS_Buffer[u8_Buffer_Index].u8_Task_Priority), (arrstr_OS_Buffer[u8_Buffer_Index].Ptr_Consumer));
+						   }
+					   }
+				   }
+			   }
+			   /*clear the tick flag to let the timer call back function set it again and call the dispatch*/
+			   gu8_Tick_Flag = LOW;
+		   }
+
+			Sleep();
 		}
 		
 		return Error;
 	}
 	
 /* this function is used to stop a specific function */
- ERROR_STATUS Task_Delet(uint8_t Task_Id, void(* Ptr_Func)(void))
+ ERROR_STATUS Task_Delet(uint8_t Period, void(* Ptr_Func)(void))
 	{
 		uint8_t au8_Search_Loop_Counter = ZERO;
 		uint8_t Error = E_OK;
@@ -210,10 +227,10 @@ static ERROR_STATUS Is_Buffer_Full(void)
 			    {
 				    
 				    /*Check if this task is the desired to stop*/
-				    if ((Task_Id == arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Task_ID) && (Ptr_Func == arrstr_OS_Buffer[au8_Search_Loop_Counter].Ptr_Consumer))
+				    if ((Period == arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Task_Priority) && (Ptr_Func == arrstr_OS_Buffer[au8_Search_Loop_Counter].Ptr_Consumer))
 				    {
 					    /*stop the task*/
-					    arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Duty = NOT_USED;
+					    arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Status = NOT_USED;
 					    arrstr_OS_Buffer[au8_Search_Loop_Counter].Ptr_Consumer = NULL;
 					    /*decrease the buffer*/
 					    gu8_Buffer_Counter --;
@@ -240,12 +257,9 @@ static ERROR_STATUS Is_Buffer_Full(void)
 	}
 
 /* this function is used to start a specific function */
- ERROR_STATUS Task_Creat (uint16_t Time_Delay,uint8_t Task_Id, uint8_t Repeat, void(* Ptr_Func)(void))
+ ERROR_STATUS Task_Creat (uint16_t Time_Delay,uint8_t Task_Priorty, uint8_t Repeat, void(* Ptr_Func)(void))
   {
      /*variable for linear search algorithm*/
-	  uint8_t au8_Search_Loop_Counter = ZERO;
-	  sint8_t aS8_Empty_Buffer_Location = EMPTY_BUFFER_LOCATION_INITIAL_VALUE;
-	  uint8_t au8_Already_Started = NOT_INITIALIZED;
 	  uint8_t Error = E_OK;
 
 	  if (INITIALIZED == str_FuncStatus.u8_Init_Flag)
@@ -254,57 +268,35 @@ static ERROR_STATUS Is_Buffer_Full(void)
 		  {
 		      if (NULL != Ptr_Func)
 		      {
-			      
-			      /* Search for empty location and if the consumer is already started in the OS buffer*/
-			      for (au8_Search_Loop_Counter = ZERO; au8_Search_Loop_Counter < OS_BUFFER_SIZE; au8_Search_Loop_Counter ++)
-			      {
-				      /* save the first empty location in OS buffer*/
-				      if ((NOT_USED == arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Duty) && (aS8_Empty_Buffer_Location == EMPTY_BUFFER_LOCATION_INITIAL_VALUE))
-				      {
-					      aS8_Empty_Buffer_Location = au8_Search_Loop_Counter;
-				      }
-				      /*Check if the consumer is pre started with the same ID*/
-				      if ((Task_Id == arrstr_OS_Buffer[au8_Search_Loop_Counter].u8_Task_ID) && (Ptr_Func == arrstr_OS_Buffer[au8_Search_Loop_Counter].Ptr_Consumer))
-				      {
-					      au8_Already_Started = INITIALIZED;
-					      break;
-				      }
-			      }
+				   /*check if the given priorty available or not*/
+					if (arrstr_OS_Buffer[Task_Priorty].u8_Status == NOT_USED)
+					{
+					   /*Create struct for the new creator*/
+					   str_OSBuffer_t str_Buffer;
+					   str_Buffer.u8_Status = WATING;
+					   str_Buffer.u8_Delay_Time = Time_Delay;
+					   str_Buffer.u8_Repeat = Repeat;
+					   str_Buffer.Ptr_Consumer =  Ptr_Func;
+					   str_Buffer.u8_Pre_Flag = 1;
+					   str_Buffer.u8_Task_Priority = Task_Priorty;
+					   
+					   /*Insert the created struct for the new creator in the OS buffer*/
+					   arrstr_OS_Buffer[Task_Priorty] = str_Buffer;
 
-
-			      if (au8_Already_Started == NOT_INITIALIZED)
-			      {
-				      /*Create struct for the new creator*/
-				      str_OS_Buffer_t str_Buffer;
-				      str_Buffer.u8_Duty = USED;
-				      str_Buffer.u8_Delay_Time = Time_Delay;
-				      str_Buffer.u8_Repeat = Repeat;
-				      str_Buffer.Ptr_Consumer =  Ptr_Func;
-				      str_Buffer.u8_Pre_Flag = 1;
-				      str_Buffer.u8_Task_ID = Task_Id;
-				      
-				      /*Insert the created struct for the new creator in the OS buffer*/
-				      arrstr_OS_Buffer[aS8_Empty_Buffer_Location] = str_Buffer;
-				      
 						/*if the buffer empty start the timer */
 						if (TRUE == Is_Buffer_Empty())
-				      Timer_Start(Timer_0,250);
+						Timer_Start(Timer_0,250);
 
 						/*increment buffer counter before adding new task*/
 						gu8_Buffer_Counter++;
-						
-						
+					}
 
-
-			      }
-					//else for restart same task
-			      else if (au8_Already_Started == INITIALIZED)
-			      {
-				      aS8_Empty_Buffer_Location = EMPTY_BUFFER_LOCATION_INITIAL_VALUE;
-				      SET_BIT(PORTA_DATA,BIT6);
-				      //return error
-			      }
-
+					else
+					{
+					   Error_Push(OS_MODULE,ERROR_PRIORITY_UNAVAILABLE);
+						Error = E_NOK;
+					}
+			    
 				}
 
 				

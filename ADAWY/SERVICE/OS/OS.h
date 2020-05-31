@@ -57,10 +57,10 @@ extern ERROR_STATUS OS_Init (const str_OS_InitConfig_t * pstr_OS_ConfigPtr );
 * Reentrancy	   : Reentrant
 * Description     : check timing to serve the consumer function.
 *****************************************************************************/
-extern ERROR_STATUS OS_Dispatch(void);
+extern ERROR_STATUS OS_RUN(void);
 
 /******************************************************************************
-* Function        : ERROR_STATUS Task_Delet(uint8_t Task_Id, void(* Ptr_Func)(void));
+* Function        : ERROR_STATUS OS_Stop(uint8_t Task_Id, void(* Ptr_Func)(void));
 * Type            : public
 * Input parameters: Task_Id, void(* Ptr_Func)(void)
 * Return type     : ERROR_STATUS
@@ -70,14 +70,14 @@ extern ERROR_STATUS OS_Dispatch(void);
 extern ERROR_STATUS Task_Delet(uint8_t Task_Id, void(* Ptr_Func)(void));
 
 /******************************************************************************
-* Function        : ERROR_STATUS Task_Creat (uint16_t Time_Delay,uint8_t Task_Id, uint8_t Repeat, void(* Ptr_Func)(void));
+* Function        : ERROR_STATUS OS_Start (uint16_t Time_Delay,uint8_t Task_Id, uint8_t Repeat, void(* Ptr_Func)(void));
 * Type            : public
-* Input parameters: Time_Delay(0 : 65536), Task_Id(0 : 255), Repeat (one shot or periodic), void(* Ptr_Func)(void))
+* Input parameters: Time_Delay(0 : 65536), Task_Priorty(0 : bufer size -1), Repeat (one shot or periodic), void(* Ptr_Func)(void))
 * Return type     : ERROR_STATUS
 * Reentrancy	   : Reentrant
 * Description     : start OS for a specific task
 *****************************************************************************/
-extern ERROR_STATUS Task_Creat (uint16_t Time_Delay,uint8_t Task_Id, uint8_t Repeat, void(* Ptr_Func)(void));
+extern ERROR_STATUS Task_Creat (uint16_t Time_Delay,uint8_t Task_Priorty, uint8_t Repeat, void(* Ptr_Func)(void));
 
 
 /******************************************************************************

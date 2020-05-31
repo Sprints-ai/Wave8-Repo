@@ -15,7 +15,7 @@
 
 #define TMU_MODULE 1
 #define BCM_MODULE 2
-
+#define OS_MODULE 3
 
 /***********************************************/
 /***************** ERRORS NUBERS *****************/
@@ -33,7 +33,7 @@
 #define ERROR_EMPTY_BUFFER					   ERROR_NOT_FULL_BUFFER + 1		   
 #define ERROR_NOT_EMPTY_BUFFER			   ERROR_EMPTY_BUFFER + 1		
 #define ERROR_NO_DATA					      ERROR_NOT_EMPTY_BUFFER + 1
-#define ERROR_TX_BUFFER_NOT_READY         ERROR_NO_DATA + 1 							   
-							   
+#define ERROR_TX_BUFFER_NOT_READY         ERROR_NO_DATA + 1 							
+#define ERROR_PRIORITY_UNAVAILABLE        ERROR_TX_BUFFER_NOT_READY + 1
 							   
 #endif /* ERRORS_H_ */

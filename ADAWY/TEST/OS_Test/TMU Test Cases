@@ -1,0 +1,79 @@
+/* OS_Init */  
+1- First test case is to insert a NULL Pointer with taking into consideration timer is working will
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer.
+
+2- Second Test case is to insert a NULL Pointer with taking into consideration timer is not working will
+	- Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns "Passed" that's means the function could detect that it's a NULL Pointer.
+
+3- Third Test case is to insert a non NULL Pointer with taking into consideration timer is working will
+    - Expected -> to return "Passed" that's means the function could detect that it's a non NULL Pointer.
+	- Actual   -> the program returns "Passed" that's means the function could detect that it's a non NULL Pointer.
+
+4- fourth Test case is to insert a non NULL Pointer with taking into consideration timer is working will
+    - Expected -> to return "Passed" that's means the function could detect that timer is not working will.
+	- Actual   -> the program returns "failed" that's means the function could not detect that timer is not working will..
+
+/* OS_Creat */  
+1- First test case is to check the happy senario of the function by inserting correct values for it's arguments
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to insert a wrong value for one it's parameters "REPEAT"
+    - Expected -> to return "Passed" that's means the function doing very well and could detect it's a wrong value.
+	- Actual   -> the program returns "failed" that's means the function could not detect it's a wrong value.
+
+3- third test case is to insert a NULL Pointer 
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer.
+		
+
+4- Fourth test case is to trying to start OS without Initiaize it 
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that the module is not initialized.
+
+6- sixth test case is to trying to start a started function with the same Id
+    - Expected -> to return "Passed" that's means the function could detect that the function is already started.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that  the function is already started.
+
+
+/* OS_Delet */
+1- First test case is to insert a NULL Pointer
+    - Expected -> to return "Passed" that's means the function could detect that it's a NULL Pointer.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that it's a NULL Pointer.
+	
+2- Second Test case is to insert a non NULL Pointer 
+    - Expected -> to return "Passed" that's means the function could detect that it's a non NULL Pointer.
+	- Actual   -> the program returns "Passed" that's means the function could detect that it's a non NULL Pointer.
+
+3- Third test case is to trying to Stop OS without OS Initialization
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized to stop it.
+	- Actual   -> the program returns "failed" that's means the function could not detect that the module is not initialized to stop it.
+
+
+4- Fourth test case is to trying to Stop OS without starting OS first
+    - Expected -> to return "Passed" that's means the function could detect that the module is not started to stop it.
+	- Actual   -> the program returns "failed" that's means the function could not detect that the module is not started to stop it.
+
+
+/* OS_DeInit */
+
+1- First test case is to check the happy senario of the function.
+    - Expected -> to return "Passed" that's means the function doing very well.
+	- Actual   -> the program returns "Passed" that's means the function doing very well.
+	
+2- Second test case is to trying to Deinitialize OS without Initiaize it 
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that the module is not initialized.
+
+3- Third test case is to trying to Deinitialize OS without Initiaize it 
+    - Expected -> to return "Passed" that's means the function could detect that the module is not initialized.
+	- Actual   -> the program returns  "Passed" that's means the function could detect that the module is not initialized.
+
+4- Fourth test case is to trying to Deinitialize OS without Stopping the function 
+    - Expected -> to return "Passed" that's means the function could detect that the module Buffer is not empty that's mean OS is serving tasks right now.
+	- Actual   -> the program returns "Passed" that's means the function could detect that the module Buffer is not empty that's mean OS is serving tasks right now.
+
+
+
