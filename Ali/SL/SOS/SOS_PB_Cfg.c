@@ -1,14 +1,14 @@
 /*
- * TMU_PB_Cfg.c
+ * SOS_PB_Cfg.c
  *
  * Created: 2/25/2020 10:41:53 AM
  *  Author: Az
  */ 
 /*- INCLUDES ------------------------------------------------------------------------------------------------------*/
-#include "TMU.h"
+#include "SOS.h"
 /*- CONSTANTS -----------------------------------------------------------------------------------------------------*/
-const strTMU_Cfg_t gstrTMUConfig = 
+const strSOS_Cfg_t gstrSOSConfig = 
 {
-   (uint8_t)TIMER_1,
+   (uint8_t)TIMER_2,
    (uint16_t)1
 };

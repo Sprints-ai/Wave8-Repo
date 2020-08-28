@@ -1,14 +1,14 @@
 /*
- * TMU_PB_Cfg.h
+ * SOS_PB_Cfg.h
  *
  * Created: 2/25/2020 10:42:11 AM
  *  Author: Az
  */ 
 
 
-#ifndef TMU_PB_CFG_H_
-#define TMU_PB_CFG_H_
+#ifndef SOS_PB_CFG_H_
+#define SOS_PB_CFG_H_
 /*- CONSTANTS ------------------------------------------------------------------------------------------------------*/
-extern const strTMU_Cfg_t gstrTMUConfig;
+extern const strSOS_Cfg_t gstrSOSConfig;
 
-#endif /* TMU_PB_CFG_H_ */
+#endif /* SOS_PB_CFG_H_ */

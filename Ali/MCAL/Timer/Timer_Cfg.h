@@ -16,6 +16,10 @@ extern strTimerConfig_t gstrTimerConfig;
 extern strTimerConfig_t gstrTimer0TmuConfig;
 extern strTimerConfig_t gstrTimer1TmuConfig;
 extern strTimerConfig_t gstrTimer2TmuConfig;
+/*-- SOS timer configuration extern --*/
+extern strTimerConfig_t gstrTimer0SosConfig;
+extern strTimerConfig_t gstrTimer1SosConfig;
+extern strTimerConfig_t gstrTimer2SosConfig;
 
 
 

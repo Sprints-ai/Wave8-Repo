@@ -1,16 +1,88 @@
 /*- INCLUDES ----------------------------------------------------------------------------------------------------------------------------------------*/
 #include "Timer.h"
-
-
+#include "../../interrupt.h"
 /*- GLOBAL VARIABLES --------------------------------------------------------------------------------------------------------------------------*/
 /*---- Timers prescalers ----*/
 volatile static uint8_t gu8_t0Prescaler   = 0;
 volatile static uint16_t gu16_t1Prescaler = 0;
 volatile static uint8_t gu8_t2Prescaler   = 0;
-
-volatile uint32_t gu32_overflowTimes = 0;
-volatile uint8_t gu8_excuteFlag = 0;  /* Initial condition '0' not to execute*/
+/* Timers OV Call Backs */
+static void (*TOV_T0_Call_Back)(void) = NULL;
+static void (*TOV_T1_Call_Back)(void) = NULL;
+static void (*TOV_T2_Call_Back)(void) = NULL;
+/* Timers OC Call Backs */
+// static void (*TOC_T0_Call_Back)(void) = NULL;
+// static void (*TOC_T1_Call_Back)(void) = NULL;
+// static void (*TOC_T2_Call_Back)(void) = NULL;
 /*- FUNCTIONS DEFINITIONS ----------------------------------------------------------------------------------------------------------------------------*/
+
+/*
+*  Description : Sets Timer ISRs Call Backs
+*
+*  @param   uint8_t timer_channel
+*  @param   uint8_t call_back_type
+*  @param   void (*call_back)(void)
+*
+*  @return ERROR_STATUS
+*/
+ERROR_STATUS Timer_SetCallBack(uint8_t timer_channel , uint8_t call_back_type , void (*call_back)(void))
+{
+   /* Define error state */
+   uint8_t au8_errorState = 0;
+   if(NULL != call_back)
+   {
+      /* Switch on timer channel */
+      switch (timer_channel)
+      {
+         case TIMER_0:
+            /* Switch on call back type */
+            switch (call_back_type)
+            {
+               case TOV_CALL_BACK:
+                  TOV_T0_Call_Back = call_back;                  
+               break;
+               case TOC_CALL_BACk:
+                  /* not used for now */
+               break;
+            };
+         break;
+         case TIMER_1:
+            /* Switch on call back type */
+            switch (call_back_type)
+            {
+               case TOV_CALL_BACK:
+                  TOV_T1_Call_Back = call_back;
+               break;
+               case TOC_CALL_BACk:
+                  /* not used for now */
+               break;
+            };
+         break;
+         case TIMER_2:
+            /* Switch on call back type */
+            switch (call_back_type)
+            {
+               case TOV_CALL_BACK:
+                  TOV_T2_Call_Back = call_back;
+               break;
+               case TOC_CALL_BACk:
+                  /* not used for now */
+               break;
+            };
+         break;
+      }      
+      /* Report Success */
+      au8_errorState = E_OK;
+   }
+   else
+   {
+      /* Report fail */
+      au8_errorState = E_NOK;
+   }
+   return au8_errorState;
+}
+
+
 /**
  * Description: Initiates timer module. 
  * 
@@ -211,36 +283,16 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t * Timer_status)
 }
 
 /************************************************ Timers ISRs Control **********************************************************/
-ISR_TIMER0_OVF(){
-   /*---- TMU Over Flow Procedure ----*/
-   /* 1 - Increment Global over flow times counter --*/
-   gu32_overflowTimes++;
-   /* 2 - Rise execute flag */
-   gu8_excuteFlag = 1;
-   /* 3 - Reload TCNT ---*/   
-   Timer_SetValue(TIMER_0 , (T0_OV_VAL - gu16_preloader));   
-     
+ISR_TIMER0_OVF(){      
+   TOV_T0_Call_Back();    
 }
 
 ISR_TIMER1_OVF(){
-   /*---- TMU Over Flow Procedure ----*/
-   /* 1 - Increment Global over flow times counter --*/
-   gu32_overflowTimes++; 
-   /* 2 - Rise execute flag */
-   gu8_excuteFlag = 1; 
-   /* 3 - Reload TCNT ---*/   
-   Timer_SetValue(TIMER_1 , (T1_OV_VAL - gu16_preloader));     
+   TOV_T1_Call_Back();     
 }
 
 ISR_TIMER2_OVF(){
-   /*---- TMU Over Flow Procedure ----*/
-   /* 1 - Increment Global over flow times counter --*/
-   gu32_overflowTimes++;
-   /* 2 - Rise execute flag or tick flag */
-   gu8_excuteFlag = 1;
-   /* 3 - Reload TCNT ---*/   
-   Timer_SetValue(TIMER_2 , (T2_OV_VAL - gu16_preloader));   
-     
+   TOV_T2_Call_Back();    
 }
 
 

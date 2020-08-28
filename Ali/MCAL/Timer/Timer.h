@@ -11,7 +11,6 @@
 /*- INCLUDES -----------------------------------------------------------------------------------------------------------------------------------------*/
 #include "../../registers.h"
 #include "../DIO/DIO.h"
-#include "../../interrupt.h"
 #include "../../common_macros.h"
 
 /*- DEFINES-------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -33,6 +32,9 @@
 //#define INVERSE_TICK_TIME_PRESCALE_8     ((CPU_F)/(8))
 //#define INVERSE_TICK_TIME_PRESCALE_NO    ((CPU_F)/(1))
 
+/*---- Call Back Type ----*/
+#define TOV_CALL_BACK 1    /* case of Over Flow ISR */
+#define TOC_CALL_BACk 2    /* case of Output Compare ISR */
 
 /*---- TIMER CHANNEL ----*/
 #define  TIMER_0  0
@@ -112,9 +114,6 @@
 #define T2_POLLING            0
 #define T2_INTERRUPT_NORMAL   0x40
 #define T2_INTERRUPT_CMP      0x80
-/*- GLOBALS & EXTERNS -------------------------------------------------------------------------------------------------------------------------------*/
-/*---- TMU related variables ---*/
-extern volatile uint16_t gu16_preloader;
 /*- TYPEDEFS ----------------------------------------------------------------------------------------------------------------------------------------*/
 typedef struct strTimerConfig{
    uint16_t u16_timer_ch;
@@ -125,6 +124,17 @@ typedef struct strTimerConfig{
 }strTimerConfig_t;
 
 /*- FUNCTIONS PROTOTYPES -----------------------------------------------------------------------------------------------------------------------------*/
+/*
+*  Description : Sets Timer ISRs Call Backs
+*
+*  @param   uint8_t timer_channel
+*  @param   uint8_t call_back_type
+*  @param   void (*call_back)(void)
+*
+*  @return ERROR_STATUS
+*/
+extern ERROR_STATUS Timer_SetCallBack(uint8_t timer_channel , uint8_t call_back_type , void (*call_back)(void));
+
 /**
  * Description: Initiates timer module. 
  * 
