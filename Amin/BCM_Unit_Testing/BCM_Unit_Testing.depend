@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1583518870 source:c:\users\ahmed amin\desktop\bcm_unit_testing\main.c
+	<stdio.h>
+	<stdlib.h>
+	"BCM_rx.h"
+	"BCM_tx.h"
+
+1583514829 c:\users\ahmed amin\desktop\bcm_unit_testing\bcm_rx.h
+	"std_types.h"
+	"Errors.h"
+
+1583514799 c:\users\ahmed amin\desktop\bcm_unit_testing\std_types.h
+
+1583514805 c:\users\ahmed amin\desktop\bcm_unit_testing\errors.h
+
+1583514973 c:\users\ahmed amin\desktop\bcm_unit_testing\bcm_tx.h
+	"std_types.h"
+	"Errors.h"
+
+1583514816 source:c:\users\ahmed amin\desktop\bcm_unit_testing\bcm_tx.c
+	"BCM_tx.h"
+
+1583515332 source:c:\users\ahmed amin\desktop\bcm_unit_testing\bcm_rx.c
+	"BCM_rx.h"
+

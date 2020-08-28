@@ -1,0 +1,80 @@
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:BCM_Send
+-INPUT:BufferPTR=0------Size=1------Channel=1
+Expected Output:ERROR_NULL_POINTER
+Actual Output:ERROR_NULL_POINTER
+TEST CASE#NO_1 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:BCM_Send
+-INPUT:BufferPTR=1------Size=2------Channel=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE#NO_2 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_1_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:BCM_Send
+-INPUT:BufferPTR=2------Size=3------Channel=10
+Expected Output:ERROR_INVALID_PARAMETER
+Actual Output:ERROR_INVALID_PARAMETER
+TEST CASE#NO_3 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:BCM_Init
+-INPUT:-Channel=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE#NO_1 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:BCM_Init
+-INPUT:-Channel=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE#NO_2 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_2_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:BCM_Init
+-INPUT:-Channel=10
+Expected Output:ERROR_INVALID_PARAMETER
+Actual Output:ERROR_INVALID_PARAMETER
+TEST CASE#NO_3 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_1***********************************************
+-FUNCTION NAME:BCM_Recieve
+-INPUT:Size=1------Channel=1
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE#NO_1 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_2***********************************************
+-FUNCTION NAME:BCM_Recieve
+-INPUT:Size=2------Channel=2
+Expected Output:EOK
+Actual Output:E_OK
+TEST CASE#NO_2 PASSED
+
+****************************This is Unit Test for BCM MODULE***************************************
+*******************************************_API_NO#_3_**************************************************
+*****************************************TEST_CASE_NO#_3***********************************************
+-FUNCTION NAME:BCM_Recieve
+-INPUT:Size=3------Channel=10
+Expected Output:ERROR_INVALID_PARAMETER
+Actual Output:ERROR_INVALID_PARAMETER
+TEST CASE#NO_3 PASSED
