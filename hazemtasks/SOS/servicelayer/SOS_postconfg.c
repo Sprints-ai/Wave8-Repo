@@ -6,8 +6,8 @@
  */ 
 #include "SOS.h"
 
-/* config type of TMU post build configuration you just re flash file hex to change OS config*/
-TMU_Configtype gstr_TMUCONFIG={RESOLUTION,TMU_TIMER_ID};
+/* config type of sos post build configuration you just re flash file hex to change OS config*/
+SOS_Configtype gstr_OSCONFIG={RESOLUTION,SOS_TIMER_ID};
 
 
 
