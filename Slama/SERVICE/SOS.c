@@ -8,9 +8,10 @@
 /************************************************************************/
 /*							INCLUDES                                    */
 /************************************************************************/
-#include "TMU.h"
+#include "SOS.h"
 #include "/tmu/tmuapp/tmuapp/MCAL/timer.h"
 #include "/tmu/tmuapp/tmuapp/Error_table.h"
+#include "/tmu/tmuapp/tmuapp/MCAL/registers.h"
 
 /************************************************************************/
 /*							DEFINES                                    */
@@ -39,21 +40,19 @@
 /*							Variables                                   */
 /************************************************************************/
 static uint8_t u8_TaskNumber=ZERO;
-static uint8_t u8_DeletedElements[TMU_BUFFER];
-static uint8_t TMR_ch=0;
+static uint8_t u8_DeletedElements[SOS_BUFFER] = {ZERO};
+static uint8_t TMR_ch = ZERO;
 volatile static uint8_t Flag_1ms = LOW;
-static uint8_t u8_Deleted_Tasks_Counter = 0;
-volatile static uint32_t u32_cnts = 0;
-static uint8_t ModuleInit_State = 0;
-static uint8_t Module_started_state = 0;
-static uint8_t Timer_started = 0;
+static uint8_t u8_Deleted_Tasks_Counter = ZERO;
+volatile static uint32_t u32_cnts = ZERO;
+static uint8_t ModuleInit_State = ZERO;
+static uint8_t Module_started_state = ZERO;
+static uint8_t Timer_started = ZERO;
 
 /*create array of Tasks*/
-TMU_TaskType Timer_tasks[TMU_BUFFER] ;
+st_SOS_TaskType_t Timer_tasks[SOS_BUFFER] = {{ZERO}};
 
-
-volatile static void Timer_callback();
-
+static volatile void Timer_callback(void);
 /************************************************************************/
 /*							APIS                                        */
 /************************************************************************/
@@ -69,7 +68,7 @@ volatile static void Timer_callback();
 						-2 : for multiple initialization
 						
 */
-ERROR_STATUS TMU_Init(st_TMU_init *ConfigPtr)
+ERROR_STATUS SOS_Init(st_SOS_init_t *ConfigPtr)
 {
 	/*create Error_flag*/
 	ERROR_STATUS error_flag = NO_ERROR;
@@ -99,7 +98,7 @@ ERROR_STATUS TMU_Init(st_TMU_init *ConfigPtr)
 			/*check which channel user wants*/
 			switch(ConfigPtr->u8_timer_chnl){
 		
-				case TMU_TMR_CH0:
+				case SOS_TMR_CH0:
 			
 					/*configure TM0*/
 					/*first save the selected timer*/
@@ -112,7 +111,7 @@ ERROR_STATUS TMU_Init(st_TMU_init *ConfigPtr)
 			
 				break;
 		
-				case TMU_TMR_CH1:
+				case SOS_TMR_CH1:
 		
 					/*configure TM1*/
 					/*first save the selected timer*/
@@ -124,7 +123,7 @@ ERROR_STATUS TMU_Init(st_TMU_init *ConfigPtr)
 					st_timer_cfg.Timer_Cbk_ptr = Timer_callback;
 				break;
 		
-				case TMU_TMR_CH2:
+				case SOS_TMR_CH2:
 			
 					/*configure TM2*/
 					/*first save the selected timer*/
@@ -156,7 +155,7 @@ return error_flag;
 4-task callback pointer
 *Return : Error state
 */
-ERROR_STATUS TMU_Start_Timer(TMU_TaskType *Tmu_start)
+ERROR_STATUS SOS_Start_Timer(st_SOS_TaskType_t *SOS_start)
 {
 	/*create error flag to save error state*/
 	ERROR_STATUS error_flag = NO_ERROR;
@@ -164,18 +163,18 @@ ERROR_STATUS TMU_Start_Timer(TMU_TaskType *Tmu_start)
 	/*create inner loop to check the id*/
 	uint8_t id_loop = ZERO;
 	
+	uint8_t u8_BufferCounter =ZERO;
+	
 	/*check if module was init or not*/
 	if(ModuleInit_State == MODULE_INIT)
 	{
 		/*check if null pointer then not valid*/
-		if(Tmu_start == NULL)
+		if(SOS_start == NULL)
 		{
 			/*save error state*/
 			error_flag = ERROR_NULL_PTR_START;
 		}
 		else{
-			/*save starting state*/
-			Module_started_state = MODULE_STARTED;
 						
 			/*check if the timer was started before then don't start it again*/
 			if(Timer_started == TRUE);
@@ -186,18 +185,26 @@ ERROR_STATUS TMU_Start_Timer(TMU_TaskType *Tmu_start)
 				}
 		
 			/*check if the buffer is full*/
-			if((u8_TaskNumber == TMU_BUFFER) && u8_Deleted_Tasks_Counter ==ZERO)
+			if((u8_TaskNumber == SOS_BUFFER) && u8_Deleted_Tasks_Counter ==ZERO)
 			{
 				/*save error state full buffer*/
 				error_flag = ERROR_START_FULL_BUFFER;
 			}
 			
+			/*check for invalid parameters*/
+			else if((SOS_start->u8_TaskPriority >= SOS_BUFFER) ||
+			(SOS_start->task_ptr == NULL) ||
+			((SOS_start->u8_periodic_state != SOS_PERIODIC) &&
+			(SOS_start->u8_periodic_state != SOS_ONESHOOT)))
+			{
+				error_flag = ERROR_INVALID_START_PARAMETERS;
+			}
 			else{
 				/*check if the id was inserted before*/
-				for(id_loop = 0; id_loop<u8_TaskNumber; id_loop ++){
+				for(id_loop = ZERO; id_loop<u8_TaskNumber ; id_loop++){
 					
 					/*check for task id entered*/
-					if(Timer_tasks[id_loop].u8_id  == Tmu_start->u8_id)
+					if(Timer_tasks[id_loop].u8_id  == SOS_start->u8_id)
 					{
 						/*save error state*/
 						error_flag = ERROR_MULTIPLE_MODULE_START;
@@ -207,31 +214,33 @@ ERROR_STATUS TMU_Start_Timer(TMU_TaskType *Tmu_start)
 				/*init only if it's the first time for module*/
 				if(error_flag != ERROR_MULTIPLE_MODULE_START)
 				{
-					
-					if(u8_Deleted_Tasks_Counter != ZERO ){
-						
-						/*decrement the counter by one*/
-						u8_Deleted_Tasks_Counter--;
-						
-						/*allocate your data at the last free buffer*/
-						Timer_tasks[u8_DeletedElements[u8_Deleted_Tasks_Counter]].u8_id = Tmu_start->u8_id;
-						Timer_tasks[u8_DeletedElements[u8_Deleted_Tasks_Counter]].u32_counts = Tmu_start->u32_counts;
-						Timer_tasks[u8_DeletedElements[u8_Deleted_Tasks_Counter]].u8_periodic_state = Tmu_start->u8_periodic_state;
-						Timer_tasks[u8_DeletedElements[u8_Deleted_Tasks_Counter]].task_ptr = Tmu_start->task_ptr;
-						Timer_tasks[u8_DeletedElements[u8_Deleted_Tasks_Counter]].u8_TaskState = TASK_STATE_NOTDONE;
-					}
-					else{
-						
+					/*check if the inserted place is empty or deleted before*/
+					if((Timer_tasks[SOS_start->u8_TaskPriority].u8_id == ZERO) || 
+					((Timer_tasks[SOS_start->u8_TaskPriority].u8_periodic_state == SOS_ONESHOOT) && 
+					(Timer_tasks[SOS_start->u8_TaskPriority].u8_TaskState == TASK_STATE_DONE)))
+					{
 						/*allocate your data at the first free buffer*/
-						Timer_tasks[u8_TaskNumber].u8_id = Tmu_start->u8_id;
-						Timer_tasks[u8_TaskNumber].u32_counts = Tmu_start->u32_counts;
-						Timer_tasks[u8_TaskNumber].u8_periodic_state = Tmu_start->u8_periodic_state;
-						Timer_tasks[u8_TaskNumber].task_ptr = Tmu_start->task_ptr;
-						Timer_tasks[u8_TaskNumber].u8_TaskState = TASK_STATE_NOTDONE;
+						u8_BufferCounter = SOS_start->u8_TaskPriority;
+						Timer_tasks[u8_BufferCounter].u8_id = SOS_start->u8_id;
+						Timer_tasks[u8_BufferCounter].u32_counts = SOS_start->u32_counts;
+						Timer_tasks[u8_BufferCounter].u8_periodic_state = SOS_start->u8_periodic_state;
+						Timer_tasks[u8_BufferCounter].task_ptr = SOS_start->task_ptr;
+						Timer_tasks[u8_BufferCounter].u8_TaskState = TASK_STATE_NOTDONE;
+
 						/*save the counts Val*/
-						u8_TaskNumber++;
+						if(u8_BufferCounter > u8_TaskNumber)
+						{
+							u8_TaskNumber = u8_BufferCounter;
+						}
+					}
+				else{
+					/*save error module can't be created*/
+					error_flag = ERROR_MODULE_PRIORITY_USED;
 					}
 				}
+				
+				/*save starting state*/
+				Module_started_state = MODULE_STARTED;
 			}
 		}
 	}
@@ -251,14 +260,14 @@ ERROR_STATUS TMU_Start_Timer(TMU_TaskType *Tmu_start)
 *Description : Function that starts the timer and trigger the scheduled tasks 
 *Input : none
 *Output : ERROR STATUS: NO_ERROR , ERROR_NO_TASK if no task is inserted*/
-ERROR_STATUS  TMU_Dispatch(void)
+ERROR_STATUS  SOS_Dispatch(void)
 {
 	/*create error flag*/
 	ERROR_STATUS error_flag = NO_ERROR;
-	
+
 	/*create a loop variable*/
 	uint8_t u8_loop = ZERO;
-
+	
 	/*check if it's was started before or not*/
 	if(Module_started_state == MODULE_STARTED)
 	{
@@ -267,46 +276,49 @@ ERROR_STATUS  TMU_Dispatch(void)
 			
 			/*reset trigger flag*/
 			Flag_1ms = LOW;
-			
-			for(u8_loop=ZERO ;u8_loop<u8_TaskNumber;u8_loop++){
-				
+
+			for(u8_loop = ZERO ; u8_loop <= u8_TaskNumber ; u8_loop++){
+
 				/*for 1 shot only task check if it's the first time then fire it if not then neglect it*/
-				if(Timer_tasks[u8_loop].u8_periodic_state  == TMU_ONESHOOT &&
+				if(Timer_tasks[u8_loop].u8_periodic_state  == SOS_ONESHOOT &&
 				  (u32_cnts % (Timer_tasks[u8_loop].u32_counts) == ZERO) &&
 				   Timer_tasks[u8_loop].u8_TaskState == TASK_STATE_NOTDONE){
 					
+					/*call the one shot task*/
+					Timer_tasks[u8_loop].task_ptr();
+					
 					/*call the function stop to send it to done state*/
-					TMU_Stop_Timer(Timer_tasks[u8_loop].u8_id);
+					SOS_Stop_Timer(Timer_tasks[u8_loop].u8_id);
 
 				}
 				
-				/*if it's periodic then keep it runing*/
-				else if(Timer_tasks[u8_loop].u8_periodic_state == TMU_PERIODIC &&
+				/*if it's periodic then keep it running*/
+				else if(Timer_tasks[u8_loop].u8_periodic_state == SOS_PERIODIC &&
 					   (u32_cnts % (Timer_tasks[u8_loop].u32_counts) == ZERO))
 				{
-					
 					/*call it*/
 					Timer_tasks[u8_loop].task_ptr();
 				}
-				
 				/*reinit the counter every 40000 msecond*/
-				if(u32_cnts == DISPATCH_MAX_TRIGGER)
-				
+				if(u32_cnts >= DISPATCH_MAX_TRIGGER)
+				{
 				u32_cnts = ZERO;
+				}
 			}
 		}
 	}
 	
 	else
 	{
-		error_flag = ERROR_MODULE_DIDNOT_START;
+		error_flag = ERROR_MODULE_DIDNOT_START;	
 	}
 	
 	
 	/*check if no tasks available*/
 	if(u8_TaskNumber == ZERO || ((u8_TaskNumber - u8_Deleted_Tasks_Counter) == ZERO))
-	
+	{
 		error_flag = ERROR_DISPATCH_NO_TASKS;
+	}
 	
 	return error_flag;
 }
@@ -315,7 +327,7 @@ ERROR_STATUS  TMU_Dispatch(void)
 ** Inputs : Task_ID
 * Output : ERROR_STATUS 1-NO_ERROR 2_MODULE NOT STARTED
 */
-ERROR_STATUS TMU_Stop_Timer(uint8_t Task_ID){
+ERROR_STATUS SOS_Stop_Timer(uint8_t Task_ID){
 	
 	/*create error flag*/
 	ERROR_STATUS error_flag = NO_ERROR;
@@ -324,12 +336,12 @@ ERROR_STATUS TMU_Stop_Timer(uint8_t Task_ID){
 	uint8_t u8_stop_loop = ZERO;
 	
 	/*loop to save index of task id*/
-	for(u8_stop_loop = ZERO; u8_stop_loop <u8_TaskNumber ; u8_stop_loop++){
+	for(u8_stop_loop = ZERO; u8_stop_loop <= u8_TaskNumber ; u8_stop_loop++){
 		
 		if(Timer_tasks[u8_stop_loop].u8_id == Task_ID){
 			
 			/*change Task configs*/
-			Timer_tasks[u8_stop_loop].u8_periodic_state = TMU_ONESHOOT;
+			Timer_tasks[u8_stop_loop].u8_periodic_state = SOS_ONESHOOT;
 			Timer_tasks[u8_stop_loop].u8_TaskState = TASK_STATE_DONE;
 			
 			/*break*/
@@ -355,7 +367,7 @@ ERROR_STATUS TMU_Stop_Timer(uint8_t Task_ID){
 
 
 /*callback function for the timer interrupt*/
-volatile static void Timer_callback(void){
+static volatile void Timer_callback(void){
 	
 	/*set the flag high to indicated 1 milli second received*/
 	Flag_1ms = HIGH;
@@ -364,14 +376,14 @@ volatile static void Timer_callback(void){
 	u32_cnts++;
 	
 	/*reinit timer value*/
-	Timer_SetValue(TMU_TMR_CH0,TCNT_VAL);
+	Timer_SetValue(SOS_TMR_CH0,TCNT_VAL);
 }
 
 /** TMU_deinit module
 *Description : return everything to the starting point
 ** Output : nothing
 */
-void TMU_DeInit(void)
+void SOS_DeInit(void)
 {
 	/*reinit all variables*/
 	u8_Deleted_Tasks_Counter = ZERO;

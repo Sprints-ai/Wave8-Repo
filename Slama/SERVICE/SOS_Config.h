@@ -14,7 +14,7 @@
 			  2- for errors please check Error_table head filer         */
 /************************************************************************/
 
-#define TMU_BUFFER		(4)
+#define SOS_BUFFER		(4)
 
 
 #endif /* TMU_CONFIG_H_ */
