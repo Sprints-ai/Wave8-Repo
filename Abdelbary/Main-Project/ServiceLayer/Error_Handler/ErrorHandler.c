@@ -6,10 +6,10 @@
  */ 
 #include "SystemErrors.h"
 
-#define MODULE_ERROR	-100
+#define MODULE_ERROR_HANDLER_ERROR	-100
 
-static uint16_t error_buffer_head = -1 ; /*algorithem increase position first*/
-static uint16_t error_Buffer[ERROR_BUFFER_SIZE]; /*buffer to hold system errors*/
+STATIC uint16_t error_buffer_head = -1 ; /*algorithem increase position first*/
+STATIC uint16_t error_Buffer[ERROR_BUFFER_SIZE]; /*buffer to hold system errors*/
 
 void error_handler(sint16_t error_ID)
 {
@@ -19,11 +19,11 @@ void error_handler(sint16_t error_ID)
 	{
 		if (error_ID > 0)	/*error id must be negative*/
 		{
-			u8_fun_error_status = (MODULE_ERROR+INVALAD_PARAMETER);
+			u8_fun_error_status = (MODULE_ERROR_HANDLER_ERROR+INVALAD_PARAMETER);
 		}
 		else if (error_buffer_head == (ERROR_BUFFER_SIZE-ONE)) /*check for buffer capacity*/
 		{
-			u8_fun_error_status = (MODULE_ERROR+FULL_BUFFER);
+			u8_fun_error_status = (MODULE_ERROR_HANDLER_ERROR+FULL_BUFFER);
 			/*must report system somehow that the buffer is full*/
 		}
 		else

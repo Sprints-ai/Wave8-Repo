@@ -1,7 +1,7 @@
 /*
 *	File name: DIO.h
 *	Author : Abdelbary
-*	
+*
 *
 */
 
@@ -65,6 +65,9 @@ typedef struct DIO_Cfg_s
 */
 ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info);
 
+/*Description: same as DIO-int Fun but with no strut case the last implementation is idiot.
+*/
+ERROR_STATUS gpioPinDirection(uint8_t GPIO,uint8_t pins,uint8_t dir);
 
 /*
 *Input: GPIO -> to get PORT name

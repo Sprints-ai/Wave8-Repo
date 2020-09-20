@@ -1,0 +1,37 @@
+/*
+ * PWMconfig.h
+ *
+ * Created: 2/17/2020 8:06:06 PM
+ *  Author: MENA
+ */ 
+
+#include "DIO.h"
+
+#ifndef PWMCONFIG_H_
+#define PWMCONFIG_H_
+
+
+#define		TIMER1_NO_CLOCK_MASK				0xFFF8
+#define		TIMER1_PRESCALER_NO_MASK			0x0001
+#define		TIMER1_PRESCALER_8_MASK				0x0002
+#define		TIMER1_PRESCALER_64_MASK			0x0003
+#define		TIMER1_PRESCALER_256_MASK			0x0004
+#define		TIMER1_PRESCALER_1024_MASK			0x0005
+
+
+#define  T1_PHASE_CORRECT_ICR1  0X0210
+
+#define  T1_COMP_MODE_ICR1_TOP  0x0018
+
+#define  T1_OC1A_CLEAR 0x8000
+
+#define  T1_OC1B_CLEAR 0x2000
+
+#define PWM_GPIO1 GPIOD
+#define PWM_BIT1	BIT4
+
+#define PWM_GPIO2 GPIOD
+#define PWM_BIT2	BIT5
+
+
+#endif /* PWMCONFIG_H_ */

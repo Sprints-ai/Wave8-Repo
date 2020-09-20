@@ -12,6 +12,8 @@
 /*
  * General Registers
  */
+
+#ifndef GCC /*no debugging mode*/
 #define MCUCR			*(reg_type8_t)(0X55)	
 #define MCUCSR			*(reg_type8_t)(0X54)
 #define GICR			*(reg_type8_t)(0X5B)
@@ -104,6 +106,86 @@
 #define  UBRRH    *(reg_type8_t)(0x40)   //!!
 #define  UBRRL    *(reg_type8_t)(0x29)
 
+#endif
 
+#ifdef GCC
+extern  uint8_t MoocVariable;
+uint8_t MoocVariable ;
+#define MCUCR			MoocVariable
+#define MCUCSR			MoocVariable
+#define GICR			MoocVariable
+#define GIFR			MoocVariable
+#define SREG			MoocVariable
+					
+#define PORTA_DATA 		MoocVariable
+#define PORTA_DIR  		MoocVariable
+#define PORTA_PIN		MoocVariable
+
+#define PORTB_DATA 		MoocVariable
+#define PORTB_DIR  		MoocVariable
+#define PORTB_PIN		MoocVariable
+						
+						
+#define PORTC_DATA 		MoocVariable
+#define PORTC_DIR  		MoocVariable
+#define PORTC_PIN		MoocVariable
+						
+						
+#define PORTD_DATA 		MoocVariable
+#define PORTD_DIR  		MoocVariable
+#define PORTD_PIN		MoocVariable
+						
+						
+#define TIMSK			MoocVariable
+#define TIFR			MoocVariable
+						
+						
+#define TCCR0			MoocVariable
+#define TCNT0			MoocVariable
+#define OCR0			MoocVariable
+					
+					
+///REMEBER TO CHECK FOR MoocVariable
+#define TCCR1A			MoocVariable
+#define TCCR1B			MoocVariable
+#define TCCR1			MoocVariable
+#define TCNT1H			MoocVariable
+#define TCNT1L			MoocVariable
+#define TCNT1			MoocVariable
+#define OCR1AH			MoocVariable
+#define OCR1AL			MoocVariable
+#define OCR1A			MoocVariable
+#define OCR1BH			MoocVariable
+#define OCR1BL			MoocVariable
+#define OCR1B			MoocVariable
+#define ICR1H			MoocVariable
+#define ICR1L			MoocVariable
+#define ICR1			MoocVariable
+	
+
+/*
+ * Timer 2 Registers
+ */
+#define TCCR2			MoocVariable	
+#define TCNT2			MoocVariable
+#define OCR2			MoocVariable
+#define ASSR			MoocVariable
+
+/* SPI */
+#define SPCR			  MoocVariable
+#define SPSR			  MoocVariable
+#define SPDR			  MoocVariable
+
+/*
+*  USART Registers
+*/
+#define  UDR			  MoocVariable	
+#define  UCSRA			  MoocVariable	
+#define  UCSRB			  MoocVariable	
+#define  UCSRC			  MoocVariable	   //!!
+#define  UBRRH			  MoocVariable	   //!!
+#define  UBRRL			  MoocVariable	
+
+#endif
 
 #endif /* REGISTERS_H_ */

@@ -1,0 +1,54 @@
+
+
+	=========================TMU_Module_TEST=======================
+
+
+		-----------------TMU_Init_TEST-------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -101	 fun_return: -101	Passed.
+testCase   0:	expected_return : -103	 fun_return: -103	Passed.
+
+		-----------------TMU_DeInit_TEST-----------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+
+		-----------------TMU_Start_TEST------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -101	 fun_return: -101	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+
+		-----------------TMU_Stop_TEST-------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+
+		-----------------TMU_Dispatcher_TEST-------
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+
+
+	=========================ENDED================================
+

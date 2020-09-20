@@ -6,7 +6,7 @@
  */ 
 #include "Steering.h"
 
-static uint8_t gu8_firstTime = TRUE;
+STATIC uint8_t gu8_firstTime = TRUE;
 
 ERROR_STATUS Steering_Init(void)
 {

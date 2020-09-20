@@ -77,7 +77,7 @@ ERROR_STATUS Us_Trigger(void);
 ERROR_STATUS Us_GetDistance(uint64_t *Distance);
 
 
-
+ERROR_STATUS Us_dispatcher();
 
 
 

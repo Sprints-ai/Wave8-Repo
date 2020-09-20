@@ -1,0 +1,17 @@
+
+
+	=========================Us_Module_TEST=======================
+
+		-----------------Us_Init_TEST-------------
+testCase 0  Passed.
+testCase 1  Passed.
+testCase 2  Passed.
+testCase 3  Failed.
+		-----------------Us_Trigger_TEST----------
+testCase 0  Passed.
+testCase 1  Failed.
+		-----------------Us_GetDistance_TEST-------------
+testCase 0  Passed.
+testCase 1  Passed.
+testCase 2  Failed.
+testCase 3  Passed.

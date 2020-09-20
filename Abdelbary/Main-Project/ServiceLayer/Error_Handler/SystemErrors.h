@@ -10,7 +10,7 @@
 #define SYSTEMERRORS_H_
 #include "..\..\common_macros.h"
 
-#define OK							     0
+#define OK							     1
 #define	NULL_PTR_ERROR					-1
 #define	MODULE_NOT_INITALIZED			-2
 #define	MULTIPLE_INITALIZATION			-3
@@ -19,9 +19,11 @@
 #define	MULTIPLE_START					-6
 #define	FULL_BUFFER						-7
 #define MODULE_BUSY						-8
-#define NOK								-20
+#define INVALID_STATE					-9
+#define MODULE_NOT_EN					-10
+#define MULTIPLE_EN						-11
+#define NOK								 0
 #define ERROR_BUFFER_SIZE				500
-
 
 void error_handler(sint16_t error_ID);
 

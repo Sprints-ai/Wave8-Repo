@@ -15,8 +15,8 @@
 #include "../../HAL/UltraSonic/ultraSonic.h"
 
 
-extern void US_Init_test(void);
-extern void Us_Trigger_test(void);
-extern void Us_Module_Test(void);
-extern void Us_GetDistance_Test(void);
+void US_Init_test(void);
+void Us_Trigger_test(void);
+void Us_Module_Test(void);
+void Us_GetDistance_Test(void);
 #endif /* ULTRASONIC_TEST_H_ */

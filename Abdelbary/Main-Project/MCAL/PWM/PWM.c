@@ -70,15 +70,15 @@ typedef enum En_PWM_Timer1_Mode_t{
 
 
 /*- LOCAL FUNCTIONS PROTOTYPES ----------------------------*/
-static ERROR_STATUS validate_prescaler(uint8_t channel , uint8_t prescaler);
-static  ERROR_STATUS validate_cnfg(Pwm_Cfg_s *Pwm_Cfg);
+STATIC ERROR_STATUS validate_prescaler(uint8_t channel , uint8_t prescaler);
+STATIC  ERROR_STATUS validate_cnfg(Pwm_Cfg_s *Pwm_Cfg);
 /*- GLOBAL STATIC VARIABLES -------------------------------*/
 
-static uint8_t gu8_PWM_prescaler;
+STATIC uint8_t gu8_PWM_prescaler;
 /*- GLOBAL EXTERN VARIABLES -------------------------------*/
 /*- LOCAL FUNCTIONS IMPLEMENTATION ------------------------*/
 /*- APIs IMPLEMENTATION -----------------------------------*/
-static ERROR_STATUS validate_prescaler(uint8_t channel , uint8_t prescaler)
+STATIC ERROR_STATUS validate_prescaler(uint8_t channel , uint8_t prescaler)
 {
 	uint8_t u8_fun_status = OK;
 		switch(channel)
@@ -121,7 +121,7 @@ static ERROR_STATUS validate_prescaler(uint8_t channel , uint8_t prescaler)
 		}
 	return u8_fun_status;
 }
-static ERROR_STATUS validate_cnfg(Pwm_Cfg_s *Pwm_Cfg)
+STATIC ERROR_STATUS validate_cnfg(Pwm_Cfg_s *Pwm_Cfg)
 {
 	uint8_t u8_fun_status = OK;
 

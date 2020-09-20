@@ -1,0 +1,11 @@
+1-in the test folder creat new test folder for the module  and in it create ->moduleName_test.c
+		       							    ->moduleName_test.h
+2-in the moduleName_test.h file include ->tester.h file
+		       			->module.h file
+
+3-in the stubfunction.h file add all stub function headers needed
+ -in the stubfunction.c file add all stub function defention needed
+ -for every stub function create a global variable _fun error return value_ and return its value in its function
+ -extern the variable names in the moduleName_test.c file
+
+4-design test cases add them to  tests.txt and save it

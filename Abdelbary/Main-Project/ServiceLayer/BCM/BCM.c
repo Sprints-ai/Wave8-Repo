@@ -5,7 +5,6 @@
  *  Author: mahmo
  */ 
 #include "BCM.h"
-
 /*	/binary search on lower bound value <= value
 *
 *
@@ -39,28 +38,20 @@
 #define BCM_FRAM_ELEMENT_FOUR			3
 
 
-typedef struct bcm_taskControlBlock{
-	gstr_BCM_Task_cfg_t* bcmTask;/*user configuration*/
-	uint8_t  u8_taskStatus;/*idle,sending,complete_sending*/
-	uint8_t  u8_counter; /*counter to point to BCM_FRAM_POINTER to send 0 ,1 ,2 ,3 */
-	uint8_t  u8_byteCounter; /*for each fram loop on its bytes*/
-	uint8_t  u8_checkSum;/*hold sum of the bytes*/
-	uint16_t u8_BCM_framSize;/*data size +2 bytes for numOfBytes + 1byte for BCM_ID +1 byte for checksum*/
-	uint8_t* apu8_BCM_Frame[BCM_FRAME_SIZE];
-}bcm_taskControlBlock_t;
 
-static sint8_t gas8_init_chanals_stauts[BCM_MAX_CHANALS][BCM_MAX_MODES];		/*num of tasks in each comm chanal for uinit chanals value is -1*/
-static bcm_taskControlBlock_t g3astr_BCM_Tasks[BCM_MAX_CHANALS][BCM_MAX_MODES]; /*for each comm chanal hold the max number of tasks*/
-volatile static uint8_t gau8_BCM_FrameElementSize[BCM_FRAME_SIZE];
-volatile static uint8_t gau8_BCM_RecivingBuffer[BCM_MAX_RECIVING_BUFFER_SIZE];/*buffer to recive data in*/
-volatile static uint8_t gu8_bufferCounter = ZERO;
-static uint8_t gu8_BCM_Id;/*to hold predetermined bcm_id*/
-static uint8_t gu8_moduleInitFlag = FALSE;
+
+STATIC sint8_t gas8_init_chanals_stauts[BCM_MAX_CHANALS][BCM_MAX_MODES];		/*num of tasks in each comm chanal for uinit chanals value is -1*/
+STATIC bcm_taskControlBlock_t g3astr_BCM_Tasks[BCM_MAX_CHANALS][BCM_MAX_MODES]; /*for each comm chanal hold the max number of tasks*/
+volatile STATIC uint8_t gau8_BCM_FrameElementSize[BCM_FRAME_SIZE];
+volatile STATIC uint8_t gau8_BCM_RecivingBuffer[BCM_MAX_RECIVING_BUFFER_SIZE];/*buffer to recive data in*/
+volatile STATIC uint8_t gu8_bufferCounter = ZERO;
+STATIC uint8_t gu8_BCM_Id;/*to hold predetermined bcm_id*/
+STATIC uint8_t gu8_BCM_moduleInitFlag = FALSE;
 
 
 
 /*SPI ISR CALL BACK FUNCTION*/
-static void BCM_spiReciveCBF(void)
+STATIC void BCM_spiReciveCBF(void)
 {
 	/*
 	*`	-get current task 
@@ -87,7 +78,7 @@ static void BCM_spiReciveCBF(void)
 }
 
 /*SPI ISR CALL BACK FUNCTION*/
-static void BCM_spiSentCBF(void)
+STATIC void BCM_spiSentCBF(void)
 {
 	/*	-check for task status 
 	*		-if task status == sending byte 
@@ -109,14 +100,14 @@ static void BCM_spiSentCBF(void)
 
 }
 
-static uint8_t bcm_uartSend()
+STATIC uint8_t bcm_uartSend()
 {
 
 	/*implement call back fun*/
 	return ZERO;
 }
 
-static void bcm_uartResive(uint8_t value)
+STATIC void bcm_uartResive(uint8_t value)
 {
 	/*implement call back fun*/
 }
@@ -135,7 +126,7 @@ ERROR_STATUS BCM_init(gstr_BCM_cfg_t* pstr_bcm_cfg )
 		u8_fun_status = BCM_MODULE_ERR + NULL_PTR_ERROR;
 	}
 	
-	else if (gu8_moduleInitFlag == TRUE)/*check for multiple initialization*/
+	else if (gu8_BCM_moduleInitFlag == TRUE)/*check for multiple initialization*/
 	{
 		u8_fun_status = BCM_MODULE_ERR + MULTIPLE_INITALIZATION;
 	}
@@ -224,7 +215,7 @@ ERROR_STATUS BCM_init(gstr_BCM_cfg_t* pstr_bcm_cfg )
 				u8_fun_status = (BCM_MODULE_ERR+INVALAD_PARAMETER);
 			break;
 		}
-		gu8_moduleInitFlag = TRUE;
+		gu8_BCM_moduleInitFlag = TRUE;
 
 	}
 	return u8_fun_status;
@@ -234,7 +225,8 @@ ERROR_STATUS BCM_init(gstr_BCM_cfg_t* pstr_bcm_cfg )
 ERROR_STATUS BCM_setup(gstr_BCM_Task_cfg_t* str_BCM_TaskCfg)
 {
 	ERROR_STATUS u8_fun_status = OK;
-	if (gu8_moduleInitFlag == FALSE)
+
+	if (gu8_BCM_moduleInitFlag == FALSE)
 	{
 		u8_fun_status = BCM_MODULE_ERR + MODULE_NOT_INITALIZED;
 	}
@@ -244,7 +236,7 @@ ERROR_STATUS BCM_setup(gstr_BCM_Task_cfg_t* str_BCM_TaskCfg)
 	}
 	else if (str_BCM_TaskCfg->mode >= BCM_MAX_MODES || str_BCM_TaskCfg->size > MAX_USER_BUFFER_SIZE || (*str_BCM_TaskCfg->lock) == LOCK || str_BCM_TaskCfg->chanal >= BCM_MAX_CHANALS )
 	{
-	u8_fun_status = BCM_MODULE_ERR +NULL_PTR_ERROR;
+		u8_fun_status = BCM_MODULE_ERR +INVALAD_PARAMETER;
 	}
 	else
 	{
@@ -253,6 +245,7 @@ ERROR_STATUS BCM_setup(gstr_BCM_Task_cfg_t* str_BCM_TaskCfg)
 			*	-set task in its position
 			*	-lock on buffer
 			*/
+
 			bcm_taskControlBlock_t* pstr_currentTask = &g3astr_BCM_Tasks[str_BCM_TaskCfg->chanal][str_BCM_TaskCfg->mode];
 
 			pstr_currentTask->bcmTask = (str_BCM_TaskCfg);
@@ -310,7 +303,7 @@ ERROR_STATUS BCM_RX_dispatcher()
 	ERROR_STATUS u8_fun_error_status = OK;
 
 
-	if (gu8_moduleInitFlag == FALSE)
+	if (gu8_BCM_moduleInitFlag == FALSE)
 	{
 		u8_fun_error_status = BCM_MODULE_ERR + MODULE_NOT_INITALIZED;
 	} 
@@ -455,7 +448,7 @@ ERROR_STATUS BCM_RX_dispatcher()
 ERROR_STATUS BCM_TX_dispatcher()
 {
 	ERROR_STATUS u8_fun_error_status = OK;
-	if (gu8_moduleInitFlag == FALSE)
+	if (gu8_BCM_moduleInitFlag == FALSE)
 	{
 		u8_fun_error_status = BCM_MODULE_ERR + MODULE_NOT_INITALIZED;
 	}
@@ -500,7 +493,6 @@ ERROR_STATUS BCM_TX_dispatcher()
 							/*get state and current task buffer counter and data to send*/
 							bcm_taskControlBlock_t* pstr_currentTask =  &g3astr_BCM_Tasks[u8_BCM_chanalIndx][BCM_SENDER];
 							uint8_t u8_data =  *(pstr_currentTask->apu8_BCM_Frame[pstr_currentTask->u8_counter]+pstr_currentTask->u8_byteCounter); /*get data if counter didn't reach end of buffer*/
-							TCNT2 = pstr_currentTask->u8_taskStatus;
 							switch(u8_BCM_chanalIndx)
 							{
 								/*	-case idle

@@ -9,10 +9,13 @@
 #ifndef STUBFUNCTION_H_
 #define STUBFUNCTION_H_
 #include "tester.h"
- 
-extern  uint8_t gu8_Timer_Init_fun_status;
-extern  uint8_t gu8_Timer_Start_fun_status;
-extern  uint8_t gu8_Timer_DeInit_status;
+#include "../../MCAL/Timers/Timer.h"
+#include "../../HAL/UltraSonic/ultraSonic.h"
+#include "../../MCAL/Communication/UART/uart.h"
+#include "../../MCAL/Communication/SPI/spi.h"
+extern  sint16_t gu8_Timer_Init_fun_status;
+extern  sint16_t gu8_Timer_Start_fun_status;
+extern  sint16_t gu8_Timer_DeInit_status;
 
 #ifndef GCC
 /*declare fun as weak to avoid multiple definition by linker*/

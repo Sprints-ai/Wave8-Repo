@@ -128,15 +128,15 @@ typedef enum En_time2Mod_t{
 
 /*- LOCAL FUNCTIONS PROTOTYPES ----------------------------*/ 
 /*- GLOBAL STATIC VARIABLES -------------------------------*/ 
-static uint8_t	 gu8_timer0prescaler;
-static uint8_t	 gu8_timer1prescaler;
-static uint8_t	 gu8_timer2prescaler;
+STATIC uint8_t	 gu8_timer0prescaler;
+STATIC uint8_t	 gu8_timer1prescaler;
+STATIC uint8_t	 gu8_timer2prescaler;
 
 /*- GLOBAL EXTERN VARIABLES -------------------------------*/ 
 /*- LOCAL FUNCTIONS IMPLEMENTATION ------------------------*/ 
 /*- APIs IMPLEMENTATION -----------------------------------*/
 
-volatile static uint16_t gu16SwICU_timer0_Overflow_Counts = ZERO;
+volatile STATIC uint16_t gu16SwICU_timer0_Overflow_Counts = ZERO;
 volatile  uint16_t timer0_MS_flag = FALSE;
 
 ISR(TIMER0_OVF_vect)

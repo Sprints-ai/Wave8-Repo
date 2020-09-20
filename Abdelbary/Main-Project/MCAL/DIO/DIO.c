@@ -16,6 +16,72 @@
 /*- LOCAL FUNCTIONS IMPLEMENTATION ------------------------*/
 /*- APIs IMPLEMENTATION -----------------------------------*/
 
+ERROR_STATUS gpioPinDirection(uint8_t GPIO,uint8_t pins,uint8_t dir)
+{
+	uint8_t u8_fun_status = OK;
+	/*check for errors*/
+	if((dir != OUTPUT && dir != INPUT) || GPIO > GPIOD)
+	{
+		u8_fun_status = NOK;
+	}
+	/*if input is ok proceed with fun process*/
+	else
+	{
+		switch(GPIO)
+		{
+			case GPIOA:
+			switch(dir)
+			{
+				case INPUT:
+				CLEAR_MASK(PORTA_DIR,pins);
+				break;
+				case OUTPUT:
+				SET_MASK(PORTA_DIR,pins);
+				break;
+			}
+			break;
+			case GPIOB:
+			switch(dir)
+			{
+				case INPUT:
+				CLEAR_MASK(PORTB_DIR,pins);
+				break;
+				case OUTPUT:
+				SET_MASK(PORTB_DIR,pins);
+				break;
+			}
+			break;
+			case GPIOC:
+			switch(dir)
+			{
+				case INPUT:
+				CLEAR_MASK(PORTC_DIR,pins);
+				break;
+				case OUTPUT:
+				SET_MASK(PORTC_DIR,pins);
+				break;
+			}
+			break;
+			case GPIOD:
+			switch(dir)
+			{
+				case INPUT:
+				CLEAR_MASK(PORTD_DIR,pins);
+				break;
+				case OUTPUT:
+				SET_MASK(PORTD_DIR,pins);
+				break;
+			}
+			break;
+			default:
+			u8_fun_status = NOK;
+			break;
+		}
+	}
+	return u8_fun_status;
+}
+
+
 ERROR_STATUS DIO_init (DIO_Cfg_s *DIO_info)
 {
 	uint8_t u8_fun_status = OK;
@@ -161,16 +227,16 @@ ERROR_STATUS DIO_Read (uint8_t GPIO,uint8_t pins, uint8_t *data)
 	switch(GPIO)
 	{
 		case GPIOA:
-			*data = MASK_IS_SET(PORTA_DATA,pins);
+			*data = MASK_IS_SET(PORTA_PIN,pins);
 		break;
 		case GPIOB:
-			*data = MASK_IS_SET(PORTB_DATA,pins);
+			*data = MASK_IS_SET(PORTB_PIN,pins);
 		break;
 		case GPIOC:
-			*data = MASK_IS_SET(PORTC_DATA,pins);
+			*data = MASK_IS_SET(PORTC_PIN,pins);
 		break;
 		case GPIOD:
-			*data = MASK_IS_SET(PORTD_DATA,pins);
+			*data = MASK_IS_SET(PORTD_PIN,pins);
 		break;
 		default:
 			u8_fun_status = NOK;

@@ -1,0 +1,57 @@
+
+
+	=========================SOS_Module_TEST=======================
+
+
+		-----------------SOS_Init_TEST-------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -101	 fun_return: -101	Passed.
+testCase   0:	expected_return : -103	 fun_return: -103	Passed.
+
+		-----------------SOS_DeInit_TEST-----------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+
+		-----------------SOS_createTask_TEST------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -101	 fun_return: -101	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+
+		-----------------SOS_deletTask_TEST-------------
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return : -105	 fun_return: -105	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+
+		-----------------SOS_Dispatcher_TEST-------
+testCase   0:	expected_return : -102	 fun_return: -102	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+
+
+	=========================ENDED================================
+

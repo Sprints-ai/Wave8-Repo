@@ -20,11 +20,11 @@ typedef struct TMU_obj_str
 	
 }gstr_TMU_obj;
 
-static uint8_t TMU_Init_flag = FALSE;
-static uint8_t TMU_Timer_ch;
-static gstr_TMU_obj gastr_TMU_ObjBuffer[TMU_OBJ_BUFFER_SIZE];
-static sint8_t u8_TMU_objBufferHead = ZERO-ONE;
-static uint8_t taken_Ids[TMU_OBJ_BUFFER_SIZE+ONE]; /*mark taken ids*/
+STATIC uint8_t TMU_Init_flag = FALSE;
+STATIC uint8_t TMU_Timer_ch;
+STATIC gstr_TMU_obj gastr_TMU_ObjBuffer[TMU_OBJ_BUFFER_SIZE];
+STATIC sint8_t u8_TMU_objBufferHead = ZERO-ONE;
+STATIC uint8_t taken_Ids[TMU_OBJ_BUFFER_SIZE+ONE]; /*mark taken ids*/
 
 ERROR_STATUS TMU_Init(gstr_TMU_cfg_t * tmu_cfg)
 {
@@ -104,7 +104,7 @@ ERROR_STATUS TMU_start(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_time,u
 	}
 	else
 	{
-	static uint8_t fun_frstTime_flag = FALSE;
+	STATIC uint8_t fun_frstTime_flag = FALSE;
 	/*check for first time entrance to start timer*/
 	if(!fun_frstTime_flag)
 	{
@@ -181,8 +181,8 @@ ERROR_STATUS	TMU_dispatcher(void)
 	}
 	else
 	{
-		static uint8_t current_ticks = ZERO;
-		static uint8_t new_tick_flag = FALSE;
+		STATIC uint8_t current_ticks = ZERO;
+		STATIC uint8_t new_tick_flag = FALSE;
 	
 		/*
 		*	-check for new time tick

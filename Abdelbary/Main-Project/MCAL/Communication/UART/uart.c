@@ -41,10 +41,10 @@
 #define UCSZ0   1
 #define UCPOL   0
 
-static volatile uint8_t u8_UDREmptyFlag = TRUE;
+STATIC volatile uint8_t u8_UDREmptyFlag = TRUE;
 
-volatile static UartTX_CBF TX_CBF;
-volatile static UartRX_CBF RX_CBF;
+volatile STATIC UartTX_CBF TX_CBF;
+volatile STATIC UartRX_CBF RX_CBF;
 
 
 ISR(USART_UDRE_vect)

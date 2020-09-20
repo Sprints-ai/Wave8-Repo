@@ -42,6 +42,15 @@ typedef struct bcmTask_cfg{
 	uint8_t mode;				/*send || recive*/
 }gstr_BCM_Task_cfg_t;
 
+typedef struct bcm_taskControlBlock{
+	gstr_BCM_Task_cfg_t* bcmTask;/*user configuration*/
+	uint8_t  u8_taskStatus;/*idle,sending,complete_sending*/
+	uint8_t  u8_counter; /*counter to point to BCM_FRAM_POINTER to send 0 ,1 ,2 ,3 */
+	uint8_t  u8_byteCounter; /*for each fram loop on its bytes*/
+	uint8_t  u8_checkSum;/*hold sum of the bytes*/
+	uint16_t u8_BCM_framSize;/*data size +2 bytes for numOfBytes + 1byte for BCM_ID +1 byte for checksum*/
+	uint8_t* apu8_BCM_Frame[BCM_FRAME_SIZE];
+}bcm_taskControlBlock_t;
 /*
 *
 *

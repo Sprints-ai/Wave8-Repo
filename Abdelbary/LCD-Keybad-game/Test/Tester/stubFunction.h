@@ -9,8 +9,7 @@
 #ifndef STUBFUNCTION_H_
 #define STUBFUNCTION_H_
 #include "tester.h"
- #include "../../MCAL/Timers/Timer.h"
-
+ 
 extern  uint8_t gu8_Timer_Init_fun_status;
 extern  uint8_t gu8_Timer_Start_fun_status;
 extern  uint8_t gu8_Timer_DeInit_status;

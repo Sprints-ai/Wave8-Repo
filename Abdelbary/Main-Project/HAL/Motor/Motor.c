@@ -11,10 +11,10 @@
 /*- LOCAL DataTypes ---------------------------------------*/
 /*- LOCAL FUNCTIONS PROTOTYPES ----------------------------*/
 /*- GLOBAL STATIC VARIABLES -------------------------------*/
-static DIO_Cfg_s gstr_DIO_cfg;
-static Pwm_Cfg_s gstr_pwm_cfg;
-static uint8_t gu8_motor_1_init_status = FALSE;
-static uint8_t gu8_motor_2_init_status = FALSE;
+STATIC DIO_Cfg_s gstr_DIO_cfg;
+STATIC Pwm_Cfg_s gstr_pwm_cfg;
+STATIC uint8_t gu8_motor_1_init_status = FALSE;
+STATIC uint8_t gu8_motor_2_init_status = FALSE;
 /*- GLOBAL EXTERN VARIABLES -------------------------------*/
 /*- LOCAL FUNCTIONS IMPLEMENTATION ------------------------*/
 /*- APIs IMPLEMENTATION -----------------------------------*/

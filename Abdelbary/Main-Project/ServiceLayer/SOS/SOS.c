@@ -21,11 +21,11 @@ typedef struct SOS_obj_str
 	
 }gstr_SOS_obj;
 
-static uint8_t SOS_Init_flag = FALSE;
-static uint8_t SOS_Timer_ch;
-static gstr_SOS_obj gastr_SOS_ObjBuffer[SOS_OBJ_BUFFER_SIZE];
-static sint8_t u8_SOS_objBufferHead = ZERO-ONE;
-static uint8_t taken_Ids[SOS_OBJ_BUFFER_SIZE+ONE]; /*mark taken ids*/
+STATIC uint8_t SOS_Init_flag = FALSE;
+STATIC uint8_t SOS_Timer_ch;
+STATIC gstr_SOS_obj gastr_SOS_ObjBuffer[SOS_OBJ_BUFFER_SIZE];
+STATIC sint8_t u8_SOS_objBufferHead = ZERO-ONE;
+STATIC uint8_t taken_Ids[SOS_OBJ_BUFFER_SIZE+ONE]; /*mark taken ids*/
 
 ERROR_STATUS SOS_Init(gstr_SOS_cfg_t * SOS_cfg)
 {
@@ -105,7 +105,7 @@ ERROR_STATUS SOS_createTask(uint8_t Id,void (*callB_fun_ptr)(void),uint8_t lap_t
 	}
 	else
 	{
-		static uint8_t fun_frstTime_flag = FALSE;
+		STATIC uint8_t fun_frstTime_flag = FALSE;
 		uint8_t u8_tempCounter = ZERO;
 		/*check for first time entrance to start timer*/
 		if(!fun_frstTime_flag)
@@ -215,8 +215,8 @@ ERROR_STATUS	SOS_run(void)
 	}
 	else
 	{
-		static uint8_t current_ticks = ZERO;
-		static uint8_t new_tick_flag = FALSE;
+		STATIC uint8_t current_ticks = ZERO;
+		STATIC uint8_t new_tick_flag = FALSE;
 	
 		/*
 		*	-check for new time tick

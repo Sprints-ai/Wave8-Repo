@@ -7,7 +7,7 @@
 
 
 #include "SOS.h"
-
-gstr_SOS_cfg_t SOS_linkCfg = {SOS_TIMER_CH0,ONE};
+#define DYNAMIC_CAR_DESIGN_TICK   12
+gstr_SOS_cfg_t SOS_linkCfg = {SOS_TIMER_CH0,DYNAMIC_CAR_DESIGN_TICK};
 
 
