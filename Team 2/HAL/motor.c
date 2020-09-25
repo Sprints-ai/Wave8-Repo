@@ -149,6 +149,7 @@ ERROR_STATUS Motor_Direction(uint8_t Motor_Number, uint8_t Motor_Direction)
 					u8_status=E_NOk;
 				}
 				break;
+
 		default:
 			u8_status=E_NOk;
 	}

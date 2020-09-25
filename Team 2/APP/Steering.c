@@ -80,14 +80,14 @@ ERROR_STATUS Steering_SteerCar(uint8_t Steering_CarCmd, uint8_t speed)
 	case CAR_RIGHT:
 		Motor_Direction(MOTOR_1, MOTOR_BACKWARD);
 		Motor_Direction(MOTOR_2, MOTOR_FORWARD);
-		Motor_SpeedUpdate(MOTOR_2,speed);
+		Motor_SpeedUpdate(MOTOR_1_2,speed);
 		u8_status=E_ok;
 		break;
 
 	case CAR_LEFT:
 		Motor_Direction(MOTOR_1, MOTOR_FORWARD);
 		Motor_Direction(MOTOR_2, MOTOR_BACKWARD);
-		Motor_SpeedUpdate(MOTOR_1,speed);
+		Motor_SpeedUpdate(MOTOR_1_2,speed);
 		u8_status=E_ok;
 		break;
 

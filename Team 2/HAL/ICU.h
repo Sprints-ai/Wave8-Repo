@@ -43,9 +43,6 @@ typedef struct Icu_cfg_s{
 /*				               Global variables                               */
 /************************************************************************/
 extern volatile uint8_t g8_SwICU_value;
-extern volatile void (*g_callBackPtr)(void);
-
-
 extern  uint8_t g8_edgeCount;
 extern  uint16_t g16_timeHigh;
 extern  uint16_t g16_timePeriod;

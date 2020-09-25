@@ -14,7 +14,7 @@
 
 /*********************************definitions*******************************/
 #define NULL_Ptr ((void*)0)
-#define US_PER_TICK 64
+#define TIMER_TICK 64
 #define CLEAR 0
 #define FIRST_ENTRY 1
 #define SECOND_ENTRY 2
@@ -24,8 +24,7 @@
 
 
 /******************************global variables*****************************/
-/* Global variables to hold the address of the call back function in the application */
-volatile void (*g_callBackPtr)(void) = NULL_Ptr;
+
 
 volatile uint8_t g8_SwICU_value;
 uint8_t g8_edgeCount;
@@ -54,14 +53,6 @@ ERROR_STATUS Icu_Init(Icu_cfg_s * Icu_Cfg)
 	}
 	else
 	{
-		St_TimerCfg timer0_stru_init=
-			{
-				timer0_stru_init.Timer_CH_NO=Timer_0,
-				timer0_stru_init.Timer_Mode=TIMER_MODE,
-				timer0_stru_init.Timer_Polling_Or_Interrupt=T0_POLLING,
-				timer0_stru_init.Timer_Prescaler=T0_PRESCALER_64,
-			};
-
 		St_TimerCfg timer2_stru_init=
 			{
 				timer2_stru_init.Timer_CH_NO=Timer_2,
@@ -92,7 +83,8 @@ ERROR_STATUS Icu_Init(Icu_cfg_s * Icu_Cfg)
 		switch(Icu_Cfg->ICU_Ch_Timer)
 		{
 		case Timer_0:
-			u8_status |= Timer_Init(&timer0_stru_init);
+			/*cauldn't use timer0 since it used to perform another functionality*/
+			u8_status |= E_NOk;
 			break;
 
 		case Timer_1:
@@ -143,17 +135,17 @@ ERROR_STATUS Icu_ReadTime(uint8_t Icu_Channel, uint8_t Icu_EdgeToEdge, uint32_t 
 		{
 		case ICU_RISE_TO_RISE:
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timePeriod)*US_PER_TICK;
+			*Icu_Time=(g16_timePeriod)*TIMER_TICK;
 			break;
 
 		case ICU_RISE_TO_FALL:
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timeHigh)*US_PER_TICK;
+			*Icu_Time=(g16_timeHigh)*TIMER_TICK;
 			break;
 
 		case ICU_FALE_TO_RISE:
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timePeriod-g16_timeHigh)*US_PER_TICK;
+			*Icu_Time=(g16_timePeriod-g16_timeHigh)*TIMER_TICK;
 			break;
 
 		default:
@@ -173,19 +165,19 @@ ERROR_STATUS Icu_ReadTime(uint8_t Icu_Channel, uint8_t Icu_EdgeToEdge, uint32_t 
 		case ICU_RISE_TO_RISE:
 			//u8_status |= Icu_setCallBack(Rising_EdgeFunc);
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timePeriod)*US_PER_TICK;
+			*Icu_Time=(g16_timePeriod)*TIMER_TICK;
 			break;
 
 		case ICU_RISE_TO_FALL:
 			//u8_status |= Icu_setCallBack(Rising_EdgeFunc);
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timeHigh)*US_PER_TICK;
+			*Icu_Time=(g16_timeHigh)*TIMER_TICK;
 			break;
 
 		case ICU_FALE_TO_RISE:
 			//u8_status |= Icu_setCallBack(Rising_EdgeFunc);
 			Icu_setCallBack(Rising_EdgeFunc);
-			*Icu_Time=(g16_timePeriod-g16_timeHigh)*US_PER_TICK;
+			*Icu_Time=(g16_timePeriod-g16_timeHigh)*TIMER_TICK;
 			break;
 
 		default:
@@ -230,7 +222,7 @@ ERROR_STATUS Icu_setCallBack(void(*a_ptr)(void))
 	else
 	{
 		/* Save the address of the Call back function in a global variable */
-		g_callBackPtr = a_ptr;
+		g_callBackPtr_INT2 = a_ptr;
 		u8_status |= E_ok;
 	}
 
@@ -267,7 +259,7 @@ void Rising_EdgeFunc(void)
 		 * first detected rising edge
 		 */
 		u8_status |= Timer_Clear(Timer_2);
-		u8_status |= Timer_Start(Timer_2,TIMER0_NUMBER_OF_TICKS);
+		u8_status |= Timer_Start(Timer_2,TIMER2_NUMBER_OF_TICKS);
 		/* Detect falling edge */
 		u8_status |= INT2_SetEdge(FALLING_EDGE);
 	}
@@ -288,7 +280,7 @@ void Rising_EdgeFunc(void)
 	else if(g8_edgeCount == FORTH_ENTRY)
 	{
 		/* Store the Period time value + High time value */
-		g16_timePeriodPlusHigh = TCNT0;
+		g16_timePeriodPlusHigh = TCNT2;
 		u8_status |= Timer_GetValue(Timer_2,&g16_timePeriodPlusHigh);
 		/* Clear the timer counter register to start measurements again */
 		u8_status |= Timer_Clear(Timer_2);

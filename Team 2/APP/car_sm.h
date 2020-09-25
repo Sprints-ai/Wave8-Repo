@@ -33,6 +33,7 @@
 #define  FAR_DISTANCE                  35
 #define  INITIAL_SPEED                 80
 #define  FULL_SPEED                    100
+#define  MEDIUM_SPEED                  50
 #define  LOW_SPEED                     30
 #define  DELAY_FOR_TURN                500
 #define  DELAY_FOR_GET_NEW_READING     100

@@ -11,11 +11,12 @@
 #define CLEAR 0
 #define ONE 1
 
-
+/* Global variables to hold the address of the call back function in the application */
+volatile void (*g_callBackPtr_INT2)(void) = NULL_Ptr;
 volatile uint8_t g8_state;
 volatile uint8_t g8_interrupt_zero_flag=CLEAR;
 volatile uint8_t g8_echo_flag=CLEAR;
-
+uint8_t gu8_UltraSonic_Erro_Detection;
 /************************INT0*****************************************/
 ERROR_STATUS INT0_Init(EN_Edge_t en_edge_selection)
 {
@@ -251,10 +252,11 @@ ERROR_STATUS INT2_SetEdge(EN_Edge_t en_edge_selection)
 
 ISR(INT2_vect)
 {
-	if(g_callBackPtr != NULL_Ptr)
+	if(g_callBackPtr_INT2 != NULL_Ptr)
 	{
+		gu8_UltraSonic_Erro_Detection=FLAG_HIGH;
 		// Call the Call Back function in the application after the edge is detected
-		(*g_callBackPtr)(); // another method to call the function using pointer to function g_callBackPtr();
+		(*g_callBackPtr_INT2)();
 	}
 
 }

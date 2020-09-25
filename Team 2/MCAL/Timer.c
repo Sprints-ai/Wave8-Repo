@@ -1,6 +1,6 @@
-	/*
+/*
  ============================================================================
- Name        : Timer.c
+ Name        : AGILE_REQ2.h
  Author      : Muhammed Gamal
  Description :this file contains the timer driver
  ============================================================================
@@ -9,6 +9,7 @@
 
 /*********************************includes**********************************/
 #include "Timer.h"
+
 /***************************************************************************/
 
 
@@ -33,6 +34,7 @@ uint8_t g8_TCNT0_value_Swpwm_ISR;
 static uint16_t T0_PrescallerValue;
 static uint16_t T1_PrescallerValue;
 static uint16_t T2_PrescallerValue;
+uint8_t gu8_Timer0CompFlag=0;
 /***************************************************************************/
 
 
@@ -105,7 +107,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count)
 		case Timer_0:
 			if(Timer_Count<=TIMER0_MAX_COUNT)
 			{
-				TCNT0 = (TIMER0_MAX_COUNT-Timer_Count);
+				OCR0 = Timer_Count;
 				TCCR0 |= T0_PrescallerValue;
 				u8_status=E_ok;
 			}
@@ -118,8 +120,8 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count)
 		case Timer_1:
 			if(Timer_Count<=TIMER1_MAX_COUNT)
 			{
-				TCNT1H = (((TIMER1_MAX_COUNT-Timer_Count) & MASK_HIGH_BYTE)>>ONE_BYTE);
-				TCNT1L = ((TIMER1_MAX_COUNT-Timer_Count) & MASK_LOW_BYTE);
+				OCR1A = Timer_Count;
+				OCR1B = Timer_Count;
 				TCCR1B = T1_PrescallerValue;
 				u8_status=E_ok;
 			}
@@ -132,7 +134,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count)
 		case Timer_2:
 			if(Timer_Count<=TIMER0_MAX_COUNT)
 			{
-				TCNT2 = (TIMER2_MAX_COUNT-Timer_Count);
+				OCR2 = Timer_Count;
 				TCCR2 |= T2_PrescallerValue;
 				u8_status=E_ok;
 			}
@@ -313,6 +315,7 @@ ERROR_STATUS Timer_Clear(uint8_t Timer_CH_NO)
 
 
 
+
 /************************************************************************************
 * Function Name: Timer_DeInit
 * Parameters (in): Timer_CH_NO: The channel number of the timer needed to get its value
@@ -353,9 +356,12 @@ ERROR_STATUS Timer_DeInit(uint8_t Timer_CH_NO)
 
 
 
-
 /**************************************************************************************
                                  TIMERS ISRs
 **************************************************************************************/
+ISR(TIMER0_COMP_vect)
+{
+	gu8_Timer0CompFlag=1;
+}
 
 

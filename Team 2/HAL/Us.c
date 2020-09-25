@@ -45,9 +45,9 @@ ERROR_STATUS Us_Init(void)
 	};
 	DIO_init (&trigger_init);
 	DIO_Write (GPIOA, BIT0, LOW);
-
 	Icu_cfg_s echo_init={ICU_CH2,ICU_TIMER_CH2};    /*INT2,TIMER2*/
 	Icu_Init(&echo_init);
+	gu8_UltraSonic_Erro_Detection=FLAG_HIGH;
 	u8_status=E_ok;
 	return u8_status;
 
@@ -67,9 +67,9 @@ ERROR_STATUS Us_Init(void)
 ERROR_STATUS Us_Trigger(void)
 {
 	uint8_t u8_status;
-	softwareDelayMs(ONE_MS);
+	_delay_us(1);
 	DIO_Write (GPIOA, BIT0, HIGH);
-	softwareDelayMs(ONE_MS);
+	_delay_us(1);
 	DIO_Write (GPIOA, BIT0, LOW);
 	u8_status=E_ok;
 	return u8_status;

@@ -50,8 +50,8 @@ ERROR_STATUS Pwm_Init(Pwm_Cfg_s *Pwm_Cfg)
 	}
 	else
 	{
-		TCNT0 = CLEAR; /*timer initial value*/
-		TIMSK = CLEAR; /*disable interrupts*/
+		//TCNT0 = CLEAR; /*timer initial value*/
+		//TIMSK = CLEAR; /*disable interrupts*/
 		//OCR0 = (u8_dutyCycle*TIMER0_NUMBER_OF_TICKS)/100; //output compare value
 		switch(Pwm_Cfg->Channel)
 		{
@@ -69,6 +69,7 @@ ERROR_STATUS Pwm_Init(Pwm_Cfg_s *Pwm_Cfg)
 			break;
 
 			case PWM_CH1A:
+				TIMSK &= ~(1<<4); /*disable interrupts*/
 				T1_PrescallerValue = Pwm_Cfg->Prescaler;
 				ICR1 = TIMER_ICR1_TOP_VALUE;	/* Set TOP count for timer1 in ICR1 register */
 				/* Configure timer control register TCCR1A
@@ -94,6 +95,7 @@ ERROR_STATUS Pwm_Init(Pwm_Cfg_s *Pwm_Cfg)
 			break;
 
 			case PWM_CH1B:
+				TIMSK &= 0XC3; /*disable interrupts for timer1*/
 				T1_PrescallerValue = Pwm_Cfg->Prescaler;
 				ICR1 = TIMER_ICR1_TOP_VALUE;	/* Set TOP count for timer1 in ICR1 register */
 				/* Configure timer control register TCCR1A
@@ -119,6 +121,7 @@ ERROR_STATUS Pwm_Init(Pwm_Cfg_s *Pwm_Cfg)
 			break;
 
 			case PWM_CH2:
+				TIMSK &= 0XC3; /*disable interrupts for timer1*/
 				T2_PrescallerValue = Pwm_Cfg->Prescaler;
 				TCCR2 =(ONE<<COM21)| (ONE<<WGM20);
 				u8_status = E_ok;
@@ -132,6 +135,7 @@ ERROR_STATUS Pwm_Init(Pwm_Cfg_s *Pwm_Cfg)
 			break;
 
 			case PWM_CH1A_CH1B:
+				TIMSK &= 0XC3; /*disable interrupts for timer1*/
 				T1_PrescallerValue = Pwm_Cfg->Prescaler;
 				ICR1 = TIMER_ICR1_TOP_VALUE;	/* Set TOP count for timer1 in ICR1 register */
 				/* Configure timer control register TCCR1A

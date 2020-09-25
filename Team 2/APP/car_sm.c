@@ -12,12 +12,14 @@
 
 
 /*********************************definitions*******************************/
-
+#define CLEAR 0
+#define ENTRY_NUMBER 10
 /***************************************************************************/
 
 
 /******************************global variables*****************************/
-
+uint16_t Distance;
+uint8_t u8_state;
 /***************************************************************************/
 
 
@@ -38,7 +40,9 @@ ERROR_STATUS Car_SM_Init(void)
 	u8_status |= Steering_Init();
 	u8_status |= Steering_SteerCar(CAR_FORWARD,INITIAL_SPEED);
 	u8_status |= E_ok;
-
+	/*initialize global variables*/
+	Distance=CLEAR;
+	u8_state=NEAR;
 	if(u8_status == E_ok)
 	{
 		u8_status=E_ok;
@@ -63,11 +67,14 @@ ERROR_STATUS Car_SM_Init(void)
 ************************************************************************************/
 ERROR_STATUS Car_SM_Update(void)
 {
-	uint8_t u8_status;
-	uint16_t Distance;
-	uint8_t u8_state;
-	u8_status |= Us_Trigger();
-	u8_status |= Us_GetDistance(&Distance);
+	uint8_t au8_status;
+	static uint8_t au8_EntryCounter;
+	if(gu8_UltraSonic_Erro_Detection==FLAG_HIGH)
+	{
+		au8_status |= Us_Trigger();
+		gu8_UltraSonic_Erro_Detection=FLAG_LOW;
+	}
+	au8_status |= Us_GetDistance(&Distance);
 
 	if(Distance>NEAR_DISTANCE && Distance<=INTERMEDIATE_DISTANCE)
 	{
@@ -82,29 +89,44 @@ ERROR_STATUS Car_SM_Update(void)
 		u8_state=FAR;
 	}
 
-	switch(u8_state)
+	/*
+	 * -if this task called ten times, this means a 500ms delay is performed
+	 * since this task is called by the SOS every 50ms
+	 * -500ms is the appropriate delay for the car to turn right
+	 **/
+	if(au8_EntryCounter==ENTRY_NUMBER)
 	{
-		case NEAR:
-			u8_status |= Steering_SteerCar(CAR_FORWARD,LOW_SPEED);
-			break;
-		case INTERMEDIATE:
-			u8_status |= Steering_SteerCar(CAR_RIGHT,FULL_SPEED);
-			softwareDelayMs(DELAY_FOR_TURN);
-			break;
-		case FAR:
-			u8_status |= Steering_SteerCar(CAR_BACKWARD,LOW_SPEED);
-			break;
-	}
-
-	softwareDelayMs(DELAY_FOR_GET_NEW_READING);
-
-	if(u8_status == E_ok)
-	{
-		u8_status=E_ok;
+		u8_state=INTERMEDIATE;
 	}
 	else
 	{
-		u8_status = E_NOk;
+		au8_EntryCounter=CLEAR;
 	}
-	return u8_status;
+	switch(u8_state)
+	{
+		case NEAR:
+			au8_status |= Steering_SteerCar(CAR_BACKWARD,MEDIUM_SPEED);
+			break;
+		case INTERMEDIATE:
+			au8_status |= Steering_SteerCar(CAR_RIGHT,FULL_SPEED);
+			/* I use this counter here to let the car rotates to right for an appropriate time*/
+			au8_EntryCounter++;
+			break;
+		case FAR:
+			au8_status |= Steering_SteerCar(CAR_FORWARD,MEDIUM_SPEED);
+			break;
+		default:
+			break;
+	}
+
+
+	if(au8_status == E_ok)
+	{
+		au8_status=E_ok;
+	}
+	else
+	{
+		au8_status = E_NOk;
+	}
+	return au8_status;
 }

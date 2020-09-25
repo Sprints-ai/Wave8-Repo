@@ -16,8 +16,8 @@
 #include "../Common/common_macros.h"
 #include "ICU.h"
 #include "../Common/softwareDelay.h"
-
-
+#include "../MCAL/external_interrupts.h"
+#include "util/delay.h"
 /************************************************************************/
 /*				   functions' prototypes	                            */
 /************************************************************************/

@@ -10,9 +10,12 @@
 #define EXTERNAL_INTERRUPTS_H_
 
 #include "interrupt.h"
-#include "../HAL/ICU.h"
 #include "../Common/std_types.h"
 #include "DIO.h"
+
+
+#define FLAG_HIGH 1
+#define FLAG_LOW 0
 /**************************************ENUMs**********************************/
 typedef enum EN_Edge_t{
 	LOW_LEVEL=0,
@@ -23,10 +26,9 @@ typedef enum EN_Edge_t{
 
 
 
-/*********************************global flags*********************************/
-
-
-
+/*********************************global variables*********************************/
+extern volatile void (*g_callBackPtr_INT2)(void);
+extern uint8_t gu8_UltraSonic_Erro_Detection;
 /************************************functions*******************************/
 ERROR_STATUS INT0_Init(EN_Edge_t);
 ERROR_STATUS INT1_Init(EN_Edge_t);

@@ -10,9 +10,10 @@
 /***************************************************************************/
 
 
-/*******************definitions, macros & types*******************/
+/*******************definitions, macros, ENUMs & types*******************/
 #define cpu_frq 16000000
 #define TIMER0_NUMBER_OF_TICKS 256
+#define TIMER2_NUMBER_OF_TICKS 256
 #define TIMER1_NUMBER_OF_TICKS_10_BITS 1024
 #ifndef SEC
 #define SEC 1000
@@ -24,14 +25,24 @@
 #define		TIMER_CH1					1
 #define		TIMER_CH2					2
 
+
 #define		TIMER_MODE					0
 #define		COUNTER_RISING_MODE		    1
 #define		COUNTER_FALLING_MODE		2
+
 
 #define T0_NORMAL_MODE 0
 #define T0_COMP_MODE 0x08
 #define T0_PHASECORRECT_MODE 0X40
 #define T0_FAST_MODE 0x48
+
+
+#define T1_NORMAL_MODE 0x0000
+#define T1_COMP_MODE_OCR1A_TOP 0x0008
+#define T1_COMP_MODE_ICR1_TOP 0x0018
+
+#define T2_NORMAL_MODE 0
+#define T2_COMP_MODE 0x08
 
 #define T0_POLLING 0
 #define T0_INTERRUPT_NORMAL 0x01
@@ -80,9 +91,6 @@
 #define     Timer_2                     2
 
 
-#define T0_NORMAL_MODE 0
-#define T0_COMP_MODE 0x08
-
 
 /************************************************************************/
 /*			  Structures Definitions		                            */
@@ -115,6 +123,7 @@ typedef struct St_TimerCfg
 
 /******************************global variables*****************************/
 extern uint8_t g8_TCNT0_value_Swpwm_ISR;
+extern uint8_t gu8_Timer0CompFlag;
 /***************************************************************************/
 
 

@@ -26,8 +26,8 @@
 
 /*Command Macros to call the steering api*/
 #define		CAR_STOP		0
-#define		CAR_FORWARD		1
-#define		CAR_BACKWARD	2
+#define		CAR_BACKWARD    1
+#define		CAR_FORWARD	    2
 #define		CAR_RIGHT		3
 #define		CAR_LEFT		4
 
