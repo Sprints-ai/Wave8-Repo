@@ -2,7 +2,7 @@
  * PWM.c
  *
  * Created: 2/17/2020 7:07:19 PM
- *  Author: MENA
+ *  Author: Menna
  */ 
 
 #include "PWM.h"

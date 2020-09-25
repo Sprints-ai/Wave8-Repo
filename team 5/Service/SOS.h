@@ -2,7 +2,7 @@
  * SOS.h
  *
  * Created: 3/11/2020 10:54:33 AM
- *  Author: MENA
+ *  Author: MENNA
  */ 
 
 
@@ -10,14 +10,12 @@
 #define SOS_H_
 
 
-
-
 /************************************************************************/
 /*							 INCLUDES							        */
 /************************************************************************/
 
 #include "std_types.h"
-#include "registers.h"
+#include "../MCAL/registers.h"
 
 
 /************************************************************************/
@@ -44,8 +42,8 @@
 
 typedef struct SOS_Cfg_s{
 	
-	uint8_t Timer_channel ;
-	uint8_t SOS_Reselution ;
+	uint8_t Timer_channel;
+	uint8_t SOS_Reselution;
 	
 	
 	}SOS_Cfg_s;
@@ -54,11 +52,11 @@ typedef struct SOS_Cfg_s{
 typedef struct SOS_tsak_s{
 	
 	uint8_t Task_ID;
-	void (* Ptr_FunctionCall)(void) ; 
-	uint16_t delay_time ;
-	uint8_t SOS_mode ;/* periodic or one shot*/
-	uint16_t N_OVFs ;
-	uint8_t Priority ;
+	void (* Ptr_FunctionCall)(void);
+	uint16_t delay_time;
+	uint8_t SOS_mode;/* periodic or one shot*/
+	uint16_t N_OVFs;
+	uint8_t Priority;
 	
 	}SOS_tsak_s;
 	

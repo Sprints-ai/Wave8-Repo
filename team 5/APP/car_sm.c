@@ -1,53 +1,29 @@
 /*
  * car_sm.c
  *
- * Created: 2/18/2020 8:02:47 PM
- *  Author: MENA
- */ 
+ * Created: 2020-02-19 9:20:53 AM
+ *  Author: EbrahimOseif
+ */
 
+/************************************************************************/
+/*				 INCLUDES										        */
+/************************************************************************/
+
+#include <stdlib.h>
 #include "car_sm.h"
-#include "Steering.h"
-#include "TimerDelay.h"
-#include "Us.h"
-/*******************       States of state machine       *********/
 
-#define FORWARD_STATE 0
-#define BACKWARD_STATE 1
-#define TURNING_STATE 2
-#define STOP_STATE 3
+/************************************************************************/
+/*				 Global / Static Variables						       */
+/************************************************************************/
 
-#define	CAR_SPEED 30
+static uint8_t gu8_State = STOP;
+static uint8_t gu8_Speed = 100;
+volatile uint16_t gu16_US_Distance ;
 
-#define DISTANCE_TURNNING 40
-#define DISTANCE_BACKWARDING 20
+/************************************************************************/
+/*		         TIMER FUNCTIONS' implementation				        */
+/************************************************************************/
 
-
-uint8_t g_state ;
-
-/*
- * Fun----------: ERROR_STATUS Car_SM_Init(void);
- * Input--------: Nothing
- * Output-------: Nothing
- * Return-------: ERROR_STATUES
- * -------------- #E_Ok	->function operation is okay, no error
- * -------------- #E_Nok->function operation faild, error exists
- * Description--: Initiate the car state machine with state"stop_state",
- * -------------- And initiate steering and ultrasonic functions
-*/
-
-
-ERROR_STATUS Car_SM_Init(void){
-	
-	ERROR_STATUS state_error = E_OK ;
-	
-	state_error |= Steering_Init();
-	
-	state_error |= Us_Init();
-	
-	g_state=STOP_STATE ;
-	
-	return state_error ;
-}
 
 /*
  * Fun----------: ERROR_STATUS Car_SM_Update(void);
@@ -58,77 +34,39 @@ ERROR_STATUS Car_SM_Init(void){
  * -------------- #E_Nok->function operation faild, error exists
  * Description--: changes car state according to the ultrasonic input
  * -------------- And represents the motors output for each state
-*/
+ */
+ERROR_STATUS Car_SM_Update(void)
+{
+	ERROR_STATUS u8_status = E_OK;
+	/* get the distance and switch to the corresponding state */
+	if(gu16_US_Distance < RESOLUTION)
+		gu8_State = BACK;
+	else if((gu16_US_Distance >= RESOLUTION) && (gu16_US_Distance <= RESOLUTION + MARGIN))
+		gu8_State = RIGHT;
+	else if(gu16_US_Distance >= RESOLUTION + MARGIN)
+		gu8_State = MOVE;
+	else
+		gu8_State = MOVE;
 
-
-ERROR_STATUS Car_SM_Update(void){
-	
-	uint16_t distance;
-	ERROR_STATUS state_error = E_OK ;
-	
-	state_error |= Us_Trigger();
-	state_error |= Us_GetDistance(&distance);
-	
-	switch(g_state){
-		
-		case STOP_STATE :
-			if (distance<DISTANCE_BACKWARDING){
-				
-				g_state = BACKWARD_STATE ;
-			}
-			else if ((distance <= DISTANCE_TURNNING) && ( distance >= DISTANCE_BACKWARDING)){
-				
-				g_state =TURNING_STATE ;
-			}else
-				g_state = FORWARD_STATE ;
+	/* switch on the state calculated by distance */
+	switch(gu8_State)
+	{
+		case MOVE:
+			Steering_SteerCar(CAR_FORWARD, gu8_Speed);
 			break;
-			
-		case FORWARD_STATE :
-		
-			if (distance<DISTANCE_BACKWARDING){
-				g_state = BACKWARD_STATE;
-			}else if ( distance<=DISTANCE_TURNNING && distance >= DISTANCE_BACKWARDING )
-			{
-				g_state=TURNING_STATE;
-			}
-			else
-				state_error |= Steering_SteerCar(CAR_FORWARD,CAR_SPEED);
+		case BACK:
+			Steering_SteerCar(CAR_BACKWARD, gu8_Speed);
 			break;
-				
-		case BACKWARD_STATE:
-		
-			if (distance<DISTANCE_BACKWARDING){
-				state_error |= Steering_SteerCar(CAR_BACKWARD,CAR_SPEED);
-			}else if (distance <= DISTANCE_TURNNING && distance>=DISTANCE_BACKWARDING )
-			{
-				g_state=TURNING_STATE;
-			}
-			 else{
-				g_state = FORWARD_STATE ;
-			}
+		case RIGHT:
+			Steering_SteerCar(CAR_RIGHT, gu8_Speed);
 			break;
-			
-		case TURNING_STATE :
-		
-			if (distance <= DISTANCE_TURNNING && distance >= DISTANCE_BACKWARDING )
-			{
-				state_error |= Steering_SteerCar(CAR_LEFT,CAR_SPEED);
-			}else if (distance <DISTANCE_BACKWARDING){
-				g_state = BACKWARD_STATE ;
-			}
-			else
-			g_state = FORWARD_STATE ;
-			
+		case LEFT:
+			Steering_SteerCar(CAR_LEFT, gu8_Speed);
 			break;
-			
-		default: 
-		
-		state_error |= E_NOK ;
-		
+		default:
+			Steering_SteerCar(CAR_STOP, gu8_Speed);
+			break;
 	}
-	
-	
-	return state_error ;
-	
-}
 
+	return u8_status;
+}

@@ -2,16 +2,13 @@
  * motorconfig.h
  *
  * Created: 2/18/2020 10:05:02 AM
- *  Author: MENA
+ *  Author: Joo
  */ 
 
 
 #ifndef MOTORCONFIG_H_
 #define MOTORCONFIG_H_
 
-
-#include "DIO.h"
-#include "registers.h"
 
 #define MOTOR_EN_1_GPIO		(GPIOD)
 #define MOTOR_EN_1_BIT		(BIT4)

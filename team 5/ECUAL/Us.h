@@ -10,8 +10,8 @@
 
 
 
-#include "std_types.h"
-#include "registers.h"
+#include "../Service/std_types.h"
+#include "../MCAL/registers.h"
 
 
 
@@ -32,22 +32,7 @@
  *                                                                                                  *
  ***************************************************************************************************/
 
-
-
-ERROR_STATUS Us_Init(void);
-
-/**************************************************************************************************
- * Function Name    : Us_Trigger.                                                                 *
- * Input Parameters : None.                                                                       *                                                                              *                                                                                                *
- * Output Parameters: None.                                                                       *
- * In_Out Parameters: None.                                                                       *
- * Return           : ERROR_STATUS                                                                *
- * Description      : This function send the  pulse, to trigger pin of the UltraSonic to enhance  *
- *                    the  ECUO signal                                                            *
- *************************************************************************************************/
-
-
-ERROR_STATUS Us_Trigger(void);
+extern ERROR_STATUS Us_Init(void);
 
 /**************************************************************************************************
  * Function Name    : Us_GetDistance.                                                             *
@@ -61,7 +46,7 @@ ERROR_STATUS Us_Trigger(void);
  *************************************************************************************************/
 
 
-ERROR_STATUS Us_GetDistance(uint16_t *Distance);
+extern ERROR_STATUS Us_GetDistance(uint16_t *Distance);
 
 
 #endif /* US_H_ */

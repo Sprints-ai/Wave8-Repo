@@ -2,7 +2,7 @@
  * PWMconfig.h
  *
  * Created: 2/17/2020 8:06:06 PM
- *  Author: MENA
+ *  Author: Menna
  */ 
 
 #include "DIO.h"

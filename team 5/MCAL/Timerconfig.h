@@ -1,9 +1,9 @@
 /*
- * Timerconfig.h
- *
- * Created: 2/17/2020 1:26:17 PM
- *  Author: MENA
- */ 
+* Timerconfig.h
+*
+* Created: 2/17/2020 1:26:17 PM
+*  Author: Menna
+*/
 
 
 #ifndef TIMERCONFIG_H_

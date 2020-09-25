@@ -14,10 +14,10 @@
 /************************************************************************/
 
 #include "std_types.h"
-#include "registers.h"
-#include "Timer.h"
+#include "../MCAL/registers.h"
+#include "../MCAL/Timer.h"
 #include "avr/interrupt.h"
-#include "DIO.h"
+#include "../MCAL/DIO.h"
 /************************************************************************/
 /*				               Constants                                */
 /************************************************************************/
@@ -56,7 +56,7 @@ typedef struct Icu_cfg_s{
  * Description  : Initializes the ICU by initializing the timer			  *
  * 				  and enabling the global interrupt						  *
  **************************************************************************/
-ERROR_STATUS Icu_Init(Icu_cfg_s * Icu_Cfg);
+extern ERROR_STATUS Icu_Init(Icu_cfg_s * Icu_Cfg);
 
 /***************************************************************************
  * Function		: Icu_ReadTime
@@ -77,7 +77,7 @@ ERROR_STATUS Icu_Init(Icu_cfg_s * Icu_Cfg);
  *				  - E_NOK : not successful								   *
  * Description	: calculates the time between 2 edges				       *
  ***************************************************************************/
-ERROR_STATUS Icu_ReadTime(uint8_t Icu_Channel, uint8_t Icu_EdgeToEdge, uint32_t * Icu_Time);
+extern ERROR_STATUS Icu_ReadTime(uint8_t Icu_Channel, uint8_t Icu_EdgeToEdge, uint32_t * Icu_Time);
 
 
 #endif /* _ICU_H_ */

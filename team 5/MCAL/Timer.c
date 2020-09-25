@@ -2,7 +2,7 @@
  * Timer.c
  *
  * Created: 2/17/2020 1:06:31 PM
- *  Author: MENA
+ *  Author: Menna
  */ 
 
 #include "Timer.h"
@@ -13,15 +13,15 @@
 #define NORMAL_MODE
 //#define  COMPARE_MODE
 
-uint8_t g_prescaleTimer0 = 0 ;
-uint8_t g_prescaleTimer1 = 0 ;
-uint8_t g_prescaleTimer2 = 0 ;
+uint8_t g_prescaleTimer0 = 0;
+uint8_t g_prescaleTimer1 = 0;
+uint8_t g_prescaleTimer2 = 0;
 
-uint8_t g_ModeTimer0 = 0 ;
-uint8_t g_ModeTimer1 = 0 ;
-uint8_t g_ModeTimer2 = 0 ;
+uint8_t g_ModeTimer0 = 0;
+uint8_t g_ModeTimer1 = 0;
+uint8_t g_ModeTimer2 = 0;
 
- volatile static void (* g_ptr_callback_function)(void) = NULL ;
+ volatile static void (* g_ptr_callback_function)(void) = NULL;
 
 
 /*
@@ -38,31 +38,29 @@ uint8_t g_ModeTimer2 = 0 ;
 
 ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 	
-	uint8_t a_u8_error_state = E_OK ;
-	
-	g_ptr_callback_function = (volatile void *)Timer_cfg->Timer_Cbk_ptr;
-	
+	uint8_t a_u8_error_state = E_OK;
+
 	switch(Timer_cfg->Timer_CH_NO){
 		
 /******************** TIMER 0 ***************************/
 		case TIMER_CH0 :
-			TCCR0 = ZERO_VALUE ;
+			TCCR0 = ZERO_VALUE;
 	
 			/*set the PreScale config*/
 		
-			g_prescaleTimer0 = Timer_cfg->Timer_Prescaler ;
-			g_ModeTimer0 = Timer_cfg->Timer_Mode ;
+			g_prescaleTimer0 = Timer_cfg->Timer_Prescaler;
+			g_ModeTimer0 = Timer_cfg->Timer_Mode;
 		
 			#ifdef NORMAL_MODE
 	
 				/*set normal or compare mode*/
 				
-				TCCR0 |= T0_NORMAL_MODE_MASK ;
+				TCCR0 |= T0_NORMAL_MODE_MASK;
 				
 				/* set polling or interrupt config*/
 				if (Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_POLLING_MODE)
 				{
-					TIMSK |=TIMER0_POLLING_MODE_MASK ;
+					TIMSK |=TIMER0_POLLING_MODE_MASK;
 				}else if(Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_INTERRUPT_MODE){
 					TIMSK |=TIMER0_INTERRUPT_NORMAL_MASK;
 				}
@@ -90,20 +88,20 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 			
 			/*set the PreScale config*/
 			
-			g_prescaleTimer1 = Timer_cfg->Timer_Prescaler ;
-			g_ModeTimer1 = Timer_cfg->Timer_Mode ;
+			g_prescaleTimer1 = Timer_cfg->Timer_Prescaler;
+			g_ModeTimer1 = Timer_cfg->Timer_Mode;
 
 		
 			#ifdef NORMAL_MODE
 			
 				/*set normal or compare mode*/
 				
-				TCCR1 |= T1_NORMAL_MODE_MASK ;
+				TCCR1 |= T1_NORMAL_MODE_MASK;
 				
 				/* set polling or interrupt config*/
 				if (Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_POLLING_MODE)
 				{
-					TIMSK |=TIMER1_POLLING_MODE_MASK ;
+					TIMSK |=TIMER1_POLLING_MODE_MASK;
 					}else if(Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_INTERRUPT_MODE){
 					TIMSK |=TIMER1_INTERRUPT_NORMAL_MASK;
 				}
@@ -131,12 +129,12 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 			
 			/*set synchronous or asynchronous */
 			
-			ASSR &= 0xF0 ;
+			ASSR &= 0xF0;
 
 			/*set the PreScale config*/
 			
-			g_prescaleTimer2 = Timer_cfg->Timer_Prescaler ;
-			g_ModeTimer2 = Timer_cfg->Timer_Mode ;
+			g_prescaleTimer2 = Timer_cfg->Timer_Prescaler;
+			g_ModeTimer2 = Timer_cfg->Timer_Mode;
 
 			
 			
@@ -144,15 +142,18 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 			
 			/*set normal or compare mode*/
 			
-			TCCR2 |= T2_NORMAL_MODE_MASK ;
+			TCCR2 |= T2_NORMAL_MODE_MASK;
 			
 			/* set polling or interrupt config*/
 			if (Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_POLLING_MODE)
 			{
-				TIMSK |=TIMER2_POLLING_MODE_MASK ;
-				}else if(Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_INTERRUPT_MODE){
-					
+				TIMSK |=TIMER2_POLLING_MODE_MASK;
+			}
+			else if(Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_INTERRUPT_MODE)
+			{
+				
 				TIMSK |=TIMER2_INTERRUPT_NORMAL_MASK;
+				g_ptr_callback_function = (volatile void (*)(void))Timer_cfg->Timer_Cbk_ptr;
 			}
 			
 			
@@ -161,11 +162,11 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 			
 			#ifdef COMPARE_MODE
 			/*mode*/
-			TCCR2 |= T2_COMP_MODE_MASK ;
+			TCCR2 |= T2_COMP_MODE_MASK;
 
 			/*OC*/
 			//disconnect
-			TCCR2 |= T2_OC2_DIS ;
+			TCCR2 |= T2_OC2_DIS;
 			
 			/*output compare*/
 			//in start too
@@ -173,7 +174,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 			/* set polling or interrupt config*/
 			if (Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_POLLING_MODE)
 			{
-				TIMSK |=TIMER2_POLLING_MODE_MASK ;
+				TIMSK |=TIMER2_POLLING_MODE_MASK;
 				}else if(Timer_cfg->Timer_Polling_Or_Interrupt==TIMER_INTERRUPT_MODE){
 				TIMSK |=TIMER2_INTERRUPT_COMPARE_MASK;
 				
@@ -189,12 +190,12 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 ///////////////////////ERROR //////////////////////////
 
 		default :
-		a_u8_error_state |= E_NOK ;
+		a_u8_error_state |= E_NOK;
 		break;
 		
 		
 	}//// end switch of channel type
-	return a_u8_error_state  ;
+	return a_u8_error_state;
 }
 
 
@@ -213,7 +214,7 @@ ERROR_STATUS Timer_Init(Timer_cfg_s* Timer_cfg){
 	
 ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 	
-		uint8_t a_u8_error_state = E_OK ;
+		uint8_t a_u8_error_state = E_OK;
 	
 		#ifdef NORMAL_MODE 
 			  if(Timer_CH_NO==TIMER_CH1)
@@ -227,7 +228,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 			switch (Timer_CH_NO)
 			{
 				case TIMER_CH0 :
-				 OCR0 = Timer_Count ;
+				 OCR0 = Timer_Count;
 				break;
 				case TIMER_CH1 :
 				 OCR1A = Timer_Count;
@@ -237,7 +238,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 				 OCR2 = Timer_Count;
 				break;
 				default:
-				a_u8_error_state |= E_NOK ;
+				a_u8_error_state |= E_NOK;
 				break;
 			}
 		
@@ -258,35 +259,35 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 					TCCR0 |=TIMER0_PRESCALER_NO_MASK;
 					break;
 					case TIMER_PRESCALER_8 :
-					TCCR0 |= TIMER0_PRESCALER_8_MASK ;
+					TCCR0 |= TIMER0_PRESCALER_8_MASK;
 					break;
 					case TIMER_PRESCALER_64:
-					TCCR0 |= TIMER0_PRESCALER_64_MASK ;
+					TCCR0 |= TIMER0_PRESCALER_64_MASK;
 					break;
 					case TIMER_PRESCALER_256:
-					TCCR0 |= TIMER0_PRESCALER_256_MASK ;
+					TCCR0 |= TIMER0_PRESCALER_256_MASK;
 
 					break;
 					case TIMER_PRESCALER_1024:
-					TCCR0 |= TIMER0_PRESCALER_1024_MASK ;
+					TCCR0 |= TIMER0_PRESCALER_1024_MASK;
 
 					break;
 					default:
-					a_u8_error_state |= E_NOK ;
+					a_u8_error_state |= E_NOK;
 					
 					
 				}
 				
 			}else if (g_ModeTimer0 == COUNTER_RISING_MODE){
 				
-				TCCR0|= COUNTER_RISING_MODE_MASK ;
+				TCCR0|= COUNTER_RISING_MODE_MASK;
 				
 			}else if (g_ModeTimer0 == COUNTER_FALLING_MODE){
 				
-				TCCR0 |= COUNTER_FALLING_MODE_MASK ;
+				TCCR0 |= COUNTER_FALLING_MODE_MASK;
 				
 			}else
-				a_u8_error_state |= E_NOK ;
+				a_u8_error_state |= E_NOK;
 			
 			break;
 			
@@ -306,17 +307,17 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 					TCCR1 |=TIMER1_PRESCALER_NO_MASK;
 					break;
 					case TIMER_PRESCALER_8 :
-					TCCR1 |= TIMER1_PRESCALER_8_MASK ;
+					TCCR1 |= TIMER1_PRESCALER_8_MASK;
 					break;
 					case TIMER_PRESCALER_64:
-					TCCR1 |= TIMER1_PRESCALER_64_MASK ;
+					TCCR1 |= TIMER1_PRESCALER_64_MASK;
 					break;
 					case TIMER_PRESCALER_256:
-					TCCR1 |= TIMER1_PRESCALER_256_MASK ;
+					TCCR1 |= TIMER1_PRESCALER_256_MASK;
 
 					break;
 					case TIMER_PRESCALER_1024:
-					TCCR1 |= TIMER1_PRESCALER_1024_MASK ;
+					TCCR1 |= TIMER1_PRESCALER_1024_MASK;
 
 					break;
 					default:
@@ -328,14 +329,14 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 				
 				}else if (g_ModeTimer1 == COUNTER_RISING_MODE){
 				
-				TCCR1|= COUNTER_RISING_MODE_MASK ;
+				TCCR1|= COUNTER_RISING_MODE_MASK;
 				
 				}else if (g_ModeTimer1 == COUNTER_FALLING_MODE){
 				
-				TCCR1 |= COUNTER_FALLING_MODE_MASK ;
+				TCCR1 |= COUNTER_FALLING_MODE_MASK;
 				
 				}else 
-				a_u8_error_state |= E_NOK ; 
+				a_u8_error_state |= E_NOK;
 			
 			
 			break;
@@ -356,38 +357,38 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 					break;
 					
 					case TIMER_PRESCALER_8 :
-					TCCR2 |= TIMER2_PRESCALER_8_MASK ;
+					TCCR2 |= TIMER2_PRESCALER_8_MASK;
 					break;
 					
 					case TIMER_PRESCALER_64:
-					TCCR2 |= TIMER2_PRESCALER_64_MASK ;
+					TCCR2 |= TIMER2_PRESCALER_64_MASK;
 					break;
 					
 					case TIMER_PRESCALER_256:
-					TCCR2 |= TIMER2_PRESCALER_256_MASK ;
+					TCCR2 |= TIMER2_PRESCALER_256_MASK;
 					break;
 					
 					case TIMER_PRESCALER_1024:
-					TCCR2 |= TIMER2_PRESCALER_1024_MASK ;
+					TCCR2 |= TIMER2_PRESCALER_1024_MASK;
 					break;
 					
 					default: 
-					a_u8_error_state |= E_NOK ;
+					a_u8_error_state |= E_NOK;
 					break;	
 					
 				}///end switch case prescale
 				
 			}else
-			return E_NOK ;
+			return E_NOK;
 			// end if 
 			break;	
 			
 			default: 
-			return E_NOK ;
+			return E_NOK;
 			break;
 		}/// end switch case channels
 		
-	return a_u8_error_state ;
+	return a_u8_error_state;
 	
 }
 
@@ -407,7 +408,7 @@ ERROR_STATUS Timer_Start(uint8_t Timer_CH_NO, uint16_t Timer_Count){
 
 ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO){
 	
-	uint8_t a_u8_error_state = E_OK ;
+	uint8_t a_u8_error_state = E_OK;
 	
 	switch (Timer_CH_NO)
 	{
@@ -421,10 +422,10 @@ ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO){
 		TCCR2 &=TIMER2_NO_CLOCK_MASK;
 		break;
 		default:
-		a_u8_error_state |=  E_NOK ;
+		a_u8_error_state |=  E_NOK;
 		break;
 	}
-	return a_u8_error_state ;
+	return a_u8_error_state;
 	
 	
 }
@@ -445,11 +446,11 @@ ERROR_STATUS Timer_Stop(uint8_t Timer_CH_NO){
 
 ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 	
-	uint8_t a_u8_error_state = E_OK ;
+	uint8_t a_u8_error_state = E_OK;
 	
 	if (Data == NULL)
 	{
-		a_u8_error_state |= E_NOK ;
+		a_u8_error_state |= E_NOK;
 	}
 	
 	
@@ -458,36 +459,36 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 		case TIMER_CH0 :
 			if((TIFR&T0_OVF_FLAG_MASK) > ZERO_VALUE)
 			{
-				(*Data) = TRUE ;
-				TIFR |=T0_OVF_FLAG_MASK ;
+				(*Data) = TRUE;
+				TIFR |=T0_OVF_FLAG_MASK;
 			}else
-			(*Data) = FALSE ;
+			(*Data) = FALSE;
 			break;
 		
 		case TIMER_CH1 :
 			if((TIFR&T1_OVF_FLAG_MASK) > ZERO_VALUE)
 			{
-				(*Data) = TRUE ;
-				TIFR |=T1_OVF_FLAG_MASK ;
+				(*Data) = TRUE;
+				TIFR |=T1_OVF_FLAG_MASK;
 			}else
-			(*Data) = FALSE ;
+			(*Data) = FALSE;
 			break;
 			
 		case TIMER_CH2 :
 			if((TIFR&T2_OVF_FLAG_MASK) > ZERO_VALUE)
 			{
-				(*Data) = TRUE ;
-				TIFR |=T2_OVF_FLAG_MASK ;
+				(*Data) = TRUE;
+				TIFR |=T2_OVF_FLAG_MASK;
 			}else
-			(*Data) = FALSE ;
+			(*Data) = FALSE;
 			break;
 		
 		default: 
-		a_u8_error_state |= E_NOK ;	
+		a_u8_error_state |= E_NOK;
 		
 	}
 	
-	return a_u8_error_state  ;
+	return a_u8_error_state;
 	
 }
 
@@ -507,29 +508,29 @@ ERROR_STATUS Timer_GetStatus(uint8_t Timer_CH_NO, uint8_t* Data){
 
 ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO, uint16_t* Data){
 	
-	uint8_t a_u8_error_state = E_OK ;
+	uint8_t a_u8_error_state = E_OK;
 	
 	if (Data == NULL)
 	{
-		a_u8_error_state |= E_NOK ;
+		a_u8_error_state |= E_NOK;
 	}
 	
 		switch (Timer_CH_NO)
 		{
 			case TIMER_CH0 :
-			(*Data) = TCNT0 ;
+			(*Data) = TCNT0;
 			break;
 			case TIMER_CH1 :
-			(*Data) = TCNT1 ;
+			(*Data) = TCNT1;
 			break;
 			case TIMER_CH2 :
-			(*Data) = TCNT2 ;
+			(*Data) = TCNT2;
 			break;
 			default:
-			a_u8_error_state |= E_NOK ;
+			a_u8_error_state |= E_NOK;
 			break;
 		}
-		return a_u8_error_state  ;
+		return a_u8_error_state;
 	
 }
 
@@ -548,33 +549,30 @@ ERROR_STATUS Timer_GetValue(uint8_t Timer_CH_NO, uint16_t* Data){
 
 ERROR_STATUS Timer_SetValue(uint8_t Timer_CH_NO, uint16_t Data){
 	
-		uint8_t a_u8_error_state = E_OK ;
+		uint8_t a_u8_error_state = E_OK;
 	
 		switch (Timer_CH_NO)
 		{
 			case TIMER_CH0 :
-			 TCNT0 =(Data)  ;
+			 TCNT0 =(Data);
 			break;
 			case TIMER_CH1 :
-			 TCNT1 =(Data) ;
+			 TCNT1 =(Data);
 			break;
 			case TIMER_CH2 :
-			 TCNT2 =(Data) ;
+			 TCNT2 =(Data);
 			break;
 			default:
-			a_u8_error_state |= E_NOK ;
+			a_u8_error_state |= E_NOK;
 			break;
 		}
-		return a_u8_error_state ;
+		return a_u8_error_state;
 		
 }
 
 
 ISR(TIMER2_OVF_vect){
 	
-	 g_ptr_callback_function() ;
-	
-		
-
+	 g_ptr_callback_function();
 	
 }

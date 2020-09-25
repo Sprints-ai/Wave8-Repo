@@ -11,23 +11,24 @@
 #ifndef CAR_SM_H_
 #define CAR_SM_H_
 
-#include "std_types.h"
+#include "../Service/std_types.h"
+#include "steering.h"
+#include "../ECUAL/us.h"
 
-/*************************************************************/
-/*                     FUNCTIONS DECLARATION                 */
-/*************************************************************/
+/************************************************************************/
+/*				 DEFINES			        */
+/************************************************************************/
+#define		STOP			0
+#define		MOVE			1
+#define		RIGHT			2
+#define		LEFT			3
+#define		BACK			4
 
-/*
- * Fun----------: ERROR_STATUS Car_SM_Init(void);
- * Input--------: Nothing
- * Output-------: Nothing
- * Return-------: ERROR_STATUES
- * -------------- #E_Ok	->function operation is okay, no error
- * -------------- #E_Nok->function operation faild, error exists
- * Description--: Initiate the car state machine with state"stop_state",
- * -------------- And initiate steering and ultrasonic functions
-*/
-ERROR_STATUS Car_SM_Init(void);
+
+#define     RESOLUTION		50
+#define		MARGIN 			20
+
+extern volatile uint16_t  gu16_US_Distance ;
 
 /*
  * Fun----------: ERROR_STATUS Car_SM_Update(void);
@@ -39,6 +40,6 @@ ERROR_STATUS Car_SM_Init(void);
  * Description--: changes car state according to the ultrasonic input
  * -------------- And represents the motors output for each state
 */
-ERROR_STATUS Car_SM_Update(void);
+extern ERROR_STATUS Car_SM_Update(void);
 
 #endif /* CAR_SM_H_ */

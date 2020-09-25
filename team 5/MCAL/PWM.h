@@ -13,10 +13,8 @@
 /*********************************/
 
 #include "PWMconfig.h"
-#include "std_types.h"
+#include "../Service/std_types.h"
 #include "registers.h"
-
-#define F_CPU 16000000.0
 
 
 #define PWM_CH0  (0)

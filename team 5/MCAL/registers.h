@@ -7,7 +7,7 @@
 
 #ifndef REGISTERS_H_
 #define REGISTERS_H_
-#include "std_types.h"
+#include "../Service/std_types.h"
 
 /*
  * General Registers
@@ -108,6 +108,8 @@
 #define SPSR		(*(reg_type8_t)(0x2E))
 #define SPDR		(*(reg_type8_t)(0x2F))
 
+
+#define  F_CPU 16000000UL
 
 
 #endif /* REGISTERS_H_ */

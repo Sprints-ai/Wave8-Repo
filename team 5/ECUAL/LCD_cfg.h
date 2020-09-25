@@ -2,7 +2,7 @@
  * LCD_cfg.h
  *
  * Created: 3/15/2020 11:53:12 AM
- *  Author: MENA
+ *  Author : MENNA
  */ 
 
 
