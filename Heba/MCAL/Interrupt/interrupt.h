@@ -8,7 +8,7 @@
 #ifndef INTERRUPT_H_
 #define INTERRUPT_H_
 
-
+#define GLOBAL_INTERRUPT_MASK 0x80
 #define INT0_vect			__vector_1
 #define INT1_vect			__vector_2
 #define INT2_vect			__vector_3
@@ -33,6 +33,8 @@
 #define MY_ISR(vector, ...)            \
    void vector (void) __attribute__ ((signal, used, externally_visible)) __VA_ARGS__; \
    void vector (void)
+   
+void DIS_EN_G_INT(void);
 
-
+void EN_G_INT(void);
 #endif /* INTERRUPT_H_ */

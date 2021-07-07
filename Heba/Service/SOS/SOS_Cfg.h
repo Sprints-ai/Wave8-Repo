@@ -1,16 +1,16 @@
 ﻿/*
- * TMU_Cfg.h
+ * SOS_Cfg.h
  *
  * Created: 24/02/2020 03:01:55 م
  *  Author: TOSHIBA
  */ 
 
 
-#ifndef TMU_CFG_H_
-#define TMU_CFG_H_
+#ifndef SOS_CFG_H_
+#define SOS_CFG_H_
 
-#define TMU_DUFFER_MAX_SIZE (5)
+#define SOS_DUFFER_MAX_SIZE (5)
 
 
 
-#endif /* TMU_CFG_H_ */
+#endif /* SOS_CFG_H_ */

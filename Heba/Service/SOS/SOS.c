@@ -1,5 +1,5 @@
 ﻿/*
- * TMU.c
+ * SOS.c
  *
  * Created: 24/02/2020 02:56:11 م
  *  Author: TOSHIBA
@@ -7,30 +7,32 @@
 /*****************************************************************************************************/
 /*                                        INCLUDES                                                  */
 /***************************************************************************************************/
-#include "TMU.h"
-//#include "TMU_PbCfg.h"
+#include "SOS.h"
+//#include "SOS_PbCfg.h"
 
 
-#include "stdio.h"
+//#include "stdio.h"
 
 /*****************************************************************************************************/
 /*                                        DEFINES                                                   */
 /***************************************************************************************************/			
 							
-#define TUM_UNINIT       (0)				
-#define TMU_INIT         (1)				
-#define TUM_BUFFER_EMPTY (0)
-#define CONSUMER_START_COUNT (1)
-#define TMU_ISR_START_COUNT (1)
+#define SOS_UNINIT       (0)				
+#define SOS_INIT         (1)				
+#define SOS_BUFFER_EMPTY (0)
+#define CONSUMER_START_COUNT (0)
+#define SOS_ISR_START_COUNT (0)
 #define ZERO                  0	
 #define MAX_TIMER_CH_NU       (3)	
 #define NULL_ID              256
-#define START_TMU_ISR         1
-#define STOP_TMU_ISR         0	
+#define START_SOS_ISR         1
+#define STOP_SOS_ISR         0	
 #define TCNT_INITIAL_COUNT 6
 #define TCNT_NUMBER_OF_COUNT 250
 #define CONSUMER_MODE_PROTECTIN 2  
 #define ONE                     1
+//#define IDLE_TASK_ID      (SOS_DUFFER_MAX_SIZE-ONE)
+
 typedef struct {void (*P_Consumer)(void);
 	uint8_t u8_Perudicity ;
 	uint8_t u8_ConsumerTime;
@@ -39,66 +41,73 @@ typedef struct {void (*P_Consumer)(void);
 } str_CONSUMER;
 	
 	
-static str_CONSUMER astr_ConsumerBufferArr[TMU_DUFFER_MAX_SIZE]={0};
-static strTMU_Cfg_t strTMU_Control;			
-static uint8_t TMU_BufferSize= TUM_BUFFER_EMPTY;
-static uint8_t u8_TMU_Status=TUM_UNINIT;
-static uint8_t volatile TMU_ISR_Flag=START_TMU_ISR; 
+static str_CONSUMER astr_ConsumerBufferArr[SOS_DUFFER_MAX_SIZE]={0};
+static strSOS_Cfg_t strSOS_Control;			
+static uint8_t SOS_BufferSize= SOS_BUFFER_EMPTY;
+static uint8_t u8_SOS_Status=SOS_UNINIT;
+//static uint8_t volatile SOS_ISR_Flag=START_SOS_ISR; 
+static volatile uint8_t u8_ISR_Count;
 
-static void TMU_ISR_(void);
+static void SOS_ISR_(void);
+// static void IDLE_TASK(void)
+// {
+// 	EN_Sleep();
+// }
  
 /*
- * @param: input:  strTMU_Cfg_t  *
+ * @param: input:  strSOS_Cfg_t  *
  * @param: output: NONE
  * @param :Input/output :None 
  * @Return : Error status 
- * Description :  Initializes the TMU   
+ * Description :  Initializes the SOS   
  */
-u8_ERROR_STATUS_t TMU_Init (const strTMU_Cfg_t * ConfigPtr )
+u8_ERROR_STATUS_t SOS_Init (const strSOS_Cfg_t * ConfigPtr )
  {
 	
-	u8_ERROR_STATUS_t u8_TUM_ErrorStatus=E_OK;
+	u8_ERROR_STATUS_t u8_SOS_ErrorStatus=E_OK;
 	
 	uint8_t u8_BufferIndex = ZERO;
 	
 	      if (ConfigPtr != NULL)
 			 {
-				if( u8_TMU_Status==TUM_UNINIT){
+				if( u8_SOS_Status==SOS_UNINIT){
 			
-					 strTMU_Control.u8_TimerID = ConfigPtr->u8_TimerID;
+			
+					 strSOS_Control.u8_TimerID = ConfigPtr->u8_TimerID;
 					 
-					 strTMU_Control.u8_TMU_reslution = ConfigPtr->u8_TMU_reslution;
+					 strSOS_Control.u8_SOS_reslution = ConfigPtr->u8_SOS_reslution;
 					 
-						 if(strTMU_Control.u8_TimerID < MAX_TIMER_CH_NU )
+						 if(strSOS_Control.u8_TimerID < MAX_TIMER_CH_NU )
 						 {
 			
-                         gstrTimerConfig_t TMU_TimerCfg={strTMU_Control.u8_TimerID, TIMER_MODE,TIMER_PRESCALER_64,TIMER_MODE_INT,TMU_ISR_};
+                         gstrTimerConfig_t SOS_TimerCfg={strSOS_Control.u8_TimerID, TIMER_MODE,TIMER_PRESCALER_64,TIMER_MODE_INT,SOS_ISR_};
 	    
-		                 Timer_Init(&TMU_TimerCfg);
+		                 Timer_Init(&SOS_TimerCfg);
+						 //init the task buffer whith initial value 
 		 
-						while ( u8_BufferIndex< TMU_DUFFER_MAX_SIZE )
+						while ( u8_BufferIndex< SOS_DUFFER_MAX_SIZE )
 						{
 					 
 						astr_ConsumerBufferArr[u8_BufferIndex].u8_consumerId=NULL_ID ;
 						u8_BufferIndex ++;
 						 }
 	 
-						Timer_Start(TMU_TimerCfg.u8_TimerCh,TCNT_NUMBER_OF_COUNT);
+						Timer_Start(SOS_TimerCfg.u8_TimerCh,TCNT_NUMBER_OF_COUNT);
            
-		                 u8_TMU_Status = TMU_INIT;
+		                 u8_SOS_Status = SOS_INIT;
 						 
 						}
 		
 					else
-						u8_TUM_ErrorStatus= ERROR_INVALIDE_PARAMETAR+ MODULE_ERROR_NUMBER  ;
+						u8_SOS_ErrorStatus= ERROR_INVALIDE_PARAMETAR+ MODULE_ERROR_NUMBER  ;
 						}
 			else 
-				u8_TUM_ErrorStatus= ERROR_MULTIPLE_INIT+ MODULE_ERROR_NUMBER  ;
+				u8_SOS_ErrorStatus= ERROR_MULTIPLE_INIT+ MODULE_ERROR_NUMBER  ;
 		}
 		else 
-			u8_TUM_ErrorStatus= ERROR_NULL_PTR+ MODULE_ERROR_NUMBER ;
+			u8_SOS_ErrorStatus= ERROR_NULL_PTR+ MODULE_ERROR_NUMBER ;
 	 
-	return  u8_TUM_ErrorStatus;
+	return  u8_SOS_ErrorStatus;
 	
 	}
 /*
@@ -112,59 +121,59 @@ u8_ERROR_STATUS_t TMU_Init (const strTMU_Cfg_t * ConfigPtr )
  * Description : Creates consumer with predetermined time    
  */
 
-u8_ERROR_STATUS_t TMU_Start_Timer(uint8_t u8_consumerTime ,uint8_t u8_consumerMode,uint8_t u8_ConsumerId,void(*consumerPointer)(void) ){
-		u8_ERROR_STATUS_t u8_TUM_ErrorStatus = E_OK;
+u8_ERROR_STATUS_t SOS_Create_Task( const strSOS_CreatTask_t *  strSOS_CreatTask ){
+		u8_ERROR_STATUS_t u8_SOS_ErrorStatus = E_OK;
 		
-			if (consumerPointer!=NULL)
+			if (strSOS_CreatTask->consumerPointer!=NULL)
 	         {
-				 if( u8_TMU_Status==TMU_INIT)
+				 if( u8_SOS_Status==SOS_INIT)
 				 { 
 					
-					if(TMU_BufferSize<(TMU_DUFFER_MAX_SIZE))
+					if(SOS_BufferSize<(SOS_DUFFER_MAX_SIZE))
 					
 					{
-						 if (u8_ConsumerId<TMU_DUFFER_MAX_SIZE)
+						 if (strSOS_CreatTask->u8_ConsumerId<SOS_DUFFER_MAX_SIZE)
 						 {
 						 
 						
 								   
-							if(astr_ConsumerBufferArr[u8_ConsumerId].u8_consumerId == NULL_ID  )
+							if(astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].u8_consumerId == NULL_ID  )
 								{
-									if(u8_consumerMode< CONSUMER_MODE_PROTECTIN)
+									if(strSOS_CreatTask->u8_consumerMode< CONSUMER_MODE_PROTECTIN)
 									{
-									   astr_ConsumerBufferArr[u8_ConsumerId].P_Consumer=consumerPointer;
+									   astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].P_Consumer=strSOS_CreatTask->consumerPointer;
 								  
-									   astr_ConsumerBufferArr[u8_ConsumerId].u8_Perudicity=u8_consumerMode;
+									   astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].u8_Perudicity=strSOS_CreatTask->u8_consumerMode;
 								   
-									   astr_ConsumerBufferArr[u8_ConsumerId].u8_ConsumerTime=(u8_consumerTime/strTMU_Control.u8_TMU_reslution);
+									   astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].u8_ConsumerTime=(strSOS_CreatTask->u8_consumerTime/strSOS_Control.u8_SOS_reslution);
 					
-									   astr_ConsumerBufferArr[u8_ConsumerId].u8_ConsumerCount=CONSUMER_START_COUNT;
+									   astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].u8_ConsumerCount=CONSUMER_START_COUNT;
 					   
-									   astr_ConsumerBufferArr[u8_ConsumerId].u8_consumerId=u8_ConsumerId;
-									   TMU_BufferSize ++ ;
+									   astr_ConsumerBufferArr[strSOS_CreatTask->u8_ConsumerId].u8_consumerId=strSOS_CreatTask->u8_ConsumerId;
+									   SOS_BufferSize ++ ;
 									 }
 									 else 
-										u8_TUM_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_INVALIDE_PARAMETAR;
+										u8_SOS_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_INVALIDE_PARAMETAR;
 								}
 							else 
-								u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROE_EXIST_ID;
+								u8_SOS_ErrorStatus= MODULE_ERROR_NUMBER+ERROE_EXIST_ID;
 							   }
 						 else 
-							u8_TUM_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_INVALIDE_PARAMETAR;
+							u8_SOS_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_INVALIDE_PARAMETAR;
 							  }
 					else
-						u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_FULL_BUFFER;
+						u8_SOS_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_FULL_BUFFER;
 						
 		
 						 }
 				else 
-					u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
+					u8_SOS_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
 					
 			    }
 		else
-			u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_NULL_PTR ;
+			u8_SOS_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_NULL_PTR ;
 		
-return u8_TUM_ErrorStatus;
+return u8_SOS_ErrorStatus;
 }
 /*
  * @param: input:  u8_ConsumerId    : Consumer Id 
@@ -172,35 +181,35 @@ return u8_TUM_ErrorStatus;
  * @param :Input/output :None 
  * @Return : Error status 
  * Description : Stops consumer     
- */
-u8_ERROR_STATUS_t TMU_Stop_Timer(uint8_t u8_ConsumerId)
+ */ 
+u8_ERROR_STATUS_t SOS_Delete_Task(uint8_t u8_ConsumerId)
 {
-	u8_ERROR_STATUS_t u8_TUM_ErrorStatus = E_OK;
+	u8_ERROR_STATUS_t u8_SOS_ErrorStatus = E_OK;
 			
 			 
-	 if(u8_TMU_Status ==TMU_INIT){
+	 if(u8_SOS_Status ==SOS_INIT){
 				 
-			if ( TMU_BufferSize > ZERO)
+			if ( SOS_BufferSize > ZERO)
 				  {
 				  if (astr_ConsumerBufferArr[u8_ConsumerId].u8_consumerId!=NULL_ID  ){ 
 					       
 					 astr_ConsumerBufferArr[u8_ConsumerId].u8_consumerId=NULL_ID  ;
 					  
-					 TMU_BufferSize--;
+					 SOS_BufferSize--;
 					  } 
 					else  
-				u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_ELEMENT_NOT_EXIST;
+				u8_SOS_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_ELEMENT_NOT_EXIST;
 				}
 				
 			else
 				
-				u8_TUM_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_EMPTY_BUFFER ;
+				u8_SOS_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_EMPTY_BUFFER ;
 			 }
 	 else
 
-		 u8_TUM_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
+		 u8_SOS_ErrorStatus=MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
 			
- return u8_TUM_ErrorStatus;
+ return u8_SOS_ErrorStatus;
 }
 
 /*
@@ -211,103 +220,76 @@ u8_ERROR_STATUS_t TMU_Stop_Timer(uint8_t u8_ConsumerId)
  *Description :Determines which consumer to be called    
  */
 
-u8_ERROR_STATUS_t TMU_Dispatcher(void){
-	 	
- u8_ERROR_STATUS_t u8_TUM_ErrorStatus = E_OK;
-		 
- uint8_t u8_Tep_BufferIndex = ZERO;
-		
-	if ( u8_TMU_Status==TMU_INIT){
-	 	
-		if( TMU_ISR_Flag ==START_TMU_ISR){
-		
-			TMU_ISR_Flag=STOP_TMU_ISR;
-		
-				while (u8_Tep_BufferIndex < TMU_DUFFER_MAX_SIZE ){
-
-						if (astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_consumerId!=NULL_ID  ){
-					
-							if((astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount )== (astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerTime)){
-				
-				
-								astr_ConsumerBufferArr[u8_Tep_BufferIndex].P_Consumer();
+void SOS_Run(void){
 	
-									if(astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_Perudicity ==  PERUDIC ){
-										astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount=CONSUMER_START_COUNT;
-											}
-									else
-									{
+	uint8_t u8_ISR_CopyFlag=ZERO;
+	uint8_t u8_Tep_BufferIndex=ZERO;
+	Sleep_Mode(IDLE);
+	
+
+	while(1)
+	{
+	
+		DIS_EN_G_INT();
+	    u8_ISR_CopyFlag=u8_ISR_Count;
+		u8_ISR_Count=ZERO;
+		EN_G_INT();     
 		
-										 astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_consumerId=NULL_ID  ;
+		u8_Tep_BufferIndex = ZERO;
 		
-									}
-								}
+		if ( u8_SOS_Status==SOS_INIT){
 			
- 							else
-							{
-								astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount++;
 				
+				while (u8_Tep_BufferIndex < SOS_DUFFER_MAX_SIZE ){
+
+					if (astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_consumerId!=NULL_ID  ){
+						
+						astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount += u8_ISR_CopyFlag;
+						
+						if((astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount )>= (astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerTime)){
+							
+							
+							astr_ConsumerBufferArr[u8_Tep_BufferIndex].P_Consumer();
+							
+							if(astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_Perudicity ==  PERUDIC ){
+								astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount=CONSUMER_START_COUNT;
+							}
+							else
+							{
+								
+								//astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_consumerId=NULL_ID  ;
+								
 							}
 						}
-			
- 				u8_Tep_BufferIndex++;
- 			
+						
+						else
+						{	//IN SOS do nothing
+							//astr_ConsumerBufferArr[u8_Tep_BufferIndex].u8_ConsumerCount++;
+							
+						}
+					}
+					
+					u8_Tep_BufferIndex++;
+					
 				}	
-			
-		}
-			
-	}
-	else
-		u8_TUM_ErrorStatus= MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
-		
-return u8_TUM_ErrorStatus;
-		
-	}
-/*
- * @param: input:None
- * @param: output: NONE
- * @param :Input/output :None 
- * @Return : Error status 
- * Description :  De_initializes the TMU   
- */
-u8_ERROR_STATUS_t TMU_DeInit ( void ) {
-	
-	u8_ERROR_STATUS_t u8_TUM_ErrorStatus = E_OK;
-
-	  if ( u8_TMU_Status==TMU_INIT)
-	  {
-		   
-		   u8_TMU_Status = TUM_UNINIT;
-		 
-		  Timer_Stop(strTMU_Control.u8_TimerID);
-		 }
-	  
-	u8_TUM_ErrorStatus=  MODULE_ERROR_NUMBER+ERROR_UNILTILZED_MODULE;
-	
-	return u8_TUM_ErrorStatus;
+			EN_Sleep();
+				
+		}	
+	}		
 }
+
+
 /*
 * @param: input:None
 * @param: output: NONE
 * @param :Input/output :None
 * @Return : None
-* Description :  TMU_ISR
+* Description : SOS_ISR
 */
-static void TMU_ISR_(void){
-	
-static volatile uint8_t u8_ISR_Count=TMU_ISR_START_COUNT;
-			
-if(u8_ISR_Count==strTMU_Control.u8_TMU_reslution){
-				
-	TMU_ISR_Flag=START_TMU_ISR;
-	
-	u8_ISR_Count=TMU_ISR_START_COUNT;
-
-           }
-		   
-else 
+static void SOS_ISR_(void)
+{
 	u8_ISR_Count++;
 		
- Timer_SetValue(strTMU_Control.u8_TimerID,TCNT_INITIAL_COUNT);
+ Timer_SetValue(strSOS_Control.u8_TimerID,TCNT_INITIAL_COUNT);
 
 }
