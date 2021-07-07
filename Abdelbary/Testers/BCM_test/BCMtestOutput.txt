@@ -1,0 +1,108 @@
+
+
+	=========================SPI_Module_TEST=======================
+
+
+		-----------------BCM_init_TEST-------------
+testCase   0:	expected_return :   0	 fun_return:   0	Passed.
+testCase   1:	expected_return : -201	 fun_return: -201	Passed.
+testCase   2:	expected_return :   0	 fun_return:   0	Passed.
+testCase   3:	expected_return :   0	 fun_return:   0	Passed.
+testCase   4:	expected_return :   0	 fun_return:   0	Passed.
+testCase   5:	expected_return : -201	 fun_return:   0	Failed.
+testCase   6:	expected_return : -205	 fun_return: -205	Passed.
+testCase   7:	expected_return : -205	 fun_return: -205	Passed.
+testCase   8:	expected_return : -205	 fun_return: -205	Passed.
+testCase   9:	expected_return : -205	 fun_return: -205	Passed.
+testCase  10:	expected_return : -205	 fun_return: -205	Passed.
+testCase  11:	expected_return : -205	 fun_return: -205	Passed.
+testCase  12:	expected_return :   0	 fun_return:   0	Passed.
+testCase  13:	expected_return :   0	 fun_return:   0	Passed.
+testCase  14:	expected_return :   0	 fun_return:   0	Passed.
+testCase  15:	expected_return :   0	 fun_return:   0	Passed.
+testCase  16:	expected_return : -205	 fun_return: -205	Passed.
+testCase  17:	expected_return : -205	 fun_return: -205	Passed.
+testCase  18:	expected_return : -205	 fun_return: -205	Passed.
+
+		-----------------BCM_setup_TEST------------
+testCase  19:	expected_return :   0	 fun_return:   0	Passed.
+testCase  20:	expected_return : -201	 fun_return: -201	Passed.
+testCase  21:	expected_return :   0	 fun_return:   0	Passed.
+testCase  22:	expected_return : -201	 fun_return: -201	Passed.
+testCase  23:	expected_return :   0	 fun_return:   0	Passed.
+testCase  24:	expected_return : -201	 fun_return: -201	Passed.
+testCase  25:	expected_return :   0	 fun_return:   0	Passed.
+testCase  26:	expected_return : -201	 fun_return: -201	Passed.
+testCase  27:	expected_return :   0	 fun_return:   0	Passed.
+testCase  28:	expected_return :   0	 fun_return:   0	Passed.
+testCase  29:	expected_return : -205	 fun_return: -205	Passed.
+testCase  30:	expected_return : -205	 fun_return: -205	Passed.
+testCase  31:	expected_return : -205	 fun_return: -205	Passed.
+testCase  32:	expected_return :   0	 fun_return:   0	Passed.
+testCase  33:	expected_return :   0	 fun_return:   0	Passed.
+testCase  34:	expected_return : -205	 fun_return: -205	Passed.
+testCase  35:	expected_return : -205	 fun_return: -205	Passed.
+testCase  36:	expected_return : -205	 fun_return: -205	Passed.
+testCase  37:	expected_return :   0	 fun_return:   0	Passed.
+testCase  38:	expected_return :   0	 fun_return:   0	Passed.
+testCase  39:	expected_return : -205	 fun_return: -205	Passed.
+testCase  40:	expected_return : -205	 fun_return: -205	Passed.
+testCase  41:	expected_return : -205	 fun_return: -205	Passed.
+
+		---------------BCM_RX_dispatcher_TEST-------
+
+		---------------BCM_TX_dispatcher_TEST-------
+STATE_IDLE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_SEN_BYTE_COMPLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+STATE_FRAM_SEND_COMLETE
+
+
+	=========================ENDED================================
+
