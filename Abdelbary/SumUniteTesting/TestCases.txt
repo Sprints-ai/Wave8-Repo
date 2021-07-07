@@ -1,0 +1,6 @@
+
+TC		a		b		output
+
+1		5		5		 E_OK
+2		0		0		 E_OK
+3   MAX_INIT  MAX_INIT-b  E_NOK
