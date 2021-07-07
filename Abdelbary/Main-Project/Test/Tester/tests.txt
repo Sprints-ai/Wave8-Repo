@@ -1,0 +1,17 @@
+MOD : dummy_Moudle_test;
+FUN : dummy;
+
+TESTFUN : dummy;
+C : [10,0];
+C : [1,0];
+C : [100,-103];
+R : [1,5,2,-102];
+END :;
+
+FUN : dummyer;
+TESTFUN : dummy2;
+C : [10,2];
+C : [1,2];
+C : [100,2];
+END :;
+

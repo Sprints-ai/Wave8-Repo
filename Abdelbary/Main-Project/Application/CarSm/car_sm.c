@@ -25,7 +25,8 @@ typedef enum En_distant_ranges_t{
 /*- LOCAL FUNCTIONS PROTOTYPES ----------------------------*/
 /*- GLOBAL STATIC VARIABLES -------------------------------*/
 
-static En_car_state_t genu_car_state;
+extern uint64_t gu64_US_distantCm;
+STATIC En_car_state_t genu_car_state;
 
 
 /*- GLOBAL EXTERN VARIABLES -------------------------------*/
@@ -35,6 +36,12 @@ static En_car_state_t genu_car_state;
 
 
 
+#ifdef GCC
+void _delay_ms(double __ms)
+{
+	/*Mooc function to do nothing*/
+}
+#endif
 
 ERROR_STATUS Car_SM_Init(void)
 {
@@ -92,5 +99,50 @@ ERROR_STATUS Car_SM_Update(void)
 		}
 	/*delay to take 10 samples per seconed*/
 	_delay_ms(DELAY_HUNDRED);
+	return fun_status;
+}
+
+
+
+ERROR_STATUS Car_SM_Update_dispatcher(void)
+{
+	uint8_t fun_status = OK;
+	
+	/*
+	*	1-send trigger
+	*	2-git ultrasonic dissent
+	*	3-check for distant value to determine state machine state
+	*	4-switch for state and excite crossponding actions
+	*/
+
+		
+		if(gu64_US_distantCm >= distent_0 && gu64_US_distantCm <= distent_25)
+		{
+			genu_car_state = state_move_backword;
+		}
+		else if(gu64_US_distantCm >distent_25 && gu64_US_distantCm <= distent_30)
+		{
+			genu_car_state = state_turn;
+		}
+		else 
+		{
+			genu_car_state = state_move_forward;		
+		}
+			
+		/*switch for state machine state to determine taken action*/	
+		switch(genu_car_state)
+		{
+			case state_move_backword:
+				Steering_SteerCar(CAR_BACKWARD,STEERING_SPEED);
+			break;
+			case  state_turn:
+				Steering_SteerCar(CAR_RIGHT,STEERING_SPEED);
+			break;
+			case state_move_forward:
+				Steering_SteerCar(CAR_FORWARD,STEERING_SPEED);
+			break;
+		}
+	/*delay to take 10 samples per seconed*/
+	//_delay_ms(DELAY_HUNDRED);
 	return fun_status;
 }

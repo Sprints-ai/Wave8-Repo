@@ -1,0 +1,9 @@
+MOD : car_sm_Moudle_test;
+FUN : car_init_test;
+
+TESTFUN : car_init_test;//test for comment
+C : [1,0];
+C : [2,-20];
+C : [3,-20];
+C : [4,-20];
+END :;

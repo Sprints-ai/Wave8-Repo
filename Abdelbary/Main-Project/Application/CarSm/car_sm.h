@@ -43,4 +43,5 @@ ERROR_STATUS Car_SM_Init(void);
 */
 ERROR_STATUS Car_SM_Update(void);
 
+ERROR_STATUS Car_SM_Update_dispatcher(void);
 #endif /* CAR_SM_H_ */
